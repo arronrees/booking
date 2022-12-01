@@ -1,8 +1,10 @@
 import express, { Request, Response, NextFunction } from 'express';
 import { PrismaClient } from '@prisma/client';
 import morgan from 'morgan';
+import { authRouter } from './routes/auth.routes';
 
-const prisma = new PrismaClient();
+export const prismaDB = new PrismaClient({ log: ['query', 'info', 'warn'] });
+
 const app = express();
 
 // middleware
@@ -10,22 +12,11 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(morgan('dev'));
 
+// routes
+app.use('/api/auth', authRouter);
+
 app.get('/', async (req: Request, res: Response) => {
-  const users = await prisma.user.findMany();
-
-  res.json(users);
-});
-
-app.get('/create', async (req: Request, res: Response) => {
-  const user = await prisma.user.create({
-    data: {
-      name: 'Arron Rees',
-      email: 'arron@email.com',
-      password: 'password',
-    },
-  });
-
-  res.json(user);
+  res.send('home');
 });
 
 // error handler
