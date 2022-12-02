@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { z } from 'zod';
 import { createAddressModel } from '../models/address.model';
-import { createStandardUserModel } from '../models/user.model';
+import { createStandardUserModel, signinUserModel } from '../models/user.model';
 
 export async function checkSignupObjectValid(
   req: Request,
@@ -23,7 +23,29 @@ export async function checkSignupObjectValid(
     } else {
       console.log(err);
 
-      return res.status(400).json({ success: false, error: err });
+      return res.status(500).json({ success: false, error: err });
+    }
+  }
+}
+
+export async function checkSigninObjectValid(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const { user } = req.body;
+
+    signinUserModel.parse(user);
+
+    next();
+  } catch (err) {
+    if (err instanceof z.ZodError) {
+      console.log(err.format());
+
+      return res.status(400).json({ success: false, error: err.format() });
+    } else {
+      return res.status(500).json({ success: false, error: err });
     }
   }
 }

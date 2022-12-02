@@ -26,3 +26,18 @@ export const createStandardUserModel = z.object({
 });
 
 export type CreateStandardUserType = z.infer<typeof createStandardUserModel>;
+
+export const signinUserModel = z.object({
+  email: z
+    .string({
+      required_error: 'Email is required',
+      invalid_type_error: 'Email must be a string',
+    })
+    .email(),
+  password: z.string({
+    required_error: 'Password is required',
+    invalid_type_error: 'Password must be a string',
+  }),
+});
+
+export type SigninUserType = z.infer<typeof signinUserModel>;
