@@ -3,7 +3,10 @@ import { PrismaClient } from '@prisma/client';
 import morgan from 'morgan';
 import { authRouter } from './routes/auth.routes';
 
-export const prismaDB = new PrismaClient({ log: ['query', 'info', 'warn'] });
+export const prismaDB = new PrismaClient({
+  errorFormat: 'pretty',
+  log: ['query', 'info', 'warn'],
+});
 
 const app = express();
 

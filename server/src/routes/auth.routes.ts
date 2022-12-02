@@ -1,5 +1,6 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import { omit } from 'lodash';
+import { validate as uuidValidate } from 'uuid';
 import { z } from 'zod';
 import { prismaDB } from '..';
 import { createAddressModel, CreateAddressType } from '../models/address.model';
@@ -35,6 +36,48 @@ const checkSignupObjectValid = async (
   }
 };
 
+const checkValidUuid = (id: string) => {
+  return uuidValidate(id);
+};
+
+type FieldToCheck = 'id' | 'email';
+
+const checkIfUserExists = async (
+  fieldToCheck: FieldToCheck,
+  fieldValue: string
+) => {
+  switch (fieldToCheck) {
+    case 'id':
+      if (!checkValidUuid(fieldValue)) return false;
+
+      const userFoundById = await prismaDB.user.findUnique({
+        where: {
+          id: fieldValue,
+        },
+      });
+
+      if (userFoundById) return true;
+
+      break;
+
+    case 'email':
+      const userFoundByEmail = await prismaDB.user.findUnique({
+        where: {
+          email: fieldValue,
+        },
+      });
+
+      if (userFoundByEmail) return true;
+
+      break;
+
+    default:
+      break;
+  }
+
+  return false;
+};
+
 authRouter.post(
   '/signup',
   checkSignupObjectValid,
@@ -45,6 +88,15 @@ authRouter.post(
         address,
       }: { user: CreateStandardUserType; address: CreateAddressType } =
         req.body;
+
+      const userExists = await checkIfUserExists('email', user.email);
+
+      if (userExists) {
+        return res.status(400).json({
+          success: false,
+          error: { message: 'User already registered' },
+        });
+      }
 
       const newUser = await prismaDB.user.create({
         data: {
@@ -58,6 +110,13 @@ authRouter.post(
       return res
         .status(200)
         .json({ success: true, data: omit(newUser, 'password') });
-    } catch (err) {}
+    } catch (err) {
+      console.error(err);
+
+      return res.status(500).json({
+        success: false,
+        error: { message: 'Something went wrong, please try again' },
+      });
+    }
   }
 );
