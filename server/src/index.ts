@@ -1,4 +1,5 @@
 import express, { Request, Response, NextFunction } from 'express';
+import cors from 'cors';
 import { PrismaClient } from '@prisma/client';
 import morgan from 'morgan';
 import { authRouter } from './routes/auth.routes';
@@ -11,6 +12,7 @@ export const prismaDB = new PrismaClient({
 const app = express();
 
 // middleware
+app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(morgan('dev'));

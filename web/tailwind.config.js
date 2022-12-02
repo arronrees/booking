@@ -7,8 +7,8 @@ module.exports = {
   theme: {
     extend: {},
     fontFamily: {
-      sans: ['Jost'],
+      sans: ['Lilita One'],
     },
   },
-  plugins: [],
+  plugins: [require('@tailwindcss/forms')],
 };
