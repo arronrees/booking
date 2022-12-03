@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
+import { useRouter } from 'next/router';
 
 type FormInputs = {
   name: string;
@@ -18,6 +19,8 @@ type FormInputs = {
 export default function SignupForm({}) {
   const [isLoading, setIsLoading] = useState(false);
   const [generalError, setGeneralError] = useState<string | null>(null);
+
+  const router = useRouter();
 
   const handleFormSubmit: SubmitHandler<FormInputs> = async (data) => {
     setGeneralError(null);
@@ -43,15 +46,13 @@ export default function SignupForm({}) {
 
     console.log(formData);
 
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/auth/signup`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
-      }
-    );
+    const res = await fetch('/api/auth/signup', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(formData),
+    });
     const responseData = await res.json();
+    console.log(responseData);
 
     if (!res.ok) {
       if (responseData.error && typeof responseData.error === 'string') {
@@ -59,7 +60,9 @@ export default function SignupForm({}) {
       }
     }
 
-    console.log(responseData);
+    if (res.ok) {
+      router.push('/');
+    }
 
     setIsLoading(false);
   };

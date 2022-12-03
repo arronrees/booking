@@ -1,4 +1,5 @@
 import SignupForm from '../../components/forms/SignupForm';
+import { withSessionSsr } from '../../utils/iron/withSession';
 
 export default function SignUp() {
   return (
@@ -9,3 +10,24 @@ export default function SignUp() {
     </div>
   );
 }
+
+export const getServerSideProps = withSessionSsr(
+  async function getServerSideProps({ req, res }) {
+    const user = req.session.user;
+
+    if (user) {
+      return {
+        redirect: {
+          destination: '/',
+          permanent: false,
+        },
+      };
+    }
+
+    if (!user || user === undefined) {
+      return {
+        props: {},
+      };
+    }
+  }
+);
