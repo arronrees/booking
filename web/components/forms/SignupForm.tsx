@@ -16,7 +16,7 @@ type FormInputs = {
   country: string;
 };
 
-export default function SignupForm({}) {
+export default function SignUpForm({}) {
   const [isLoading, setIsLoading] = useState(false);
   const [generalError, setGeneralError] = useState<string | null>(null);
 

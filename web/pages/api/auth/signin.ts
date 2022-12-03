@@ -1,13 +1,13 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { withSessionRoute } from '../../../utils/iron/withSession';
 
-export default withSessionRoute(signUpUser);
+export default withSessionRoute(signInUser);
 
-async function signUpUser(req: NextApiRequest, res: NextApiResponse) {
+async function signInUser(req: NextApiRequest, res: NextApiResponse) {
   try {
     // send request to api to login user
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/auth/signup`,
+      `${process.env.NEXT_PUBLIC_API_URL}/api/auth/signin`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

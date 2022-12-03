@@ -31,7 +31,7 @@ export const getServerSideProps = withSessionSsr(
     if (!user || user === undefined) {
       return {
         redirect: {
-          destination: '/auth/signup',
+          destination: '/auth/signin',
           permanent: false,
         },
       };

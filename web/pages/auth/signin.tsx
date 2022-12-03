@@ -1,12 +1,12 @@
-import SignUpForm from '../../components/forms/SignUpForm';
+import SignInForm from '../../components/forms/SignInForm';
 import { withSessionSsr } from '../../utils/iron/withSession';
 
-export default function SignUp() {
+export default function SignIn() {
   return (
     <div className='p-10'>
-      <h1 className='mb-6 text-6xl mx-auto max-w-xl'>Sign Up</h1>
+      <h1 className='mb-6 text-6xl mx-auto max-w-xl'>Sign In</h1>
 
-      <SignUpForm />
+      <SignInForm />
     </div>
   );
 }
