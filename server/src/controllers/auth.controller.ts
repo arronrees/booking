@@ -3,7 +3,11 @@ import { omit } from 'lodash';
 import { prismaDB } from '..';
 import { CreateAddressType } from '../models/address.model';
 import { CreateStandardUserType, SigninUserType } from '../models/user.model';
-import { comparePassword, hashPassword } from '../utils/auth.utils';
+import {
+  comparePassword,
+  createJwtToken,
+  hashPassword,
+} from '../utils/auth.utils';
 import { checkIfUserExists } from '../utils/user.utils';
 
 export async function signupController(req: Request, res: Response) {
@@ -38,9 +42,12 @@ export async function signupController(req: Request, res: Response) {
       },
     });
 
+    // generate token
+    const token = await createJwtToken(newUser.id);
+
     return res
       .status(200)
-      .json({ success: true, data: omit(newUser, 'password') });
+      .json({ success: true, data: omit({ ...newUser, token }, 'password') });
   } catch (err) {
     console.error(err);
 
@@ -73,8 +80,16 @@ export async function signinController(req: Request, res: Response) {
       userData.password
     );
 
+    // generate token
+    const token = await createJwtToken(userData.id);
+
     if (passwordCheck) {
-      return res.status(200).json({ success: true });
+      return res
+        .status(200)
+        .json({
+          success: true,
+          data: omit({ ...userData, token }, 'password'),
+        });
     }
 
     return res

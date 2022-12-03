@@ -1,4 +1,5 @@
 import { genSalt, hash, compare } from 'bcrypt';
+import { sign } from 'jsonwebtoken';
 
 export async function hashPassword(password: string): Promise<string> {
   const salt = await genSalt();
@@ -15,4 +16,8 @@ export async function comparePassword(
   const passwordsMatch = await compare(inputPassword, passwordToCompare);
 
   return passwordsMatch;
+}
+
+export async function createJwtToken(id: string) {
+  return sign({ id }, process.env.JWT_SECRET as string, { expiresIn: '1d' });
 }
