@@ -3,3 +3,22 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.btn {
+  @apply w-full text-center text-white p-3 rounded shadow cursor-pointer transition duration-200 focus:outline-none ring-offset-2 focus:ring-2 disabled:text-gray-400 disabled:bg-gray-200 disabled:hover:bg-gray-200 disabled:focus:bg-gray-200 disabled:cursor-progress;
+}
+
+.btn--slate {
+  @apply bg-slate-700 hover:bg-slate-800 focus:bg-slate-800 active:bg-slate-900 ring-slate-400;
+}
+.form__input {
+  @apply border block w-full flex-1 rounded border-gray-200 text-slate-800 focus:border-slate-600 focus:ring-slate-600;
+}
+
+.form__label {
+  @apply block text-slate-400 w-32;
+}
+
+.form__error {
+  @apply text-red-400 text-xs;
+}

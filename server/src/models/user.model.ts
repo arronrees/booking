@@ -21,7 +21,7 @@ export const createStandardUserModel = z.object({
   }),
   age: z.number({
     required_error: 'Age is required',
-    invalid_type_error: 'Age must be a string',
+    invalid_type_error: 'Age must be a number',
   }),
 });
 

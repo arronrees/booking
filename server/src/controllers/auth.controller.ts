@@ -21,7 +21,7 @@ export async function signupController(req: Request, res: Response) {
     if (userExists) {
       return res.status(400).json({
         success: false,
-        error: { message: 'User already registered' },
+        error: 'User already registered',
       });
     }
 
