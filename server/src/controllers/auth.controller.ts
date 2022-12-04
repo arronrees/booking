@@ -20,8 +20,6 @@ export async function signupController(req: Request, res: Response) {
     // check if user already exists in db
     const { userExists } = await checkIfUserExists('email', user.email);
 
-    console.log(userExists);
-
     if (userExists) {
       return res.status(400).json({
         success: false,
@@ -84,12 +82,10 @@ export async function signinController(req: Request, res: Response) {
     const token = await createJwtToken(userData.id);
 
     if (passwordCheck) {
-      return res
-        .status(200)
-        .json({
-          success: true,
-          data: omit({ ...userData, token }, 'password'),
-        });
+      return res.status(200).json({
+        success: true,
+        data: omit({ ...userData, token }, 'password'),
+      });
     }
 
     return res

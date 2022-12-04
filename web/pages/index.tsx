@@ -14,7 +14,7 @@ export default function Home() {
 
           console.log(data);
           if (res.ok) {
-            router.push('/auth/signup');
+            router.push('/auth/signin');
           }
         }}
       >
