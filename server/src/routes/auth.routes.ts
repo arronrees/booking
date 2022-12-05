@@ -1,42 +1,17 @@
 import { Router } from 'express';
 import {
-  signinAdminUserController,
-  signinStandardUserController,
-  signupAdminUserController,
-  signupStandardUserController,
+  signinUserController,
+  signupUserController,
 } from '../controllers/auth.controller';
 import {
-  checkAdminUserSignupObjectValid,
-  checkStandardUserSignupObjectValid,
+  checkUserSignupObjectValid,
   checkUserSigninObjectValid,
 } from '../middleware/auth.middleware';
 
 export const authRouter = Router();
 
-// standard user signup
-authRouter.post(
-  '/signup/standard',
-  checkStandardUserSignupObjectValid,
-  signupStandardUserController
-);
+// user signup
+authRouter.post('/signup', checkUserSignupObjectValid, signupUserController);
 
-// standard user signin
-authRouter.post(
-  '/signin/standard',
-  checkUserSigninObjectValid,
-  signinStandardUserController
-);
-
-// admin user signup
-authRouter.post(
-  '/signup/admin',
-  checkAdminUserSignupObjectValid,
-  signinAdminUserController
-);
-
-// admin user signin
-authRouter.post(
-  '/signin/admin',
-  checkUserSigninObjectValid,
-  signupAdminUserController
-);
+// user signin
+authRouter.post('/signin', checkUserSigninObjectValid, signinUserController);

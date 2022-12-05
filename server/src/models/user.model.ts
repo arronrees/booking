@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const createStandardUserModel = z.object({
+export const createUserModel = z.object({
   name: z.string({
     required_error: 'Name is required',
     invalid_type_error: 'Name must be a string',
@@ -23,9 +23,10 @@ export const createStandardUserModel = z.object({
     required_error: 'Age is required',
     invalid_type_error: 'Age must be a number',
   }),
+  role: z.enum(['USER', 'ADMIN', 'SUPERADMIN']),
 });
 
-export type CreateStandardUserType = z.infer<typeof createStandardUserModel>;
+export type CreateUserType = z.infer<typeof createUserModel>;
 
 export const signinUserModel = z.object({
   email: z
@@ -41,30 +42,3 @@ export const signinUserModel = z.object({
 });
 
 export type SigninUserType = z.infer<typeof signinUserModel>;
-
-export const createAdminUserModel = z.object({
-  name: z.string({
-    required_error: 'Name is required',
-    invalid_type_error: 'Name must be a string',
-  }),
-  email: z
-    .string({
-      required_error: 'Email is required',
-      invalid_type_error: 'Email must be a string',
-    })
-    .email(),
-  telephone: z.string({
-    required_error: 'Telephone is required',
-    invalid_type_error: 'Telephone must be a string',
-  }),
-  password: z.string({
-    required_error: 'Password is required',
-    invalid_type_error: 'Password must be a string',
-  }),
-  age: z.number({
-    required_error: 'Age is required',
-    invalid_type_error: 'Age must be a number',
-  }),
-});
-
-export type CreateAdminUserType = z.infer<typeof createAdminUserModel>;

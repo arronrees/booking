@@ -10,6 +10,12 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Role {
+  USER
+  ADMIN
+  SUPERADMIN
+}
+
 model User {
   id        String     @id @unique @default(uuid())
   createdAt DateTime   @default(now())
@@ -22,34 +28,21 @@ model User {
   Address   Address    @relation(fields: [addressId], references: [id])
   addressId String
   Purchase  Purchase[]
-}
-
-model AdminUser {
-  id        String   @id @unique @default(uuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  name      String   @db.VarChar(255)
-  email     String   @unique @db.VarChar(255)
-  telephone String   @db.VarChar(255)
-  password  String
-  age       Int
-  Address   Address  @relation(fields: [addressId], references: [id])
-  addressId String
   Event     Event[]
+  role      Role       @default(USER)
 }
 
 model Address {
-  id           String      @id @unique @default(uuid())
-  createdAt    DateTime    @default(now())
-  updatedAt    DateTime    @updatedAt
-  addressLine1 String      @db.VarChar(255)
-  addressLine2 String?     @db.VarChar(255)
-  town         String      @db.VarChar(255)
-  county       String?     @db.VarChar(255)
-  postcode     String      @db.VarChar(255)
-  country      String      @db.VarChar(255)
+  id           String   @id @unique @default(uuid())
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  addressLine1 String   @db.VarChar(255)
+  addressLine2 String?  @db.VarChar(255)
+  town         String   @db.VarChar(255)
+  county       String?  @db.VarChar(255)
+  postcode     String   @db.VarChar(255)
+  country      String   @db.VarChar(255)
   User         User[]
-  AdminUser    AdminUser[]
   Event        Event[]
 }
 
@@ -62,10 +55,10 @@ model Event {
   date        DateTime
   Address     Address       @relation(fields: [addressId], references: [id])
   addressId   String
-  AdminUser   AdminUser     @relation(fields: [adminUserId], references: [id])
-  adminUserId String
   BookingType BookingType[]
   Booking     Booking[]
+  User        User?         @relation(fields: [userId], references: [id])
+  userId      String?
 }
 
 model BookingType {
