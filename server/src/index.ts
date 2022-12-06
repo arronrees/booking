@@ -5,6 +5,7 @@ import cors from 'cors';
 import { PrismaClient } from '@prisma/client';
 import morgan from 'morgan';
 import { authRouter } from './routes/auth.routes';
+import { eventRouter } from './routes/event.routes';
 
 export const prismaDB = new PrismaClient({
   errorFormat: 'pretty',
@@ -21,6 +22,7 @@ app.use(morgan('dev'));
 
 // routes
 app.use('/api/auth', authRouter);
+app.use('/api/events', eventRouter);
 
 app.get('/', async (req: Request, res: Response) => {
   res.send('home');

@@ -60,8 +60,8 @@ model Event {
   addressId   String
   BookingType BookingType[]
   Booking     Booking[]
-  User        User?         @relation(fields: [userId], references: [id])
-  userId      String?
+  User        User          @relation(fields: [userId], references: [id])
+  userId      String
 }
 
 model BookingType {

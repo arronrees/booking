@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const createEventUserModel = z.object({
+export const createEventModel = z.object({
   name: z.string({
     required_error: 'Name is required',
     invalid_type_error: 'Name must be a string',
@@ -15,4 +15,4 @@ export const createEventUserModel = z.object({
   }),
 });
 
-export type CreateEventUserType = z.infer<typeof createEventUserModel>;
+export type CreateEventType = z.infer<typeof createEventModel>;
