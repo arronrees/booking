@@ -17,19 +17,22 @@ enum Role {
 }
 
 model User {
-  id        String     @id @unique @default(uuid())
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
-  name      String     @db.VarChar(255)
-  email     String     @unique @db.VarChar(255)
-  telephone String     @db.VarChar(255)
-  password  String
-  age       Int
-  Address   Address    @relation(fields: [addressId], references: [id])
-  addressId String
-  Purchase  Purchase[]
-  Event     Event[]
-  role      Role       @default(USER)
+  id                      String     @id @unique @default(uuid())
+  createdAt               DateTime   @default(now())
+  updatedAt               DateTime   @updatedAt
+  name                    String     @db.VarChar(255)
+  email                   String     @unique @db.VarChar(255)
+  telephone               String     @db.VarChar(255)
+  password                String
+  age                     Int
+  Address                 Address    @relation(fields: [addressId], references: [id])
+  addressId               String
+  Purchase                Purchase[]
+  Event                   Event[]
+  role                    Role       @default(USER)
+  emailVerified           Boolean    @default(false)
+  emailVerificationString String?
+  adminVerified           Boolean    @default(false)
 }
 
 model Address {

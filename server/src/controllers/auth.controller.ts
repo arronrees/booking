@@ -8,7 +8,11 @@ import {
   createJwtToken,
   hashPassword,
 } from '../utils/auth.utils';
-import { checkIfUserExists } from '../utils/user.utils';
+import checkValidUuid from '../utils/checkValidUuid';
+import {
+  checkIfUserExists,
+  sendEmailVerificationEmail,
+} from '../utils/user.utils';
 
 export async function signupUserController(req: Request, res: Response) {
   try {
@@ -42,6 +46,9 @@ export async function signupUserController(req: Request, res: Response) {
 
     // generate token
     const token = await createJwtToken(newUser.id);
+
+    // send verification email
+    await sendEmailVerificationEmail(user.email, newUser.id, newUser.name);
 
     return res.status(200).json({
       success: true,
@@ -94,5 +101,50 @@ export async function signinUserController(req: Request, res: Response) {
       .json({ success: false, error: 'Incorrect details, please try again' });
   } catch (err) {
     console.log(err);
+  }
+}
+
+export async function verifyEmailController(req: Request, res: Response) {
+  try {
+    const { id, token } = req.params;
+
+    if (!id || !token) {
+      return res
+        .status(400)
+        .json({ success: false, error: 'No ID or token provided' });
+    }
+
+    if (!checkValidUuid(id)) {
+      return res.status(400).json({ success: false, error: 'Invalid ID' });
+    }
+
+    const user = await prismaDB.user.findUnique({ where: { id } });
+
+    if (user) {
+      if (user.emailVerified) {
+        return res.status(200).json({ sucess: true });
+      }
+
+      if (user.emailVerificationString === token) {
+        await prismaDB.user.update({
+          where: { id },
+          data: { emailVerified: true, emailVerificationString: null },
+        });
+
+        return res.status(200).json({ sucess: true });
+      }
+    }
+
+    return res.status(400).json({
+      success: false,
+      error: 'Something went wrong, please try again',
+    });
+  } catch (err) {
+    console.error(err);
+
+    return res.status(500).json({
+      success: false,
+      error: 'Something went wrong, please try again',
+    });
   }
 }

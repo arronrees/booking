@@ -16,6 +16,25 @@ type FormInputs = {
   country: string;
 };
 
+type FormData = {
+  user: {
+    name: string;
+    email: string;
+    telephone: string;
+    age: number;
+    password: string;
+    role: 'USER' | 'ADMIN';
+  };
+  address: {
+    addressLine1: string;
+    addressLine2: string;
+    town: string;
+    county: string;
+    postcode: string;
+    country: string;
+  };
+};
+
 export default function SignUpForm({}) {
   const [isLoading, setIsLoading] = useState(false);
   const [generalError, setGeneralError] = useState<string | null>(null);
@@ -26,13 +45,14 @@ export default function SignUpForm({}) {
     setGeneralError(null);
     setIsLoading(true);
 
-    const formData = {
+    const formData: FormData = {
       user: {
         name: data.name,
         email: data.email,
         telephone: data.telephone,
         age: parseFloat(data.age),
         password: data.password,
+        role: 'USER',
       },
       address: {
         addressLine1: data.addressLine1,
@@ -43,8 +63,6 @@ export default function SignUpForm({}) {
         country: data.country,
       },
     };
-
-    console.log(formData);
 
     const res = await fetch('/api/auth/signup', {
       method: 'POST',
