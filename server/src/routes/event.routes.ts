@@ -1,9 +1,12 @@
 import { Router } from 'express';
-import { createEventController } from '../controllers/event.controller';
 import {
   checkAdminUserIdSentIsValid,
   checkCreateEventObjectValid,
 } from '../middleware/event.middleware';
+import {
+  createEventController,
+  getAllEventsController,
+} from '../controllers/event.controller';
 
 export const eventRouter = Router();
 
@@ -14,3 +17,6 @@ eventRouter.post(
   checkCreateEventObjectValid,
   createEventController
 );
+
+// get all events
+eventRouter.get('/', getAllEventsController);

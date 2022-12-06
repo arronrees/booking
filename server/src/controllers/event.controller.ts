@@ -34,3 +34,20 @@ export async function createEventController(req: Request, res: Response) {
     });
   }
 }
+
+export async function getAllEventsController(req: Request, res: Response) {
+  try {
+    const allEvents = await prismaDB.event.findMany({
+      where: { public: true },
+    });
+
+    res.status(200).json({ success: true, data: allEvents });
+  } catch (err) {
+    console.error(err);
+
+    return res.status(500).json({
+      success: false,
+      error: err,
+    });
+  }
+}
