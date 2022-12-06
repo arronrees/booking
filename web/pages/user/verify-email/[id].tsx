@@ -1,6 +1,10 @@
 import { GetServerSideProps } from 'next';
 
-export default function UserVerifyEmail({ success }) {
+interface Props {
+  success: boolean;
+}
+
+export default function UserVerifyEmail({ success }: Props) {
   return (
     <div>
       {success ? (
@@ -16,7 +20,7 @@ export const getServerSideProps: GetServerSideProps = async ({
   params,
   query,
 }) => {
-  const { id } = params;
+  const { id } = params!;
   const { token } = query;
 
   const res = await fetch(

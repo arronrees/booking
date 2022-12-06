@@ -35,9 +35,7 @@ export const getServerSideProps = withSessionSsr(
           permanent: false,
         },
       };
-    }
-
-    if (user) {
+    } else {
       return {
         props: { user },
       };

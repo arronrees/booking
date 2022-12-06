@@ -1,5 +1,10 @@
 import { withIronSessionApiRoute, withIronSessionSsr } from 'iron-session/next';
-import { GetServerSideProps } from 'next';
+import {
+  GetServerSideProps,
+  GetServerSidePropsContext,
+  GetServerSidePropsResult,
+  NextApiHandler,
+} from 'next';
 
 type SessionOptions = {
   password: string;
@@ -13,10 +18,25 @@ const sessionOptions: SessionOptions = {
   ttl: 86400,
 };
 
-export function withSessionRoute(handler) {
+export function withSessionRoute(handler: NextApiHandler) {
   return withIronSessionApiRoute(handler, sessionOptions);
 }
 
-export function withSessionSsr(handler: GetServerSideProps) {
+export function withSessionSsr<
+  P extends { [key: string]: unknown } = { [key: string]: unknown }
+>(
+  handler: (
+    context: GetServerSidePropsContext
+  ) => GetServerSidePropsResult<P> | Promise<GetServerSidePropsResult<P>>
+) {
   return withIronSessionSsr(handler, sessionOptions);
+}
+
+type User = {};
+
+// This is where we specify the typings of req.session.*
+declare module 'iron-session' {
+  interface IronSessionData {
+    user?: User;
+  }
 }

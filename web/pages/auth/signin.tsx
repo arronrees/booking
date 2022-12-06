@@ -22,9 +22,7 @@ export const getServerSideProps = withSessionSsr(
           permanent: false,
         },
       };
-    }
-
-    if (!user || user === undefined) {
+    } else {
       return {
         props: {},
       };
