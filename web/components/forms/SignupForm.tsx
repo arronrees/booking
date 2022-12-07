@@ -35,7 +35,7 @@ type FormData = {
   };
 };
 
-export default function SignUpForm({}) {
+export default function SignUpForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [generalError, setGeneralError] = useState<string | null>(null);
 
@@ -107,179 +107,146 @@ export default function SignUpForm({}) {
 
   return (
     <form
-      className='bg-white mx-auto max-w-xl p-6 rounded-md grid gap-2'
+      className='w-full grid gap-3 xs:grid-cols-2'
       onSubmit={handleSubmit(handleFormSubmit)}
     >
-      <p className='border-b mb-4 text-slate-800'>Your Details</p>
+      <p className='font-title xs:col-span-2 text-gray-300'>Your Details</p>
 
-      <div className='flex items-center gap-4'>
-        <label htmlFor='email' className='form__label'>
-          Name
-        </label>
+      <div>
         <input
           type='text'
-          id='name'
+          placeholder='Name'
           {...register('name', { required: 'Name is required' })}
           className='form__input'
         />
+        {errors.name?.message && (
+          <p className='form__error'>{errors.name?.message}</p>
+        )}
       </div>
-      {errors.name?.message && (
-        <p className='form__error'>{errors.name?.message}</p>
-      )}
-      <div className='flex items-center gap-4'>
-        <label htmlFor='email' className='form__label'>
-          Email
-        </label>
+      <div>
         <input
           type='email'
-          id='email'
+          placeholder='Email'
           {...register('email', { required: 'Email is required' })}
           className='form__input'
         />
+        {errors.email?.message && (
+          <p className='form__error'>{errors.email?.message}</p>
+        )}
       </div>
-      {errors.email?.message && (
-        <p className='form__error'>{errors.email?.message}</p>
-      )}
-      <div className='flex items-center gap-4'>
-        <label htmlFor='email' className='form__label'>
-          Telephone
-        </label>
+      <div>
         <input
           type='text'
-          id='telephone'
+          placeholder='Telephone'
           {...register('telephone', { required: 'Telephone is required' })}
           className='form__input'
         />
+        {errors.telephone?.message && (
+          <p className='form__error'>{errors.telephone?.message}</p>
+        )}
       </div>
-      {errors.telephone?.message && (
-        <p className='form__error'>{errors.telephone?.message}</p>
-      )}
-      <div className='flex items-center gap-4'>
-        <label htmlFor='email' className='form__label'>
-          Age
-        </label>
+      <div>
         <input
           type='number'
-          id='age'
+          placeholder='Age'
           {...register('age', {
             required: 'Age is required',
             min: { value: 1, message: 'Age must be at least 1' },
           })}
           className='form__input'
         />
+        {errors.age?.message && (
+          <p className='form__error'>{errors.age?.message}</p>
+        )}
       </div>
-      {errors.age?.message && (
-        <p className='form__error'>{errors.age?.message}</p>
-      )}
-      <div className='flex items-center gap-4'>
-        <label htmlFor='email' className='form__label'>
-          Password
-        </label>
+      <div>
         <input
           type='password'
-          id='password'
+          placeholder='Password'
           {...register('password', { required: 'Password is required' })}
           className='form__input'
         />
+        {errors.password?.message && (
+          <p className='form__error'>{errors.password?.message}</p>
+        )}
       </div>
-      {errors.password?.message && (
-        <p className='form__error'>{errors.password?.message}</p>
-      )}
 
-      <p className='mt-6 border-b mb-4 text-slate-800'>Address</p>
+      <p className='mt-4 font-title xs:col-span-2 text-gray-300'>Address</p>
 
-      <div className='flex items-center gap-4'>
-        <label htmlFor='email' className='form__label'>
-          Address Line 1
-        </label>
+      <div>
         <input
           type='text'
-          id='addressLine1'
+          placeholder='Address Line 1'
           {...register('addressLine1', {
             required: 'Address Line 1 is required',
           })}
           className='form__input'
         />
+        {errors.addressLine1?.message && (
+          <p className='form__error'>{errors.addressLine1?.message}</p>
+        )}
       </div>
-      {errors.addressLine1?.message && (
-        <p className='form__error'>{errors.addressLine1?.message}</p>
-      )}
-      <div className='flex items-center gap-4'>
-        <label htmlFor='email' className='form__label'>
-          Address Line 2
-        </label>
+      <div>
         <input
           type='text'
-          id='addressLine2'
+          placeholder='Address Line 2'
           {...register('addressLine2')}
           className='form__input'
         />
+        {errors.addressLine2?.message && (
+          <p className='form__error'>{errors.addressLine2?.message}</p>
+        )}
       </div>
-      {errors.addressLine2?.message && (
-        <p className='form__error'>{errors.addressLine2?.message}</p>
-      )}
-      <div className='flex items-center gap-4'>
-        <label htmlFor='email' className='form__label'>
-          Town
-        </label>
+      <div>
         <input
           type='text'
-          id='town'
+          placeholder='Town'
           {...register('town', { required: 'Town is required' })}
           className='form__input'
         />
+        {errors.town?.message && (
+          <p className='form__error'>{errors.town?.message}</p>
+        )}
       </div>
-      {errors.town?.message && (
-        <p className='form__error'>{errors.town?.message}</p>
-      )}
-      <div className='flex items-center gap-4'>
-        <label htmlFor='email' className='form__label'>
-          County
-        </label>
+      <div>
         <input
           type='text'
-          id='county'
+          placeholder='County'
           {...register('county', { required: 'County is required' })}
           className='form__input'
         />
+        {errors.county?.message && (
+          <p className='form__error'>{errors.county?.message}</p>
+        )}
       </div>
-      {errors.county?.message && (
-        <p className='form__error'>{errors.county?.message}</p>
-      )}
-      <div className='flex items-center gap-4'>
-        <label htmlFor='email' className='form__label'>
-          Postcode
-        </label>
+      <div>
         <input
           type='text'
-          id='postcode'
+          placeholder='Postcode'
           {...register('postcode', { required: 'Postcode is required' })}
           className='form__input'
         />
+        {errors.postcode?.message && (
+          <p className='form__error'>{errors.postcode?.message}</p>
+        )}
       </div>
-      {errors.postcode?.message && (
-        <p className='form__error'>{errors.postcode?.message}</p>
-      )}
-      <div className='flex items-center gap-4'>
-        <label htmlFor='email' className='form__label'>
-          Country
-        </label>
+      <div>
         <input
           type='text'
-          id='country'
+          placeholder='Country'
           {...register('country', { required: 'Country is required' })}
           className='form__input'
         />
+        {errors.country?.message && (
+          <p className='form__error'>{errors.country?.message}</p>
+        )}
       </div>
-      {errors.country?.message && (
-        <p className='form__error'>{errors.country?.message}</p>
-      )}
 
       {generalError && <p className='form__error'>{generalError}</p>}
 
       <button
         type='submit'
-        className='mt-4 btn btn--slate'
+        className='mt-4 btn btn--gold text-lg'
         disabled={isLoading}
       >
         Submit

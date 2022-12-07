@@ -7,7 +7,7 @@ type FormInputs = {
   password: string;
 };
 
-export default function SignUpForm({}) {
+export default function SignUpForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [generalError, setGeneralError] = useState<string | null>(null);
 
@@ -60,16 +60,13 @@ export default function SignUpForm({}) {
 
   return (
     <form
-      className='bg-white mx-auto max-w-xl p-6 rounded-md grid gap-2'
+      className='w-full grid gap-3'
       onSubmit={handleSubmit(handleFormSubmit)}
     >
       <div className='flex items-center gap-4'>
-        <label htmlFor='email' className='form__label'>
-          Email
-        </label>
         <input
           type='email'
-          id='email'
+          placeholder='Email'
           {...register('email', { required: 'Email is required' })}
           className='form__input'
         />
@@ -79,12 +76,9 @@ export default function SignUpForm({}) {
       )}
 
       <div className='flex items-center gap-4'>
-        <label htmlFor='email' className='form__label'>
-          Password
-        </label>
         <input
           type='password'
-          id='password'
+          placeholder='Password'
           {...register('password', { required: 'Password is required' })}
           className='form__input'
         />
@@ -97,7 +91,7 @@ export default function SignUpForm({}) {
 
       <button
         type='submit'
-        className='mt-4 btn btn--slate'
+        className='mt-4 btn btn--gold text-lg'
         disabled={isLoading}
       >
         Submit

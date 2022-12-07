@@ -1,18 +1,21 @@
-@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;500;600;700&family=Lilita+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=El+Messiri:wght@400;500;600;700&family=Lilita+One&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 .btn {
-  @apply w-full text-center text-white p-3 rounded shadow cursor-pointer transition duration-200 focus:outline-none ring-offset-2 focus:ring-2 disabled:text-gray-400 disabled:bg-gray-200 disabled:hover:bg-gray-200 disabled:focus:bg-gray-200 disabled:cursor-progress;
+  @apply w-max text-center tracking-wide text-white p-3 px-8 font-title rounded shadow cursor-pointer transition duration-200 focus:outline-none ring-offset-2 focus:ring-2 disabled:text-gray-400 disabled:bg-gray-200 disabled:hover:bg-gray-200 disabled:focus:bg-gray-200 disabled:cursor-progress;
 }
 
-.btn--slate {
-  @apply bg-slate-700 hover:bg-slate-800 focus:bg-slate-800 active:bg-slate-900 ring-slate-400;
+.btn--gold {
+  @apply bg-gold hover:bg-slate-800 focus:bg-slate-800 active:bg-slate-900 ring-gold;
 }
+
 .form__input {
-  @apply border block w-full flex-1 rounded border-gray-200 text-slate-800 focus:border-slate-600 focus:ring-slate-600;
+  @apply transition duration-200 block px-6 py-3 w-full rounded outline-none border-none text-white bg-mid-blue placeholder:text-white placeholder:opacity-70 focus:ring-slate-600 appearance-none;
+
+  line-height: 1;
 }
 
 .form__label {
@@ -20,5 +23,20 @@
 }
 
 .form__error {
-  @apply text-red-400 text-xs;
+  @apply text-red-400 text-xs mt-2;
+}
+
+figure,
+img {
+  width: 100%;
+  height: 100%;
+}
+
+figure {
+  overflow: hidden;
+  position: relative;
+}
+
+img {
+  object-fit: cover;
 }
