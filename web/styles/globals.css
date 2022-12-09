@@ -9,7 +9,7 @@
 }
 
 .btn--gold {
-  @apply bg-gold hover:bg-slate-800 focus:bg-slate-800 active:bg-slate-900 ring-gold;
+  @apply bg-gold hover:bg-gold2 focus:bg-gold2 active:bg-gold3 ring-gold;
 }
 
 .form__input {
