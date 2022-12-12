@@ -9,7 +9,9 @@ import {
   deleteEventController,
   getAllEventsController,
   updateEventController,
+  updateEventAddressController,
 } from '../controllers/event.controller';
+import { checkAddressObjectValid } from '../middleware/address.middleware';
 
 export const eventRouter = Router();
 
@@ -22,6 +24,13 @@ eventRouter.post(
   checkAdminUserIdSentIsValid,
   checkCreateEventObjectValid,
   createEventController
+);
+
+// update event address
+eventRouter.put(
+  '/update-address/:addressId',
+  checkAddressObjectValid,
+  updateEventAddressController
 );
 
 // update an event

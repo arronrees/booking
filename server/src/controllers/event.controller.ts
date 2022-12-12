@@ -81,6 +81,36 @@ export async function updateEventController(req: Request, res: Response) {
   }
 }
 
+export async function updateEventAddressController(
+  req: Request,
+  res: Response
+) {
+  try {
+    const { addressId } = req.params;
+    const { address } = req.body;
+
+    if (!checkValidUuid(addressId)) {
+      res.status(404).json({ success: false, error: 'Address not found' });
+    }
+
+    const updatedAddress = await prismaDB.address.update({
+      where: { id: addressId },
+      data: {
+        ...address,
+      },
+    });
+
+    res.status(200).json({ success: true, data: updatedAddress });
+  } catch (err) {
+    console.error(err);
+
+    return res.status(500).json({
+      success: false,
+      error: err,
+    });
+  }
+}
+
 export async function deleteEventController(req: Request, res: Response) {
   try {
     const { eventId } = req.params;
