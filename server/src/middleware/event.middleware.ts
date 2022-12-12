@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { z } from 'zod';
 import { createAddressModel } from '../models/address.model';
-import { createEventModel } from '../models/event.model';
+import { createEventModel, updateEventModel } from '../models/event.model';
 import { checkIfUserExists } from '../utils/user.utils';
 
 export async function checkAdminUserIdSentIsValid(
@@ -47,6 +47,30 @@ export async function checkCreateEventObjectValid(
 
     createEventModel.parse({ ...event, date: new Date(event.date) });
     createAddressModel.parse(address);
+
+    next();
+  } catch (err) {
+    if (err instanceof z.ZodError) {
+      console.log(err.format());
+
+      return res.status(400).json({ success: false, error: err.format() });
+    } else {
+      console.log(err);
+
+      return res.status(500).json({ success: false, error: err });
+    }
+  }
+}
+
+export async function checkUpdateEventObjectValid(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const { event } = req.body;
+
+    updateEventModel.parse({ ...event, date: new Date(event.date) });
 
     next();
   } catch (err) {

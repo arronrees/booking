@@ -53,15 +53,45 @@ export async function createEventController(req: Request, res: Response) {
   }
 }
 
-export async function deleteEventController(req: Request, res: Response) {
+export async function updateEventController(req: Request, res: Response) {
   try {
-    const { id } = req.params;
+    const { eventId } = req.params;
+    const { event } = req.body;
 
-    if (!checkValidUuid(id)) {
-      res.status(400).json({ success: false });
+    if (!checkValidUuid(eventId)) {
+      res.status(404).json({ success: false, error: 'Event not found' });
     }
 
-    const deletedEvent = await prismaDB.event.delete({ where: { id } });
+    const updatedEvent = await prismaDB.event.update({
+      where: { id: eventId },
+      data: {
+        ...event,
+        date: new Date(event.date),
+      },
+    });
+
+    res.status(200).json({ success: true, data: updatedEvent });
+  } catch (err) {
+    console.error(err);
+
+    return res.status(500).json({
+      success: false,
+      error: err,
+    });
+  }
+}
+
+export async function deleteEventController(req: Request, res: Response) {
+  try {
+    const { eventId } = req.params;
+
+    if (!checkValidUuid(eventId)) {
+      res.status(404).json({ success: false, error: 'Event not found' });
+    }
+
+    const deletedEvent = await prismaDB.event.delete({
+      where: { id: eventId },
+    });
 
     res.status(200).json({ success: true, data: deletedEvent });
   } catch (err) {

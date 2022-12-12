@@ -2,11 +2,13 @@ import { Router } from 'express';
 import {
   checkAdminUserIdSentIsValid,
   checkCreateEventObjectValid,
+  checkUpdateEventObjectValid,
 } from '../middleware/event.middleware';
 import {
   createEventController,
   deleteEventController,
   getAllEventsController,
+  updateEventController,
 } from '../controllers/event.controller';
 
 export const eventRouter = Router();
@@ -22,5 +24,12 @@ eventRouter.post(
   createEventController
 );
 
+// update an event
+eventRouter.put(
+  '/update/:eventId',
+  checkUpdateEventObjectValid,
+  updateEventController
+);
+
 // delete an event
-eventRouter.delete('/delete/:id', deleteEventController);
+eventRouter.delete('/delete/:eventId', deleteEventController);
