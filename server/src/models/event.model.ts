@@ -13,6 +13,7 @@ export const createEventModel = z.object({
     required_error: 'Date is required',
     invalid_type_error: 'Incorrect date format',
   }),
+  type: z.enum(['MUSIC', 'FESTIVAL', 'THEATRE', 'SPORT', 'OTHER']),
   public: z.boolean({
     required_error: 'Public is required',
     invalid_type_error: 'Public must be a boolean',

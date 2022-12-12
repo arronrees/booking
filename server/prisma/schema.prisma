@@ -49,6 +49,14 @@ model Address {
   Event        Event[]
 }
 
+enum EventType {
+  MUSIC
+  FESTIVAL
+  THEATRE
+  SPORT
+  OTHER
+}
+
 model Event {
   id          String        @id @unique @default(uuid())
   createdAt   DateTime      @default(now())
@@ -56,6 +64,7 @@ model Event {
   name        String        @db.VarChar(255)
   description String
   date        DateTime
+  type        EventType     @default(OTHER)
   public      Boolean       @default(false)
   Address     Address       @relation(fields: [addressId], references: [id])
   addressId   String

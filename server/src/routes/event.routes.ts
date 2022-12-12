@@ -5,10 +5,14 @@ import {
 } from '../middleware/event.middleware';
 import {
   createEventController,
+  deleteEventController,
   getAllEventsController,
 } from '../controllers/event.controller';
 
 export const eventRouter = Router();
+
+// get all events
+eventRouter.get('/', getAllEventsController);
 
 // create new event
 eventRouter.post(
@@ -18,5 +22,5 @@ eventRouter.post(
   createEventController
 );
 
-// get all events
-eventRouter.get('/', getAllEventsController);
+// delete an event
+eventRouter.delete('/delete/:id', deleteEventController);
