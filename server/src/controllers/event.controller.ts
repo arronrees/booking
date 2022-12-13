@@ -53,34 +53,6 @@ export async function createEventController(req: Request, res: Response) {
   }
 }
 
-export async function updateEventController(req: Request, res: Response) {
-  try {
-    const { eventId } = req.params;
-    const { event } = req.body;
-
-    if (!checkValidUuid(eventId)) {
-      return res.status(404).json({ success: false, error: 'Event not found' });
-    }
-
-    const updatedEvent = await prismaDB.event.update({
-      where: { id: eventId },
-      data: {
-        ...event,
-        date: new Date(event.date),
-      },
-    });
-
-    res.status(200).json({ success: true, data: updatedEvent });
-  } catch (err) {
-    console.error(err);
-
-    return res.status(500).json({
-      success: false,
-      error: err,
-    });
-  }
-}
-
 export async function updateEventAddressController(
   req: Request,
   res: Response
@@ -103,6 +75,34 @@ export async function updateEventAddressController(
     });
 
     res.status(200).json({ success: true, data: updatedAddress });
+  } catch (err) {
+    console.error(err);
+
+    return res.status(500).json({
+      success: false,
+      error: err,
+    });
+  }
+}
+
+export async function updateEventController(req: Request, res: Response) {
+  try {
+    const { eventId } = req.params;
+    const { event } = req.body;
+
+    if (!checkValidUuid(eventId)) {
+      return res.status(404).json({ success: false, error: 'Event not found' });
+    }
+
+    const updatedEvent = await prismaDB.event.update({
+      where: { id: eventId },
+      data: {
+        ...event,
+        date: new Date(event.date),
+      },
+    });
+
+    res.status(200).json({ success: true, data: updatedEvent });
   } catch (err) {
     console.error(err);
 

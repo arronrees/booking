@@ -55,3 +55,30 @@ export async function updateUserAddressController(req: Request, res: Response) {
     });
   }
 }
+
+export async function updateUserController(req: Request, res: Response) {
+  try {
+    const { userId } = req.params;
+    const { user } = req.body;
+
+    if (!checkValidUuid(userId)) {
+      return res.status(404).json({ success: false, error: 'User not found' });
+    }
+
+    const updatedUser = await prismaDB.user.update({
+      where: { id: userId },
+      data: {
+        ...user,
+      },
+    });
+
+    res.status(200).json({ success: true, data: updatedUser });
+  } catch (err) {
+    console.error(err);
+
+    return res.status(500).json({
+      success: false,
+      error: err,
+    });
+  }
+}

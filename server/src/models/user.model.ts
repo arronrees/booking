@@ -23,7 +23,6 @@ export const createUserModel = z.object({
     required_error: 'Age is required',
     invalid_type_error: 'Age must be a number',
   }),
-  role: z.enum(['USER', 'ADMIN', 'SUPERADMIN']),
 });
 
 export type CreateUserType = z.infer<typeof createUserModel>;
@@ -42,3 +41,20 @@ export const signinUserModel = z.object({
 });
 
 export type SigninUserType = z.infer<typeof signinUserModel>;
+
+export const updateUserModel = z.object({
+  name: z.string({
+    required_error: 'Name is required',
+    invalid_type_error: 'Name must be a string',
+  }),
+  telephone: z.string({
+    required_error: 'Telephone is required',
+    invalid_type_error: 'Telephone must be a string',
+  }),
+  age: z.number({
+    required_error: 'Age is required',
+    invalid_type_error: 'Age must be a number',
+  }),
+});
+
+export type UpdateUserType = z.infer<typeof updateUserModel>;
