@@ -59,7 +59,7 @@ export async function updateEventController(req: Request, res: Response) {
     const { event } = req.body;
 
     if (!checkValidUuid(eventId)) {
-      res.status(404).json({ success: false, error: 'Event not found' });
+      return res.status(404).json({ success: false, error: 'Event not found' });
     }
 
     const updatedEvent = await prismaDB.event.update({
@@ -90,7 +90,9 @@ export async function updateEventAddressController(
     const { address } = req.body;
 
     if (!checkValidUuid(addressId)) {
-      res.status(404).json({ success: false, error: 'Address not found' });
+      return res
+        .status(404)
+        .json({ success: false, error: 'Address not found' });
     }
 
     const updatedAddress = await prismaDB.address.update({
@@ -116,7 +118,7 @@ export async function deleteEventController(req: Request, res: Response) {
     const { eventId } = req.params;
 
     if (!checkValidUuid(eventId)) {
-      res.status(404).json({ success: false, error: 'Event not found' });
+      return res.status(404).json({ success: false, error: 'Event not found' });
     }
 
     const deletedEvent = await prismaDB.event.delete({
