@@ -34,6 +34,8 @@ export async function signupUserController(req: Request, res: Response) {
     // if user not registered, continue to create user
     const hash = await hashPassword(user.password);
 
+    delete user.passwordConfirmation;
+
     const newUser = await prismaDB.user.create({
       data: {
         ...user,
