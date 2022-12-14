@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { prismaDB } from '..';
 import checkValidUuid from '../utils/checkValidUuid';
+import { sendEmailVerificationEmail } from '../utils/user.utils';
 
 export async function getSingleUserController(req: Request, res: Response) {
   try {
@@ -73,6 +74,68 @@ export async function updateUserController(req: Request, res: Response) {
     });
 
     res.status(200).json({ success: true, data: updatedUser });
+  } catch (err) {
+    console.error(err);
+
+    return res.status(500).json({
+      success: false,
+      error: err,
+    });
+  }
+}
+
+export async function updateUserEmailController(req: Request, res: Response) {
+  try {
+    const { userId } = req.params;
+    const { user } = req.body;
+
+    if (!checkValidUuid(userId)) {
+      return res.status(404).json({ success: false, error: 'User not found' });
+    }
+
+    // find the user sending the request
+    const currentUser = await prismaDB.user.findUnique({
+      where: { id: userId },
+    });
+
+    if (!currentUser) {
+      return res.status(404).json({ success: false, error: 'User not found' });
+    }
+
+    // check if email sent is same as current email
+    if (currentUser.email === user.email) {
+      return res.status(400).json({
+        success: false,
+        error: 'New email is the same as current email',
+      });
+    }
+
+    // check if a user exists with the email wanting to update to
+    const anotherUser = await prismaDB.user.findUnique({
+      where: { email: user.email },
+    });
+
+    if (anotherUser) {
+      return res
+        .status(400)
+        .json({ success: false, error: 'Email already in use' });
+    }
+
+    const updatedUser = await prismaDB.user.update({
+      where: { id: userId },
+      data: {
+        email: user.email,
+        emailVerified: false,
+      },
+    });
+
+    await sendEmailVerificationEmail(
+      updatedUser.email,
+      updatedUser.id,
+      updatedUser.name
+    );
+
+    return res.status(200).json({ success: true, data: updatedUser });
   } catch (err) {
     console.error(err);
 

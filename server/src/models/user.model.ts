@@ -58,3 +58,14 @@ export const updateUserModel = z.object({
 });
 
 export type UpdateUserType = z.infer<typeof updateUserModel>;
+
+export const updateUserEmailModel = z.object({
+  email: z
+    .string({
+      required_error: 'Email is required',
+      invalid_type_error: 'Email must be a string and valid',
+    })
+    .email(),
+});
+
+export type UpdateUserEmailType = z.infer<typeof updateUserEmailModel>;
