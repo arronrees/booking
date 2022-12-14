@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { prismaDB } from '..';
+import { hashPassword } from '../utils/auth.utils';
 import checkValidUuid from '../utils/checkValidUuid';
 import { sendEmailVerificationEmail } from '../utils/user.utils';
 
@@ -136,6 +137,38 @@ export async function updateUserEmailController(req: Request, res: Response) {
     );
 
     return res.status(200).json({ success: true, data: updatedUser });
+  } catch (err) {
+    console.error(err);
+
+    return res.status(500).json({
+      success: false,
+      error: err,
+    });
+  }
+}
+
+export async function updateUserPasswordController(
+  req: Request,
+  res: Response
+) {
+  try {
+    const { userId } = req.params;
+    const { user } = req.body;
+
+    if (!checkValidUuid(userId)) {
+      return res.status(404).json({ success: false, error: 'User not found' });
+    }
+
+    const hash = await hashPassword(user.password);
+
+    const updatedUser = await prismaDB.user.update({
+      where: { id: userId },
+      data: {
+        password: hash,
+      },
+    });
+
+    res.status(200).json({ success: true, data: updatedUser });
   } catch (err) {
     console.error(err);
 

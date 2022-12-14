@@ -4,11 +4,13 @@ import {
   updateUserAddressController,
   updateUserController,
   updateUserEmailController,
+  updateUserPasswordController,
 } from '../controllers/user.controller';
 import { checkAddressObjectValid } from '../middleware/address.middleware';
 import {
   checkUpdateUserEmailObjectValid,
   checkUpdateUserObjectValid,
+  checkUpdateUserPasswordObjectValid,
 } from '../middleware/user.middleware';
 
 export const userRouter = Router();
@@ -28,6 +30,12 @@ userRouter.put(
   '/update-email/:userId',
   checkUpdateUserEmailObjectValid,
   updateUserEmailController
+);
+
+userRouter.put(
+  '/update-password/:userId',
+  checkUpdateUserPasswordObjectValid,
+  updateUserPasswordController
 );
 
 // update user details

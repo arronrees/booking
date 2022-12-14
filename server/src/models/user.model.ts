@@ -69,3 +69,21 @@ export const updateUserEmailModel = z.object({
 });
 
 export type UpdateUserEmailType = z.infer<typeof updateUserEmailModel>;
+
+export const updateUserPasswordModel = z
+  .object({
+    password: z.string({
+      required_error: 'Password is required',
+      invalid_type_error: 'Password must be a string',
+    }),
+    passwordConfirmation: z.string({
+      required_error: 'Password is required',
+      invalid_type_error: 'Password must be a string',
+    }),
+  })
+  .refine((data) => data.password === data.passwordConfirmation, {
+    message: 'Passwords do not match',
+    path: ['passwordConfirmation'],
+  });
+
+export type UpdateUserPasswordType = z.infer<typeof updateUserPasswordModel>;
