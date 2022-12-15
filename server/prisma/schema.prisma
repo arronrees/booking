@@ -66,6 +66,7 @@ model Event {
   date        DateTime
   type        EventType     @default(OTHER)
   public      Boolean       @default(false)
+  maxBookings Int           @default(0)
   Address     Address       @relation(fields: [addressId], references: [id])
   addressId   String
   BookingType BookingType[]

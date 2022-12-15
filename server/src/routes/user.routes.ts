@@ -32,6 +32,7 @@ userRouter.put(
   updateUserEmailController
 );
 
+// update user password
 userRouter.put(
   '/update-password/:userId',
   checkUpdateUserPasswordObjectValid,

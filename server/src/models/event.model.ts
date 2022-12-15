@@ -18,6 +18,10 @@ export const createEventModel = z.object({
     required_error: 'Public is required',
     invalid_type_error: 'Public must be a boolean',
   }),
+  maxBookings: z.number({
+    required_error: 'Max Bookings is required',
+    invalid_type_error: ' Max Bookings must be a number',
+  }),
 });
 
 export type CreateEventType = z.infer<typeof createEventModel>;
@@ -39,6 +43,10 @@ export const updateEventModel = z.object({
   public: z.boolean({
     required_error: 'Public is required',
     invalid_type_error: 'Public must be a boolean',
+  }),
+  maxBookings: z.number({
+    required_error: 'Max Bookings is required',
+    invalid_type_error: ' Max Bookings must be a number',
   }),
 });
 

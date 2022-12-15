@@ -6,6 +6,7 @@ export async function getAllEventsController(req: Request, res: Response) {
   try {
     const allEvents = await prismaDB.event.findMany({
       where: { public: true },
+      include: { BookingType: true },
     });
 
     res.status(200).json({ success: true, data: allEvents });
