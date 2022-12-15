@@ -1,5 +1,7 @@
 import { Request, Response } from 'express';
 import { prismaDB } from '..';
+import { CreateAddressType, UpdateAddressType } from '../models/address.model';
+import { CreateEventType, UpdateEventType } from '../models/event.model';
 import checkValidUuid from '../utils/checkValidUuid';
 
 export async function getAllEventsController(req: Request, res: Response) {
@@ -9,7 +11,7 @@ export async function getAllEventsController(req: Request, res: Response) {
       include: { BookingType: true },
     });
 
-    res.status(200).json({ success: true, data: allEvents });
+    return res.status(200).json({ success: true, data: allEvents });
   } catch (err) {
     console.error(err);
 
@@ -22,11 +24,18 @@ export async function getAllEventsController(req: Request, res: Response) {
 
 export async function createEventController(req: Request, res: Response) {
   try {
-    const { adminUserId } = req.params;
+    const { adminUserId }: { adminUserId?: string } = req.params;
 
     const user = await prismaDB.user.findUnique({ where: { id: adminUserId } });
 
-    const { event, address } = req.body;
+    if (!user) {
+      return res.status(404).json({ success: false, error: 'User not found' });
+    }
+
+    const {
+      event,
+      address,
+    }: { event: CreateEventType; address: CreateAddressType } = req.body;
 
     const newEvent = await prismaDB.event.create({
       data: {
@@ -59,8 +68,8 @@ export async function updateEventAddressController(
   res: Response
 ) {
   try {
-    const { addressId } = req.params;
-    const { address } = req.body;
+    const { addressId }: { addressId?: string } = req.params;
+    const { address }: { address: UpdateAddressType } = req.body;
 
     if (!checkValidUuid(addressId)) {
       return res
@@ -75,7 +84,7 @@ export async function updateEventAddressController(
       },
     });
 
-    res.status(200).json({ success: true, data: updatedAddress });
+    return res.status(200).json({ success: true, data: updatedAddress });
   } catch (err) {
     console.error(err);
 
@@ -88,8 +97,8 @@ export async function updateEventAddressController(
 
 export async function updateEventController(req: Request, res: Response) {
   try {
-    const { eventId } = req.params;
-    const { event } = req.body;
+    const { eventId }: { eventId?: string } = req.params;
+    const { event }: { event: UpdateEventType } = req.body;
 
     if (!checkValidUuid(eventId)) {
       return res.status(404).json({ success: false, error: 'Event not found' });
@@ -103,7 +112,7 @@ export async function updateEventController(req: Request, res: Response) {
       },
     });
 
-    res.status(200).json({ success: true, data: updatedEvent });
+    return res.status(200).json({ success: true, data: updatedEvent });
   } catch (err) {
     console.error(err);
 
@@ -116,7 +125,7 @@ export async function updateEventController(req: Request, res: Response) {
 
 export async function deleteEventController(req: Request, res: Response) {
   try {
-    const { eventId } = req.params;
+    const { eventId }: { eventId?: string } = req.params;
 
     if (!checkValidUuid(eventId)) {
       return res.status(404).json({ success: false, error: 'Event not found' });
@@ -126,7 +135,7 @@ export async function deleteEventController(req: Request, res: Response) {
       where: { id: eventId },
     });
 
-    res.status(200).json({ success: true, data: deletedEvent });
+    return res.status(200).json({ success: true, data: deletedEvent });
   } catch (err) {
     console.error(err);
 

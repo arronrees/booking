@@ -1,11 +1,15 @@
 import { Request, Response } from 'express';
 import { prismaDB } from '..';
+import {
+  CreateBookingTypeType,
+  UpdateBookingTypeType,
+} from '../models/bookingtype.model';
 import checkValidUuid from '../utils/checkValidUuid';
 
 export async function createBookingTypeController(req: Request, res: Response) {
   try {
-    const { eventId } = req.params;
-    const { bookingType } = req.body;
+    const { eventId }: { eventId?: string } = req.params;
+    const { bookingType }: { bookingType: CreateBookingTypeType } = req.body;
 
     if (!checkValidUuid(eventId)) {
       return res.status(404).json({ success: false, error: 'Event not found' });
@@ -62,8 +66,8 @@ export async function createBookingTypeController(req: Request, res: Response) {
 
 export async function updateBookingTypeController(req: Request, res: Response) {
   try {
-    const { bookingTypeId } = req.params;
-    const { bookingType } = req.body;
+    const { bookingTypeId }: { bookingTypeId?: string } = req.params;
+    const { bookingType }: { bookingType: UpdateBookingTypeType } = req.body;
 
     // check id sent is valid
     if (!checkValidUuid(bookingTypeId)) {

@@ -1,12 +1,18 @@
 import { Request, Response } from 'express';
 import { prismaDB } from '..';
+import { UpdateAddressType } from '../models/address.model';
+import {
+  UpdateUserEmailType,
+  UpdateUserPasswordType,
+  UpdateUserType,
+} from '../models/user.model';
 import { hashPassword } from '../utils/auth.utils';
 import checkValidUuid from '../utils/checkValidUuid';
 import { sendEmailVerificationEmail } from '../utils/user.utils';
 
 export async function getSingleUserController(req: Request, res: Response) {
   try {
-    const { userId } = req.params;
+    const { userId }: { userId?: string } = req.params;
 
     if (!checkValidUuid(userId)) {
       return res.status(404).json({ success: false, error: 'User not found' });
@@ -31,8 +37,8 @@ export async function getSingleUserController(req: Request, res: Response) {
 
 export async function updateUserAddressController(req: Request, res: Response) {
   try {
-    const { addressId } = req.params;
-    const { address } = req.body;
+    const { addressId }: { addressId?: string } = req.params;
+    const { address }: { address: UpdateAddressType } = req.body;
 
     if (!checkValidUuid(addressId)) {
       return res
@@ -47,7 +53,7 @@ export async function updateUserAddressController(req: Request, res: Response) {
       },
     });
 
-    res.status(200).json({ success: true, data: updatedAddress });
+    return res.status(200).json({ success: true, data: updatedAddress });
   } catch (err) {
     console.error(err);
 
@@ -60,8 +66,8 @@ export async function updateUserAddressController(req: Request, res: Response) {
 
 export async function updateUserController(req: Request, res: Response) {
   try {
-    const { userId } = req.params;
-    const { user } = req.body;
+    const { userId }: { userId?: string } = req.params;
+    const { user }: { user: UpdateUserType } = req.body;
 
     if (!checkValidUuid(userId)) {
       return res.status(404).json({ success: false, error: 'User not found' });
@@ -74,7 +80,7 @@ export async function updateUserController(req: Request, res: Response) {
       },
     });
 
-    res.status(200).json({ success: true, data: updatedUser });
+    return res.status(200).json({ success: true, data: updatedUser });
   } catch (err) {
     console.error(err);
 
@@ -87,8 +93,8 @@ export async function updateUserController(req: Request, res: Response) {
 
 export async function updateUserEmailController(req: Request, res: Response) {
   try {
-    const { userId } = req.params;
-    const { user } = req.body;
+    const { userId }: { userId?: string } = req.params;
+    const { user }: { user: UpdateUserEmailType } = req.body;
 
     if (!checkValidUuid(userId)) {
       return res.status(404).json({ success: false, error: 'User not found' });
@@ -152,8 +158,8 @@ export async function updateUserPasswordController(
   res: Response
 ) {
   try {
-    const { userId } = req.params;
-    const { user } = req.body;
+    const { userId }: { userId?: string } = req.params;
+    const { user }: { user: UpdateUserPasswordType } = req.body;
 
     if (!checkValidUuid(userId)) {
       return res.status(404).json({ success: false, error: 'User not found' });
@@ -168,7 +174,7 @@ export async function updateUserPasswordController(
       },
     });
 
-    res.status(200).json({ success: true, data: updatedUser });
+    return res.status(200).json({ success: true, data: updatedUser });
   } catch (err) {
     console.error(err);
 

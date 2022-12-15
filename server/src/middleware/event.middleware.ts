@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
 import { z } from 'zod';
+import { prismaDB } from '..';
 import { createAddressModel } from '../models/address.model';
 import { createEventModel, updateEventModel } from '../models/event.model';
-import { checkIfUserExists } from '../utils/user.utils';
 
 export async function checkAdminUserIdSentIsValid(
   req: Request,
@@ -12,7 +12,9 @@ export async function checkAdminUserIdSentIsValid(
   try {
     const { adminUserId } = req.params;
 
-    const { userExists, userData } = await checkIfUserExists('id', adminUserId);
+    const userExists = await prismaDB.user.findUnique({
+      where: { id: adminUserId },
+    });
 
     if (!userExists) {
       return res
@@ -20,7 +22,7 @@ export async function checkAdminUserIdSentIsValid(
         .json({ success: false, error: 'Invalid admin user' });
     }
 
-    if (!userData || userData.role !== 'ADMIN') {
+    if (userExists.role !== 'ADMIN') {
       return res
         .status(400)
         .json({ success: false, error: 'Invalid admin user' });

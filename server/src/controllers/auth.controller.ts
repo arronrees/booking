@@ -9,10 +9,7 @@ import {
   hashPassword,
 } from '../utils/auth.utils';
 import checkValidUuid from '../utils/checkValidUuid';
-import {
-  checkIfUserExists,
-  sendEmailVerificationEmail,
-} from '../utils/user.utils';
+import { sendEmailVerificationEmail } from '../utils/user.utils';
 
 export async function signupUserController(req: Request, res: Response) {
   try {
@@ -22,7 +19,9 @@ export async function signupUserController(req: Request, res: Response) {
     }: { user: CreateUserType; address: CreateAddressType } = req.body;
 
     // check if user already exists in db
-    const { userExists } = await checkIfUserExists('email', user.email);
+    const userExists = await prismaDB.user.findUnique({
+      where: { email: user.email },
+    });
 
     if (userExists) {
       return res.status(400).json({
@@ -71,12 +70,11 @@ export async function signinUserController(req: Request, res: Response) {
     const { user }: { user: SigninUserType } = req.body;
 
     // check if user exists in db before checking password
-    const { userExists, userData } = await checkIfUserExists(
-      'email',
-      user.email
-    );
+    const userExists = await prismaDB.user.findUnique({
+      where: { email: user.email },
+    });
 
-    if (!userExists || !userData) {
+    if (!userExists) {
       return res
         .status(401)
         .json({ success: false, error: 'Incorrect details, please try again' });
@@ -85,16 +83,16 @@ export async function signinUserController(req: Request, res: Response) {
     // compare passwords
     const passwordCheck = await comparePassword(
       user.password,
-      userData.password
+      userExists.password
     );
 
     // generate token
-    const token = await createJwtToken(userData.id);
+    const token = await createJwtToken(userExists.id);
 
     if (passwordCheck) {
       return res.status(200).json({
         success: true,
-        data: omit({ ...userData, token }, 'password'),
+        data: omit({ ...userExists, token }, 'password'),
       });
     }
 
@@ -108,7 +106,7 @@ export async function signinUserController(req: Request, res: Response) {
 
 export async function verifyEmailController(req: Request, res: Response) {
   try {
-    const { id, token } = req.params;
+    const { id, token }: { id?: string; token?: string } = req.params;
 
     if (!id || !token) {
       return res
