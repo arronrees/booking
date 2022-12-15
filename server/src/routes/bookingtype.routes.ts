@@ -1,6 +1,12 @@
 import { Router } from 'express';
-import { createBookingTypeController } from '../controllers/bookingtype.controller';
-import { checkCreateBookingTypeObjectValid } from '../middleware/bookingtype.middleware';
+import {
+  createBookingTypeController,
+  updateBookingTypeController,
+} from '../controllers/bookingtype.controller';
+import {
+  checkCreateBookingTypeObjectValid,
+  checkUpdateBookingTypeObjectValid,
+} from '../middleware/bookingtype.middleware';
 
 export const bookingTypeRouter = Router();
 
@@ -12,7 +18,11 @@ bookingTypeRouter.post(
 );
 
 // update booking type
-bookingTypeRouter.put('/update/:bookingTypeId');
+bookingTypeRouter.put(
+  '/update/:bookingTypeId',
+  checkUpdateBookingTypeObjectValid,
+  updateBookingTypeController
+);
 
 // delete booking type
 bookingTypeRouter.delete('/delete/:bookingTypeId');
