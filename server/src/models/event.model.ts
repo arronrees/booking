@@ -14,6 +14,10 @@ export const createEventModel = z.object({
     invalid_type_error: 'Incorrect date format',
   }),
   type: z.enum(['MUSIC', 'FESTIVAL', 'THEATRE', 'SPORT', 'OTHER']),
+  location: z.string({
+    required_error: 'Location is required',
+    invalid_type_error: 'Location must be a string',
+  }),
   public: z.boolean({
     required_error: 'Public is required',
     invalid_type_error: 'Public must be a boolean',
@@ -40,6 +44,10 @@ export const updateEventModel = z.object({
     invalid_type_error: 'Incorrect date format',
   }),
   type: z.enum(['MUSIC', 'FESTIVAL', 'THEATRE', 'SPORT', 'OTHER']),
+  location: z.string({
+    required_error: 'Location is required',
+    invalid_type_error: 'Location must be a string',
+  }),
   public: z.boolean({
     required_error: 'Public is required',
     invalid_type_error: 'Public must be a boolean',

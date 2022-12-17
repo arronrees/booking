@@ -64,6 +64,7 @@ model Event {
   name        String        @db.VarChar(255)
   description String
   date        DateTime
+  location    String?
   type        EventType     @default(OTHER)
   public      Boolean       @default(false)
   maxBookings Int           @default(0)
