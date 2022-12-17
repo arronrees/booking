@@ -1,3 +1,4 @@
+import { User, Event } from '@prisma/client';
 import { Request, Response } from 'express';
 import { prismaDB } from '..';
 import { CreateAddressType, UpdateAddressType } from '../models/address.model';
@@ -26,7 +27,9 @@ export async function createEventController(req: Request, res: Response) {
   try {
     const { adminUserId }: { adminUserId?: string } = req.params;
 
-    const user = await prismaDB.user.findUnique({ where: { id: adminUserId } });
+    const user = await prismaDB.user.findUnique({
+      where: { id: adminUserId },
+    });
 
     if (!user) {
       return res.status(404).json({ success: false, error: 'User not found' });

@@ -14,11 +14,17 @@ interface Props {
     | [
         {
           id: string;
+          createdAt: Date;
+          updatedAt: Date;
           name: string;
-          type: EventType;
-          image: string;
+          description: string;
           date: Date;
           location: string | null;
+          type: EventType;
+          public: boolean;
+          maxBookings: number;
+          addressId: string;
+          userId: string;
         }
       ]
     | null;

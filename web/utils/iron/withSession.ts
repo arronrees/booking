@@ -32,7 +32,19 @@ export function withSessionSsr<
   return withIronSessionSsr(handler, sessionOptions);
 }
 
-type User = {};
+enum Role {
+  USER = 'USER',
+  ADMIN = 'ADMIN',
+  SUPERADMIN = 'SUPERADMIN',
+}
+
+type User = {
+  name: string;
+  email: string;
+  emailVerified: boolean;
+  role: Role;
+  token: string;
+};
 
 // This is where we specify the typings of req.session.*
 declare module 'iron-session' {

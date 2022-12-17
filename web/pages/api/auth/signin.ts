@@ -25,7 +25,7 @@ async function signInUser(req: NextApiRequest, res: NextApiResponse) {
     console.log(data);
 
     // if response ok update session
-    req.session.user = data;
+    req.session.user = data.data;
     await req.session.save();
 
     return res.status(200).json({ data });

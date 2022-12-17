@@ -14,7 +14,11 @@ export default function Profile({}) {
             <DashboardLink colour='mid-blue' text='Dashboard' href='/' />
             <DashboardLink colour='mid-blue' text='My Details' href='/' />
             <DashboardLink colour='gold' text='Create Event' href='/' />
-            <DashboardLink colour='light-blue' text='My Events' href='/' />
+            <DashboardLink
+              colour='light-blue'
+              text='My Events'
+              href='/user/events/my-events'
+            />
           </div>
         </div>
       </section>
