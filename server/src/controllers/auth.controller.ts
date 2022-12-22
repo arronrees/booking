@@ -2,7 +2,11 @@ import { Request, Response } from 'express';
 import { omit } from 'lodash';
 import { prismaDB } from '..';
 import { CreateAddressType } from '../models/address.model';
-import { CreateUserType, SigninUserType } from '../models/user.model';
+import {
+  CreateUserToSaveType,
+  CreateUserType,
+  SigninUserType,
+} from '../models/user.model';
 import {
   comparePassword,
   createJwtToken,
@@ -30,14 +34,16 @@ export async function signupUserController(req: Request, res: Response) {
       });
     }
 
-    // if user not registered, continue to create user
-    const hash = await hashPassword(user.password);
+    const userToSave: CreateUserToSaveType = { ...user };
 
-    delete user.passwordConfirmation;
+    // if user not registered, continue to create user
+    const hash = await hashPassword(userToSave.password);
+
+    delete userToSave.passwordConfirmation;
 
     const newUser = await prismaDB.user.create({
       data: {
-        ...user,
+        ...userToSave,
         password: hash,
         Address: {
           create: address,

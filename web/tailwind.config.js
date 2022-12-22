@@ -31,8 +31,8 @@ module.exports = {
       },
     },
     fontFamily: {
-      title: ['Lilita One', 'El Messiri', 'sans-serif'],
-      sans: ['El Messiri', 'sans-serif'],
+      title: ['Lilita One', 'Work Sans', 'sans-serif'],
+      sans: ['Work Sans', 'sans-serif'],
     },
   },
   plugins: [require('@tailwindcss/forms')],
