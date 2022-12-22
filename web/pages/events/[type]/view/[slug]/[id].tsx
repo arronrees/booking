@@ -1,8 +1,8 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { EventInterface } from '../../../../constant-types';
-import Header from '../../../../layout/main/Header';
-import { withSessionSsr } from '../../../../utils/iron/withSession';
+import { EventInterface } from '../../../../../constant-types';
+import Header from '../../../../../layout/main/Header';
+import { withSessionSsr } from '../../../../../utils/iron/withSession';
 
 interface Props {
   event: EventInterface;
@@ -11,6 +11,7 @@ interface Props {
 export default function EventPage({ event }: Props) {
   return (
     <div>
+      <h1 className='font-bold text-4xl'>Single event page</h1>
       <Header />
       <section className='p-8 mx-auto max-w-6xl'>
         <div className='flex gap-4 mb-6 text-xs'>
@@ -18,9 +19,15 @@ export default function EventPage({ event }: Props) {
           <span>/</span>
           <Link href='/events'>Events</Link>
           <span>/</span>
-          <Link href='/events/sport'>Sport</Link>
+          <Link href='/events/sport' className='capitalize'>
+            {event.typeSlug}
+          </Link>
           <span>/</span>
-          <Link href='/events/sport'>{event.name}</Link>
+          <Link
+            href={`/events/${event.typeSlug}/view/${event.slug}/${event.id}`}
+          >
+            {event.name}
+          </Link>
         </div>
         <h1 className='font-bold font-title text-5xl mb-6'>{event.name}</h1>
         <div className='h-96 w-full rounded mb-4'>
@@ -62,7 +69,7 @@ export const getServerSideProps = withSessionSsr(
       }
 
       const eventRes = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/events/${params.id}`
+        `${process.env.NEXT_PUBLIC_API_URL}/api/events/single/${params.id}`
       );
 
       const eventData = await eventRes.json();

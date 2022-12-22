@@ -13,19 +13,19 @@ export default function Nav({ displayNav }: Props) {
     >
       <ul className='flex flex-col justify-center h-full w-full gap-4 p-8 lg:flex-row lg:p-0 lg:ml-4 lg:text-lg xl:text-xl'>
         <li>
-          <Link href='/'>Music</Link>
+          <Link href='/events/music'>Music</Link>
         </li>
         <li>
-          <Link href='/'>Festivals</Link>
+          <Link href='/events/festival'>Festivals</Link>
         </li>
         <li>
-          <Link href='/'>Theatre</Link>
+          <Link href='/events/theatre'>Theatre</Link>
         </li>
         <li>
-          <Link href='/'>Sport</Link>
+          <Link href='/events/sport'>Sport</Link>
         </li>
         <li>
-          <Link href='/'>Comedy</Link>
+          <Link href='/events/comedy'>Comedy</Link>
         </li>
       </ul>
     </nav>

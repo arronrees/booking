@@ -3,6 +3,7 @@ enum EventType {
   FESTIVAL = 'FESTIVAL',
   THEATRE = 'THEATRE',
   SPORT = 'SPORT',
+  COMEDY = 'COMEDY',
   OTHER = 'OTHER',
 }
 
@@ -16,6 +17,7 @@ export interface EventInterface {
   date: Date;
   location: string | null;
   type: EventType;
+  typeSlug: string;
   public: boolean;
   maxBookings: number;
   addressId: string;

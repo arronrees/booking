@@ -13,7 +13,7 @@ export const createEventModel = z.object({
     required_error: 'Date is required',
     invalid_type_error: 'Incorrect date format',
   }),
-  type: z.enum(['MUSIC', 'FESTIVAL', 'THEATRE', 'SPORT', 'OTHER']),
+  type: z.enum(['MUSIC', 'FESTIVAL', 'THEATRE', 'SPORT', 'COMEDY', 'OTHER']),
   location: z.string({
     required_error: 'Location is required',
     invalid_type_error: 'Location must be a string',

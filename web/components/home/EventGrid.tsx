@@ -11,7 +11,7 @@ export default function EventGrid({ events }: Props) {
     <section className='grid gap-6 p-6 xs:grid-cols-2 md:grid-cols-3 max-w-7xl mx-auto'>
       {events?.map((event) => (
         <Link
-          href={`/events/view/${event.slug}/${event.id}`}
+          href={`/events/${event.typeSlug}/view/${event.slug}/${event.id}`}
           key={event.id}
           className='h-full w-full'
         >

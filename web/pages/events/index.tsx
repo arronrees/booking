@@ -1,16 +1,16 @@
-import { withSessionSsr } from '../utils/iron/withSession';
-import Header from '../layout/main/Header';
-import EventGrid from '../components/home/EventGrid';
-import { EventInterface } from '../constant-types';
+import { withSessionSsr } from '../../utils/iron/withSession';
+import Header from '../../layout/main/Header';
+import EventGrid from '../../components/home/EventGrid';
+import { EventInterface } from '../../constant-types';
 
 interface Props {
   events: [EventInterface] | null;
 }
 
-export default function Home({ events }: Props) {
+export default function Events({ events }: Props) {
   return (
     <div>
-      <h1 className='font-bold text-4xl'>Home</h1>
+      <h1 className='font-bold text-4xl'>All events</h1>
       <Header />
       <EventGrid events={events} />
     </div>

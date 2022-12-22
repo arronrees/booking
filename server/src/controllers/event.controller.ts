@@ -4,13 +4,27 @@ import slugify from 'slugify';
 import { CreateAddressType, UpdateAddressType } from '../models/address.model';
 import { CreateEventType, UpdateEventType } from '../models/event.model';
 import checkValidUuid from '../utils/checkValidUuid';
+import checkEventTypeMatchesQuery from '../utils/event.utils';
 
 export async function getAllEventsController(req: Request, res: Response) {
   try {
-    const allEvents = await prismaDB.event.findMany({
-      where: { public: true },
-      include: { BookingType: true },
-    });
+    let allEvents = [];
+
+    if (req.query.type) {
+      if (!checkEventTypeMatchesQuery(req.query.type as string)) {
+        return res
+          .status(404)
+          .json({ success: false, error: 'No events found' });
+      }
+
+      allEvents = await prismaDB.event.findMany({
+        where: { public: true, typeSlug: req.query.type as string },
+      });
+    } else {
+      allEvents = await prismaDB.event.findMany({
+        where: { public: true },
+      });
+    }
 
     return res.status(200).json({ success: true, data: allEvents });
   } catch (err) {
@@ -33,6 +47,7 @@ export async function getSingleEventController(req: Request, res: Response) {
 
     const event = await prismaDB.event.findUnique({
       where: { id: eventId },
+      include: { BookingType: true },
     });
 
     if (!event || !event.public) {
@@ -71,11 +86,16 @@ export async function createEventController(req: Request, res: Response) {
       lower: true,
       remove: /[*+~.()'"!:@]/g,
     });
+    const eventTypeSlug = slugify(event.type, {
+      lower: true,
+      remove: /[*+~.()'"!:@]/g,
+    });
 
     const newEvent = await prismaDB.event.create({
       data: {
         ...event,
         slug: eventSlug,
+        typeSlug: eventTypeSlug,
         date: new Date(event.date),
         Address: {
           create: address,
@@ -144,12 +164,17 @@ export async function updateEventController(req: Request, res: Response) {
       lower: true,
       remove: /[*+~.()'"!:@]/g,
     });
+    const eventTypeSlug = slugify(event.type, {
+      lower: true,
+      remove: /[*+~.()'"!:@]/g,
+    });
 
     const updatedEvent = await prismaDB.event.update({
       where: { id: eventId },
       data: {
         ...event,
         slug: eventSlug,
+        typeSlug: eventTypeSlug,
         date: new Date(event.date),
       },
     });

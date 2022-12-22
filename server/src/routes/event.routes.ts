@@ -20,7 +20,7 @@ export const eventRouter = Router();
 eventRouter.get('/', getAllEventsController);
 
 // get single event
-eventRouter.get('/:eventId', getSingleEventController);
+eventRouter.get('/single/:eventId', getSingleEventController);
 
 // create new event
 eventRouter.post(
