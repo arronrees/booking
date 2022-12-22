@@ -1,34 +1,10 @@
 import { withSessionSsr } from '../utils/iron/withSession';
 import Header from '../layout/main/Header';
 import EventGrid from '../components/home/EventGrid';
-
-enum EventType {
-  MUSIC = 'MUSIC',
-  FESTIVAL = 'FESTIVAL',
-  THEATRE = 'THEATRE',
-  SPORT = 'SPORT',
-  OTHER = 'OTHER',
-}
+import { EventInterface } from '../constant-types';
 
 interface Props {
-  events:
-    | [
-        {
-          id: string;
-          createdAt: Date;
-          updatedAt: Date;
-          name: string;
-          description: string;
-          date: Date;
-          location: string | null;
-          type: EventType;
-          public: boolean;
-          maxBookings: number;
-          addressId: string;
-          userId: string;
-        }
-      ]
-    | null;
+  events: [EventInterface] | null;
 }
 
 export default function Home({ events }: Props) {

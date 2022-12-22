@@ -8,6 +8,7 @@ import {
   createEventController,
   deleteEventController,
   getAllEventsController,
+  getSingleEventController,
   updateEventController,
   updateEventAddressController,
 } from '../controllers/event.controller';
@@ -17,6 +18,9 @@ export const eventRouter = Router();
 
 // get all events
 eventRouter.get('/', getAllEventsController);
+
+// get single event
+eventRouter.get('/:eventId', getSingleEventController);
 
 // create new event
 eventRouter.post(

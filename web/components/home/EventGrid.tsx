@@ -1,33 +1,9 @@
 import Link from 'next/link';
 import Image from 'next/image';
-
-enum EventType {
-  MUSIC = 'MUSIC',
-  FESTIVAL = 'FESTIVAL',
-  THEATRE = 'THEATRE',
-  SPORT = 'SPORT',
-  OTHER = 'OTHER',
-}
+import { EventInterface } from '../../constant-types';
 
 interface Props {
-  events:
-    | [
-        {
-          id: string;
-          createdAt: Date;
-          updatedAt: Date;
-          name: string;
-          description: string;
-          date: Date;
-          location: string | null;
-          type: EventType;
-          public: boolean;
-          maxBookings: number;
-          addressId: string;
-          userId: string;
-        }
-      ]
-    | null;
+  events: [EventInterface] | null;
 }
 
 export default function EventGrid({ events }: Props) {
@@ -35,7 +11,7 @@ export default function EventGrid({ events }: Props) {
     <section className='grid gap-6 p-6 xs:grid-cols-2 md:grid-cols-3 max-w-7xl mx-auto'>
       {events?.map((event) => (
         <Link
-          href={`/events/view/${event.id}`}
+          href={`/events/view/${event.slug}/${event.id}`}
           key={event.id}
           className='h-full w-full'
         >
@@ -56,7 +32,7 @@ export default function EventGrid({ events }: Props) {
               <p>
                 <span className='capitalize'>
                   {event.type.toLowerCase()} -{' '}
-                  <span>{new Date(event.date).toDateString()}</span>
+                  <span>{new Date(event.date).toDateString()}</span> -{' '}
                   <span>{event.location}</span>
                 </span>
               </p>
