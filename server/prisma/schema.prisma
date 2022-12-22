@@ -63,6 +63,7 @@ model Event {
   updatedAt   DateTime      @updatedAt
   name        String        @db.VarChar(255)
   description String
+  slug        String
   date        DateTime
   location    String?
   type        EventType     @default(OTHER)

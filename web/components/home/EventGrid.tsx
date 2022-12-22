@@ -34,7 +34,11 @@ export default function EventGrid({ events }: Props) {
   return (
     <section className='grid gap-6 p-6 xs:grid-cols-2 md:grid-cols-3 max-w-7xl mx-auto'>
       {events?.map((event) => (
-        <Link href='/' key={event.id} className='h-full w-full'>
+        <Link
+          href={`/events/view/${event.id}`}
+          key={event.id}
+          className='h-full w-full'
+        >
           <article className='rounded-t group h-full w-full'>
             <div className='h-40'>
               <div className='overlay'></div>

@@ -1,6 +1,6 @@
-import { User, Event } from '@prisma/client';
 import { Request, Response } from 'express';
 import { prismaDB } from '..';
+import slugify from 'slugify';
 import { CreateAddressType, UpdateAddressType } from '../models/address.model';
 import { CreateEventType, UpdateEventType } from '../models/event.model';
 import checkValidUuid from '../utils/checkValidUuid';
@@ -40,9 +40,15 @@ export async function createEventController(req: Request, res: Response) {
       address,
     }: { event: CreateEventType; address: CreateAddressType } = req.body;
 
+    const eventSlug = slugify(event.name, {
+      lower: true,
+      remove: /[*+~.()'"!:@]/g,
+    });
+
     const newEvent = await prismaDB.event.create({
       data: {
         ...event,
+        slug: eventSlug,
         date: new Date(event.date),
         Address: {
           create: address,
@@ -107,10 +113,16 @@ export async function updateEventController(req: Request, res: Response) {
       return res.status(404).json({ success: false, error: 'Event not found' });
     }
 
+    const eventSlug = slugify(event.name, {
+      lower: true,
+      remove: /[*+~.()'"!:@]/g,
+    });
+
     const updatedEvent = await prismaDB.event.update({
       where: { id: eventId },
       data: {
         ...event,
+        slug: eventSlug,
         date: new Date(event.date),
       },
     });
