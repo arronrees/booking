@@ -1,10 +1,10 @@
 import { withSessionSsr } from '../utils/iron/withSession';
 import Header from '../layout/main/Header';
 import EventGrid from '../components/home/EventGrid';
-import { EventInterface } from '../constant-types';
+import { EventInterfaceCompact } from '../constant-types';
 
 interface Props {
-  events: EventInterface[] | null;
+  events: EventInterfaceCompact[] | null;
 }
 
 export default function Home({ events }: Props) {

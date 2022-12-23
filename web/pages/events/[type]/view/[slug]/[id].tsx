@@ -19,7 +19,7 @@ export default function EventPage({ event }: Props) {
           <span>/</span>
           <Link href='/events'>Events</Link>
           <span>/</span>
-          <Link href='/events/sport' className='capitalize'>
+          <Link href={`/events/${event.typeSlug}`} className='capitalize'>
             {event.typeSlug}
           </Link>
           <span>/</span>

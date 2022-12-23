@@ -22,7 +22,7 @@ export async function checkAdminUserIdSentIsValid(
         .json({ success: false, error: 'Invalid admin user' });
     }
 
-    if (userExists.role !== 'ADMIN') {
+    if (!(userExists.role == 'ADMIN' || userExists.role == 'SUPERADMIN')) {
       return res
         .status(400)
         .json({ success: false, error: 'Invalid admin user' });

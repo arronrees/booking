@@ -7,6 +7,7 @@ type FormInputs = {
   email: string;
   telephone: string;
   password: string;
+  passwordConfirmation: string;
   age: string;
   addressLine1: string;
   addressLine2: string;
@@ -23,6 +24,7 @@ type FormData = {
     telephone: string;
     age: number;
     password: string;
+    passwordConfirmation: string;
     role: 'USER' | 'ADMIN';
   };
   address: {
@@ -52,6 +54,7 @@ export default function SignUpForm() {
         telephone: data.telephone,
         age: parseFloat(data.age),
         password: data.password,
+        passwordConfirmation: data.passwordConfirmation,
         role: 'USER',
       },
       address: {
@@ -95,6 +98,7 @@ export default function SignUpForm() {
       email: '',
       telephone: '',
       password: '',
+      passwordConfirmation: '',
       age: '',
       addressLine1: '',
       addressLine2: '',
@@ -164,6 +168,19 @@ export default function SignUpForm() {
           type='password'
           placeholder='Password'
           {...register('password', { required: 'Password is required' })}
+          className='form__input'
+        />
+        {errors.password?.message && (
+          <p className='form__error'>{errors.password?.message}</p>
+        )}
+      </div>
+      <div>
+        <input
+          type='passwordConfirmation'
+          placeholder='Password Confirmation'
+          {...register('passwordConfirmation', {
+            required: 'Password Confirmation is required',
+          })}
           className='form__input'
         />
         {errors.password?.message && (
@@ -246,7 +263,7 @@ export default function SignUpForm() {
 
       <button
         type='submit'
-        className='mt-4 btn btn--gold text-lg'
+        className='mt-4 btn btn--gold text-lg xs:col-span-2'
         disabled={isLoading}
       >
         Submit
