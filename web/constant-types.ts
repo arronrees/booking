@@ -15,7 +15,7 @@ export interface EventInterface {
   description: string;
   slug: string;
   date: Date;
-  location: string | null;
+  location: string;
   type: EventType;
   typeSlug: string;
   public: boolean;

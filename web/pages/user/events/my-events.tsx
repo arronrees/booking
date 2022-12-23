@@ -14,7 +14,11 @@ export default function Profile({ events }: Props) {
 
       <section className='grid gap-6 p-6 xs:grid-cols-2 md:grid-cols-3 xl:grid-cols-4'>
         {events?.map((event) => (
-          <Link href='/' key={event.id} className='h-full w-full'>
+          <Link
+            href={`/user/events/edit/${event.id}`}
+            key={event.id}
+            className='h-full w-full'
+          >
             <article className='rounded-t group h-full w-full'>
               <div className='h-40'>
                 <div className='overlay'></div>
@@ -27,12 +31,12 @@ export default function Profile({ events }: Props) {
                   />
                 </figure>
               </div>
-              <div className='p-4 rounded-b bg-gold text-white'>
+              <div className='p-4 rounded-b bg-light-blue text-white'>
                 <h3 className='font-title mb-2 text-2xl'>{event.name}</h3>
                 <p>
                   <span className='capitalize'>
                     {event.type.toLowerCase()} -{' '}
-                    <span>{new Date(event.date).toDateString()}</span>
+                    <span>{new Date(event.date).toDateString()}</span> -{' '}
                     <span>{event.location}</span>
                   </span>
                 </p>

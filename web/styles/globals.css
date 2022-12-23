@@ -12,14 +12,18 @@
   @apply bg-gold hover:bg-gold2 focus:bg-gold2 active:bg-gold3 ring-gold;
 }
 
+.btn--lblue {
+  @apply bg-light-blue hover:bg-light-blue2 focus:bg-light-blue2 active:bg-light-blue3 ring-light-blue;
+}
+
 .form__input {
-  @apply transition duration-200 block px-6 py-3 w-full rounded outline-none border-none text-white bg-mid-blue placeholder:text-white placeholder:opacity-70 focus:ring-slate-600 appearance-none;
+  @apply transition duration-200 block px-6 py-3 w-full rounded outline-none border-none text-white bg-mid-blue placeholder:text-white placeholder:opacity-70 focus:ring-slate-600 appearance-none relative;
 
   line-height: 1;
 }
 
 .form__label {
-  @apply block text-slate-400 w-32;
+  @apply block text-white w-32 font-semibold text-sm mb-1;
 }
 
 .form__error {
@@ -39,4 +43,17 @@ figure {
 
 img {
   object-fit: cover;
+}
+
+input[type='date']::-webkit-calendar-picker-indicator {
+  background: transparent;
+  bottom: 0;
+  color: transparent;
+  cursor: pointer;
+  height: auto;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: auto;
 }
