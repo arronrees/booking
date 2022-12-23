@@ -1,34 +1,10 @@
 import { withSessionSsr } from '../../../utils/iron/withSession';
 import Image from 'next/image';
 import Link from 'next/link';
-
-enum EventType {
-  MUSIC = 'MUSIC',
-  FESTIVAL = 'FESTIVAL',
-  THEATRE = 'THEATRE',
-  SPORT = 'SPORT',
-  OTHER = 'OTHER',
-}
+import { EventInterface } from '../../../constant-types';
 
 interface Props {
-  events:
-    | [
-        {
-          id: string;
-          createdAt: Date;
-          updatedAt: Date;
-          name: string;
-          description: string;
-          date: Date;
-          location: string | null;
-          type: EventType;
-          public: boolean;
-          maxBookings: number;
-          addressId: string;
-          userId: string;
-        }
-      ]
-    | null;
+  events: EventInterface[] | null;
 }
 
 export default function Profile({ events }: Props) {
@@ -36,7 +12,7 @@ export default function Profile({ events }: Props) {
     <div className='p-6'>
       <h1 className='mb-8 text-3xl font-title lg:text-6xl'>My Events</h1>
 
-      <section className='grid gap-6 p-6 xs:grid-cols-2 md:grid-cols-3 max-w-7xl mx-auto'>
+      <section className='grid gap-6 p-6 xs:grid-cols-2 md:grid-cols-3 xl:grid-cols-4'>
         {events?.map((event) => (
           <Link href='/' key={event.id} className='h-full w-full'>
             <article className='rounded-t group h-full w-full'>
@@ -51,7 +27,7 @@ export default function Profile({ events }: Props) {
                   />
                 </figure>
               </div>
-              <div className='p-4 rounded-b bg-white text-dark-blue'>
+              <div className='p-4 rounded-b bg-gold text-white'>
                 <h3 className='font-title mb-2 text-2xl'>{event.name}</h3>
                 <p>
                   <span className='capitalize'>

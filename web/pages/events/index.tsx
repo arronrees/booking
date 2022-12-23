@@ -4,7 +4,7 @@ import EventGrid from '../../components/home/EventGrid';
 import { EventInterface } from '../../constant-types';
 
 interface Props {
-  events: [EventInterface] | null;
+  events: EventInterface[] | null;
 }
 
 export default function Events({ events }: Props) {

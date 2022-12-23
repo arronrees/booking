@@ -3,12 +3,12 @@ import Image from 'next/image';
 import { EventInterface } from '../../constant-types';
 
 interface Props {
-  events: [EventInterface] | null;
+  events: EventInterface[] | null;
 }
 
 export default function EventGrid({ events }: Props) {
   return (
-    <section className='grid gap-6 p-6 xs:grid-cols-2 md:grid-cols-3 max-w-7xl mx-auto'>
+    <section className='grid gap-6 p-6 xs:grid-cols-2 md:grid-cols-3 xl:grid-cols-4'>
       {events?.map((event) => (
         <Link
           href={`/events/${event.typeSlug}/view/${event.slug}/${event.id}`}
