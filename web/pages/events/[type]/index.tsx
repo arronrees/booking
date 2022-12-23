@@ -1,10 +1,10 @@
 import EventGrid from '../../../components/home/EventGrid';
-import { EventInterface } from '../../../constant-types';
+import { EventInterfaceCompact } from '../../../constant-types';
 import Header from '../../../layout/main/Header';
 import { withSessionSsr } from '../../../utils/iron/withSession';
 
 interface Props {
-  events: [EventInterface] | null;
+  events: EventInterfaceCompact[] | null;
 }
 
 export default function EventPage({ events }: Props) {

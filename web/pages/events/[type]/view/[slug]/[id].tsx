@@ -1,11 +1,11 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { EventInterface } from '../../../../../constant-types';
+import { EventInterfaceFull } from '../../../../../constant-types';
 import Header from '../../../../../layout/main/Header';
 import { withSessionSsr } from '../../../../../utils/iron/withSession';
 
 interface Props {
-  event: EventInterface;
+  event: EventInterfaceFull;
 }
 
 export default function EventPage({ event }: Props) {

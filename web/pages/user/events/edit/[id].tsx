@@ -1,12 +1,12 @@
 import Image from 'next/image';
 import EditEventAddressForm from '../../../../components/forms/events/EditEventAddressForm';
 import EditEventForm from '../../../../components/forms/events/EditEventForm';
-import { EventInterface } from '../../../../constant-types';
+import { EventInterfaceFull } from '../../../../constant-types';
 import Header from '../../../../layout/main/Header';
 import { withSessionSsr } from '../../../../utils/iron/withSession';
 
 interface Props {
-  event: EventInterface;
+  event: EventInterfaceFull;
 }
 
 export default function EventPage({ event }: Props) {

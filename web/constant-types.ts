@@ -7,7 +7,24 @@ enum EventType {
   OTHER = 'OTHER',
 }
 
-export interface EventInterface {
+export interface EventInterfaceCompact {
+  id: string;
+  createdAt: Date;
+  updatedAt: Date;
+  name: string;
+  description: string;
+  slug: string;
+  date: Date;
+  location: string;
+  type: EventType;
+  typeSlug: string;
+  public: boolean;
+  maxBookings: number;
+  addressId: string;
+  userId: string;
+}
+
+export interface EventInterfaceFull {
   id: string;
   createdAt: Date;
   updatedAt: Date;

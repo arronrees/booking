@@ -1,9 +1,9 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { EventInterface } from '../../constant-types';
+import { EventInterfaceCompact } from '../../constant-types';
 
 interface Props {
-  events: EventInterface[] | null;
+  events: EventInterfaceCompact[] | null;
 }
 
 export default function EventGrid({ events }: Props) {
