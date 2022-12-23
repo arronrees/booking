@@ -37,6 +37,34 @@ export async function getAllEventsController(req: Request, res: Response) {
   }
 }
 
+export async function getAdminUserEventsController(
+  req: Request,
+  res: Response
+) {
+  try {
+    const { adminUserId } = req.params;
+
+    if (!checkValidUuid(adminUserId)) {
+      return res.status(404).json({ success: false, error: 'User not found' });
+    }
+
+    const events = await prismaDB.event.findMany({
+      where: {
+        userId: adminUserId,
+      },
+    });
+
+    return res.status(200).json({ success: true, data: events });
+  } catch (err) {
+    console.error(err);
+
+    return res.status(500).json({
+      success: false,
+      error: err,
+    });
+  }
+}
+
 export async function getSingleEventController(req: Request, res: Response) {
   try {
     const { eventId } = req.params;

@@ -11,6 +11,7 @@ import {
   getSingleEventController,
   updateEventController,
   updateEventAddressController,
+  getAdminUserEventsController,
 } from '../controllers/event.controller';
 import { checkAddressObjectValid } from '../middleware/address.middleware';
 
@@ -18,6 +19,9 @@ export const eventRouter = Router();
 
 // get all events
 eventRouter.get('/', getAllEventsController);
+
+// get admin user events
+eventRouter.get('/user/:adminUserId', getAdminUserEventsController);
 
 // get single event
 eventRouter.get('/single/:eventId', getSingleEventController);
