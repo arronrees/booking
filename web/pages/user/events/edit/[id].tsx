@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import EditEventAddressForm from '../../../../components/forms/events/EditEventAddressForm';
 import EditEventForm from '../../../../components/forms/events/EditEventForm';
 import { EventInterface } from '../../../../constant-types';
 import Header from '../../../../layout/main/Header';
@@ -25,7 +26,7 @@ export default function EventPage({ event }: Props) {
             <EditEventForm event={event} />
           </div>
           <div className='bg-mid-blue-1 rounded p-4 shadow'>
-            <form></form>
+            <EditEventAddressForm address={event.Address} />
           </div>
         </div>
       </section>

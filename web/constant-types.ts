@@ -22,4 +22,17 @@ export interface EventInterface {
   maxBookings: number;
   addressId: string;
   userId: string;
+  Address: AddressInterface;
+}
+
+export interface AddressInterface {
+  id: string;
+  createdAt: Date;
+  updatedAt: Date;
+  addressLine1: string;
+  addressLine2?: string;
+  town: string;
+  county?: string;
+  postcode: string;
+  country: string;
 }

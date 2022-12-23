@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useRouter } from 'next/router';
 import { EventInterface } from '../../../constant-types';
+import toast from 'react-hot-toast';
 
 type FormInputs = {
   name: string;
@@ -79,15 +80,16 @@ export default function EditEventForm({ event }: Props) {
 
     if (!res.ok) {
       if (responseData.error && typeof responseData.error === 'string') {
+        toast.error(responseData.error);
         setGeneralError(responseData.error);
       }
     }
 
     if (res.ok) {
-      router.push(`/user/events/edit/${event.id}`);
+      setIsLoading(false);
+      toast.success('Event updated successfully');
+      router.push(router.asPath);
     }
-
-    setIsLoading(false);
   };
 
   const {

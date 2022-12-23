@@ -47,7 +47,7 @@ export async function getSingleEventController(req: Request, res: Response) {
 
     const event = await prismaDB.event.findUnique({
       where: { id: eventId },
-      include: { BookingType: true },
+      include: { BookingType: true, Address: true },
     });
 
     if (!event || !event.public) {
