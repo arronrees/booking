@@ -7,6 +7,12 @@ enum EventType {
   OTHER = 'OTHER',
 }
 
+export interface UserInterface {
+  id: string;
+  email: string;
+  name: string;
+}
+
 export interface EventInterfaceCompact {
   id: string;
   createdAt: Date;

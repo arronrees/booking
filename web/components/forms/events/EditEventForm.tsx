@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useRouter } from 'next/router';
-import { EventInterface } from '../../../constant-types';
+import { EventInterfaceCompact } from '../../../constant-types';
 import toast from 'react-hot-toast';
 
 type FormInputs = {
@@ -36,7 +36,7 @@ type FormData = {
 };
 
 interface Props {
-  event: EventInterface;
+  event: EventInterfaceCompact;
 }
 
 export default function EditEventForm({ event }: Props) {

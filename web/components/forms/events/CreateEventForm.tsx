@@ -1,10 +1,17 @@
 import { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useRouter } from 'next/router';
-import { AddressInterface } from '../../../constant-types';
 import toast from 'react-hot-toast';
+import { UserInterface } from '../../../constant-types';
 
 type FormInputs = {
+  name: string;
+  description: string;
+  date: Date | string;
+  public: boolean;
+  type: EventType;
+  maxBookings: number;
+  location: string;
   addressLine1: string;
   addressLine2?: string;
   town: string;
@@ -13,7 +20,25 @@ type FormInputs = {
   country: string;
 };
 
+enum EventType {
+  MUSIC = 'MUSIC',
+  FESTIVAL = 'FESTIVAL',
+  THEATRE = 'THEATRE',
+  SPORT = 'SPORT',
+  COMEDY = 'COMEDY',
+  OTHER = 'OTHER',
+}
+
 type FormData = {
+  event: {
+    name: string;
+    description: string;
+    date: Date;
+    public: boolean;
+    type: EventType;
+    maxBookings: number;
+    location: string;
+  };
   address: {
     addressLine1: string;
     addressLine2?: string;
@@ -25,14 +50,10 @@ type FormData = {
 };
 
 interface Props {
-  address: AddressInterface;
+  user: UserInterface;
 }
 
-export default function EditEventAddressForm({ address }: Props) {
-  if (!address) {
-    return <p>Error: No address passed to form</p>;
-  }
-
+export default function EditEventForm({ user }: Props) {
   const [isLoading, setIsLoading] = useState(false);
   const [generalError, setGeneralError] = useState<string | null>(null);
 
@@ -43,6 +64,15 @@ export default function EditEventAddressForm({ address }: Props) {
     setIsLoading(true);
 
     const formData: FormData = {
+      event: {
+        name: data.name,
+        description: data.description,
+        date: new Date(data.date),
+        public: data.public,
+        type: data.type,
+        maxBookings: Number(data.maxBookings),
+        location: data.location,
+      },
       address: {
         addressLine1: data.addressLine1,
         addressLine2: data.addressLine2,
@@ -53,12 +83,12 @@ export default function EditEventAddressForm({ address }: Props) {
       },
     };
 
-    console.log(formData.address);
+    console.log(formData);
 
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/events/update-address/${address.id}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/api/events/create/${user.id}`,
       {
-        method: 'PUT',
+        method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       }
@@ -68,14 +98,15 @@ export default function EditEventAddressForm({ address }: Props) {
 
     if (!res.ok) {
       if (responseData.error && typeof responseData.error === 'string') {
+        toast.error(responseData.error);
         setGeneralError(responseData.error);
       }
     }
 
     if (res.ok) {
       setIsLoading(false);
-      toast.success('Address updated sucessfully');
-      router.push(router.asPath);
+      toast.success('Event created successfully');
+      router.push('/events');
     }
   };
 
@@ -85,12 +116,12 @@ export default function EditEventAddressForm({ address }: Props) {
     formState: { errors },
   } = useForm<FormInputs>({
     defaultValues: {
-      addressLine1: address.addressLine1,
-      addressLine2: address.addressLine2,
-      town: address.town,
-      county: address.county,
-      postcode: address.postcode,
-      country: address.country,
+      name: '',
+      description: '',
+      date: new Date(),
+      public: true,
+      maxBookings: 0,
+      location: '',
     },
   });
 
@@ -99,6 +130,119 @@ export default function EditEventAddressForm({ address }: Props) {
       className='w-full grid gap-4 md:grid-cols-2'
       onSubmit={handleSubmit(handleFormSubmit)}
     >
+      <p className='font-title text-xl xs:col-span-2 text-gold'>
+        Event Details
+      </p>
+
+      <div>
+        <label className='form__label' htmlFor='name'>
+          Name
+        </label>
+        <input
+          type='text'
+          id='name'
+          placeholder='Name'
+          {...register('name', { required: 'Name is required' })}
+          className='form__input'
+        />
+        {errors.name?.message && (
+          <p className='form__error'>{errors.name?.message}</p>
+        )}
+      </div>
+      <div className='md:col-span-2'>
+        <label className='form__label' htmlFor='description'>
+          Description
+        </label>
+        <textarea
+          id='description'
+          placeholder='Description'
+          {...register('description', { required: 'Description is required' })}
+          className='form__input'
+        ></textarea>
+        {errors.description?.message && (
+          <p className='form__error'>{errors.description?.message}</p>
+        )}
+      </div>
+      <div>
+        <label className='form__label' htmlFor='date'>
+          Date
+        </label>
+        <input
+          type='date'
+          id='date'
+          placeholder='Date'
+          {...register('date', { required: 'Date is required' })}
+          className='form__input'
+        />
+        {errors.date?.message && (
+          <p className='form__error'>{errors.date?.message}</p>
+        )}
+      </div>
+      <div className='md:col-span-2 flex items-center'>
+        <label className='form__label' htmlFor='public'>
+          Public?
+        </label>
+        <input
+          type='checkbox'
+          id='public'
+          {...register('public')}
+          className='form__checkbox'
+        />
+        {errors.public?.message && (
+          <p className='form__error'>{errors.public?.message}</p>
+        )}
+      </div>
+      <div>
+        <label className='form__label' htmlFor='type'>
+          Type
+        </label>
+        <select
+          id='type'
+          {...register('type', { required: 'Type is required' })}
+          className='form__input'
+        >
+          <option value='MUSIC'>Music</option>
+          <option value='FESTIVAL'>Festival</option>
+          <option value='THEATRE'>Theatre</option>
+          <option value='SPORT'>Sport</option>
+          <option value='COMEDY'>Comedy</option>
+          <option value='OTHER'>Other</option>
+        </select>
+        {errors.type?.message && (
+          <p className='form__error'>{errors.type?.message}</p>
+        )}
+      </div>
+      <div>
+        <label className='form__label' htmlFor='maxBookings'>
+          Max Bookings
+        </label>
+        <input
+          type='number'
+          id='maxBookings'
+          placeholder='maxBookings'
+          {...register('maxBookings', { required: 'Max Bookings is required' })}
+          className='form__input'
+        />
+        {errors.maxBookings?.message && (
+          <p className='form__error'>{errors.maxBookings?.message}</p>
+        )}
+      </div>
+      <div>
+        <label className='form__label' htmlFor='location'>
+          Location
+        </label>
+        <input
+          type='text'
+          id='location'
+          placeholder='Location'
+          {...register('location', { required: 'Location is required' })}
+          className='form__input'
+        />
+        {errors.location?.message && (
+          <p className='form__error'>{errors.location?.message}</p>
+        )}
+      </div>
+
       <p className='font-title text-xl xs:col-span-2 text-gold'>
         Event Address Details
       </p>
@@ -207,7 +351,7 @@ export default function EditEventAddressForm({ address }: Props) {
       <button
         type='submit'
         className='mt-4 btn btn--lblue text-lg md:col-span-2'
-        disabled={isLoading}
+        // disabled={isLoading}
       >
         Submit
       </button>

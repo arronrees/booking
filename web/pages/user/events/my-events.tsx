@@ -60,7 +60,7 @@ export const getServerSideProps = withSessionSsr(
           permanent: false,
         },
       };
-    } else if (user.role === 'ADMIN') {
+    } else if (user.role === 'ADMIN' || user.role === 'SUPERADMIN') {
       const eventsRes = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/events`
       );
