@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { omit } from 'lodash';
 import { prismaDB } from '..';
 import { UpdateAddressType } from '../models/address.model';
 import {
@@ -24,7 +25,9 @@ export async function getSingleUserController(req: Request, res: Response) {
       return res.status(404).json({ success: false, error: 'User not found' });
     }
 
-    return res.status(200).json({ success: true, data: user });
+    return res
+      .status(200)
+      .json({ success: true, data: omit(user, 'password') });
   } catch (err) {
     console.error(err);
 

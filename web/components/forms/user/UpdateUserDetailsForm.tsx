@@ -40,8 +40,6 @@ export default function UpdateUserDetailsForm({ user }: Props) {
       },
     };
 
-    console.log(formData);
-
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/api/users/update/${user.id}`,
       {
@@ -51,7 +49,6 @@ export default function UpdateUserDetailsForm({ user }: Props) {
       }
     );
     const responseData = await res.json();
-    console.log(responseData);
 
     if (!res.ok) {
       if (responseData.error && typeof responseData.error === 'string') {
@@ -61,9 +58,19 @@ export default function UpdateUserDetailsForm({ user }: Props) {
     }
 
     if (res.ok) {
+      // update user session
+      const userRes = await fetch('/api/user/update');
+      const userData = await userRes.json();
+
+      if (!userRes.ok) {
+        setIsLoading(false);
+        toast.success(userData.error);
+        return;
+      }
+
       setIsLoading(false);
       toast.success('User updated successfully');
-      router.push(router.asPath);
+      return router.push(router.asPath);
     }
   };
 
