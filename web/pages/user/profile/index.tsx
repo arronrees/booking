@@ -12,7 +12,11 @@ export default function Profile({}) {
             <DashboardLink colour='mid-blue' text='My Tickets' href='/' />
             <DashboardLink colour='mid-blue' text='Saved Events' href='/' />
             <DashboardLink colour='mid-blue' text='Dashboard' href='/' />
-            <DashboardLink colour='mid-blue' text='My Details' href='/' />
+            <DashboardLink
+              colour='mid-blue'
+              text='My Details'
+              href='/user/profile/update'
+            />
             <DashboardLink
               colour='gold'
               text='Create Event'

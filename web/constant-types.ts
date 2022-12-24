@@ -11,6 +11,8 @@ export interface UserInterface {
   id: string;
   email: string;
   name: string;
+  telephone: string;
+  age: number;
 }
 
 export interface EventInterfaceCompact {

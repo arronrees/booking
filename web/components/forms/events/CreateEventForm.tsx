@@ -351,7 +351,7 @@ export default function EditEventForm({ user }: Props) {
       <button
         type='submit'
         className='mt-4 btn btn--lblue text-lg md:col-span-2'
-        // disabled={isLoading}
+        disabled={isLoading}
       >
         Submit
       </button>
