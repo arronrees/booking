@@ -78,6 +78,7 @@ export async function signinUserController(req: Request, res: Response) {
     // check if user exists in db before checking password
     const userExists = await prismaDB.user.findUnique({
       where: { email: user.email },
+      include: { Address: true },
     });
 
     if (!userExists) {

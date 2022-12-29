@@ -1,7 +1,8 @@
 import { UserInterface } from '../../../constant-types';
 import { withSessionSsr } from '../../../utils/iron/withSession';
 import Header from '../../../layout/main/Header';
-import UpdateUserDetailsForm from '../../../components/forms/user/UpdateUserDetailsForm';
+import EditUserDetailsForm from '../../../components/forms/user/EditUserDetailsForm';
+import EditUserAddressForm from '../../../components/forms/user/EditUserAddressForm';
 
 interface Props {
   user: UserInterface;
@@ -13,9 +14,12 @@ export default function UpdateUser({ user }: Props) {
       <h1 className='font-bold text-4xl'>Update user page</h1>
       <Header />
 
-      <div className='p-8'>
+      <div className='p-8 grid gap-6'>
         <section className='bg-mid-blue-1 rounded p-4 shadow'>
-          <UpdateUserDetailsForm user={user} />
+          <EditUserDetailsForm user={user} />
+        </section>
+        <section className='bg-mid-blue-1 rounded p-4 shadow'>
+          <EditUserAddressForm address={user.Address} />
         </section>
       </div>
     </div>

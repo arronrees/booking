@@ -13,6 +13,7 @@ export interface UserInterface {
   name: string;
   telephone: string;
   age: number;
+  Address: AddressInterface;
 }
 
 export interface EventInterfaceCompact {
