@@ -12,7 +12,6 @@ interface Props {
 export default function EventPage({ event }: Props) {
   return (
     <div>
-      <h1 className='font-bold text-4xl'>Edit event page</h1>
       <Header />
       <section className='p-8'>
         <h1 className='font-bold font-title text-5xl mb-6'>{event.name}</h1>

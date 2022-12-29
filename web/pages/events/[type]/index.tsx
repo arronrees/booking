@@ -10,7 +10,6 @@ interface Props {
 export default function EventPage({ events }: Props) {
   return (
     <div>
-      <h1 className='font-bold text-4xl'>Event type page</h1>
       <Header />
       <EventGrid events={events} />
     </div>

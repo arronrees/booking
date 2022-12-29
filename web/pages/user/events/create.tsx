@@ -10,9 +10,7 @@ interface Props {
 export default function EventPage({ user }: Props) {
   return (
     <div>
-      <h1 className='font-bold text-4xl'>Edit event page</h1>
       <Header />
-
       <div className='p-8'>
         <section className='bg-mid-blue-1 rounded p-4 shadow'>
           <CreateEventForm user={user} />

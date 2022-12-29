@@ -11,7 +11,6 @@ interface Props {
 export default function UpdateUser({ user }: Props) {
   return (
     <div>
-      <h1 className='font-bold text-4xl'>Update user page</h1>
       <Header />
 
       <div className='p-8 grid gap-6'>
