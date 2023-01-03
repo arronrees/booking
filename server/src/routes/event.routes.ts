@@ -12,6 +12,7 @@ import {
   updateEventController,
   updateEventAddressController,
   getAdminUserEventsController,
+  getSingleEventEditController,
 } from '../controllers/event.controller';
 import { checkAddressObjectValid } from '../middleware/address.middleware';
 
@@ -22,6 +23,9 @@ eventRouter.get('/', getAllEventsController);
 
 // get admin user events
 eventRouter.get('/user/:adminUserId', getAdminUserEventsController);
+
+// get single event for edit
+eventRouter.get('/single/edit/:eventId', getSingleEventEditController);
 
 // get single event
 eventRouter.get('/single/:eventId', getSingleEventController);

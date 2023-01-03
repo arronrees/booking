@@ -3,7 +3,7 @@ import Image from 'next/image';
 import DashboardLink from '../../../components/profile/DashboardLink';
 import Header from '../../../layout/main/Header';
 
-export default function Profile({}) {
+export default function Profile() {
   return (
     <>
       <Header />

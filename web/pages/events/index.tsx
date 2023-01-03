@@ -18,25 +18,16 @@ export default function Events({ events }: Props) {
 
 export const getServerSideProps = withSessionSsr(
   async function getServerSideProps({ req, res }) {
-    const user = req.session.user;
+    const user = req.session.user || null;
 
-    if (!user || user === undefined) {
-      return {
-        redirect: {
-          destination: '/auth/signin',
-          permanent: false,
-        },
-      };
-    } else {
-      const eventsRes = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/events`
-      );
+    const eventsRes = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/events`
+    );
 
-      const eventsData = await eventsRes.json();
+    const eventsData = await eventsRes.json();
 
-      return {
-        props: { user, events: eventsData.data },
-      };
-    }
+    return {
+      props: { user, events: eventsData.data },
+    };
   }
 );

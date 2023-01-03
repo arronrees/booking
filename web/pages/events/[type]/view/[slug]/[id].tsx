@@ -53,29 +53,20 @@ export const getServerSideProps = withSessionSsr(
   async function getServerSideProps({ req, res, params }) {
     const user = req.session.user;
 
-    if (!user || user === undefined) {
+    if (!params || !params.id) {
       return {
-        redirect: {
-          destination: '/auth/signin',
-          permanent: false,
-        },
-      };
-    } else {
-      if (!params || !params.id) {
-        return {
-          props: { user, event: null },
-        };
-      }
-
-      const eventRes = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/events/single/${params.id}`
-      );
-
-      const eventData = await eventRes.json();
-
-      return {
-        props: { user, event: eventData.data },
+        props: { event: null },
       };
     }
+
+    const eventRes = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/events/single/${params.id}`
+    );
+
+    const eventData = await eventRes.json();
+
+    return {
+      props: { event: eventData.data },
+    };
   }
 );

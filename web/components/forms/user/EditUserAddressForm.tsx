@@ -110,7 +110,7 @@ export default function EditUserAddressForm({ address }: Props) {
       onSubmit={handleSubmit(handleFormSubmit)}
     >
       <p className='font-title text-xl xs:col-span-2 text-gold'>
-        Event Address Details
+        User Address Details
       </p>
 
       <div>
