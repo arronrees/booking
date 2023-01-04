@@ -8,7 +8,7 @@ interface Props {
   event: EventInterfaceFull;
 }
 
-export default function EventPage({ event }: Props) {
+export default function ViewEventPage({ event }: Props) {
   return (
     <div>
       <Header />

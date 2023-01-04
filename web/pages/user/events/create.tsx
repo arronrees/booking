@@ -1,19 +1,18 @@
 import CreateEventForm from '../../../components/forms/events/CreateEventForm';
 import { UserInterface } from '../../../constant-types';
 import Header from '../../../layout/main/Header';
+import useUser from '../../../utils/iron/useUser';
 import { withSessionSsr } from '../../../utils/iron/withSession';
 
-interface Props {
-  user: UserInterface;
-}
+export default function CreateEventPage() {
+  const { user }: { user: UserInterface } = useUser();
 
-export default function EventPage({ user }: Props) {
   return (
     <div>
       <Header />
       <div className='p-8'>
         <section className='bg-mid-blue-1 rounded p-4 shadow'>
-          <CreateEventForm user={user} />
+          {user && <CreateEventForm user={user} />}
         </section>
       </div>
     </div>
@@ -33,7 +32,7 @@ export const getServerSideProps = withSessionSsr(
       };
     } else {
       return {
-        props: { user },
+        props: {},
       };
     }
   }

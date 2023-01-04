@@ -58,7 +58,7 @@ export const getServerSideProps = withSessionSsr(
       };
     } else {
       return {
-        props: { user },
+        props: {},
       };
     }
   }

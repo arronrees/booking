@@ -3,22 +3,21 @@ import { withSessionSsr } from '../../../utils/iron/withSession';
 import Header from '../../../layout/main/Header';
 import EditUserDetailsForm from '../../../components/forms/user/EditUserDetailsForm';
 import EditUserAddressForm from '../../../components/forms/user/EditUserAddressForm';
+import useUser from '../../../utils/iron/useUser';
 
-interface Props {
-  user: UserInterface;
-}
+export default function UpdateUser() {
+  const { user }: { user: UserInterface } = useUser();
 
-export default function UpdateUser({ user }: Props) {
   return (
     <div>
       <Header />
 
       <div className='p-8 grid gap-6'>
         <section className='bg-mid-blue-1 rounded p-4 shadow'>
-          <EditUserDetailsForm user={user} />
+          {user && <EditUserDetailsForm user={user} />}
         </section>
         <section className='bg-mid-blue-1 rounded p-4 shadow'>
-          <EditUserAddressForm address={user.Address} />
+          {user && <EditUserAddressForm address={user.Address} />}
         </section>
       </div>
     </div>
@@ -38,7 +37,7 @@ export const getServerSideProps = withSessionSsr(
       };
     } else {
       return {
-        props: { user },
+        props: {},
       };
     }
   }

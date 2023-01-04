@@ -8,7 +8,7 @@ interface Props {
   events: EventInterfaceCompact[] | null;
 }
 
-export default function Profile({ events }: Props) {
+export default function MyEvents({ events }: Props) {
   return (
     <>
       <Header />
@@ -72,11 +72,11 @@ export const getServerSideProps = withSessionSsr(
       const eventsData = await eventsRes.json();
 
       return {
-        props: { user, events: eventsData.data },
+        props: { events: eventsData.data },
       };
     } else {
       return {
-        props: { user },
+        props: {},
       };
     }
   }

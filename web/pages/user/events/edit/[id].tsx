@@ -9,7 +9,7 @@ interface Props {
   event: EventInterfaceFull;
 }
 
-export default function EventPage({ event }: Props) {
+export default function EditEventPage({ event }: Props) {
   return (
     <div>
       <Header />
@@ -47,7 +47,7 @@ export const getServerSideProps = withSessionSsr(
     } else {
       if (!params || !params.id) {
         return {
-          props: { user, event: null },
+          props: { event: null },
         };
       }
 
@@ -58,7 +58,7 @@ export const getServerSideProps = withSessionSsr(
       const eventData = await eventRes.json();
 
       return {
-        props: { user, event: eventData.data },
+        props: { event: eventData.data },
       };
     }
   }

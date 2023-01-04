@@ -27,7 +27,7 @@ export const getServerSideProps = withSessionSsr(
     const eventsData = await eventsRes.json();
 
     return {
-      props: { user, events: eventsData.data },
+      props: { events: eventsData.data },
     };
   }
 );
