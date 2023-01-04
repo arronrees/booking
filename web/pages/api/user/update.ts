@@ -13,7 +13,12 @@ async function updateUserSession(req: NextApiRequest, res: NextApiResponse) {
     }
 
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/users/${user.id}`
+      `${process.env.NEXT_PUBLIC_API_URL}/api/users/${user.id}`,
+      {
+        headers: {
+          Authorization: `Bearer: ${user.token}`,
+        },
+      }
     );
 
     const data = await response.json();

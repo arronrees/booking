@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useRouter } from 'next/router';
-import { AddressInterface } from '../../../constant-types';
+import { AddressInterface, UserInterface } from '../../../constant-types';
 import toast from 'react-hot-toast';
 
 type FormInputs = {
@@ -26,11 +26,14 @@ type FormData = {
 
 interface Props {
   address: AddressInterface;
+  user: UserInterface;
 }
 
-export default function EditUserAddressForm({ address }: Props) {
+export default function EditUserAddressForm({ address, user }: Props) {
+  if (!user) return null;
+
   if (!address) {
-    return <p>Error: No address passed to form</p>;
+    return <p>No address provided</p>;
   }
 
   const [isLoading, setIsLoading] = useState(false);
@@ -53,13 +56,14 @@ export default function EditUserAddressForm({ address }: Props) {
       },
     };
 
-    console.log(formData.address);
-
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/api/users/update-address/${address.id}`,
       {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer: ${user.token}`,
+        },
         body: JSON.stringify(formData),
       }
     );

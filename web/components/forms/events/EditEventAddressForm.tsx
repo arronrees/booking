@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useRouter } from 'next/router';
-import { AddressInterface } from '../../../constant-types';
+import { AddressInterface, UserInterface } from '../../../constant-types';
 import toast from 'react-hot-toast';
+import useUser from '../../../utils/iron/useUser';
 
 type FormInputs = {
   addressLine1: string;
@@ -38,6 +39,25 @@ export default function EditEventAddressForm({ address }: Props) {
 
   const router = useRouter();
 
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormInputs>({
+    defaultValues: {
+      addressLine1: address.addressLine1,
+      addressLine2: address.addressLine2,
+      town: address.town,
+      county: address.county,
+      postcode: address.postcode,
+      country: address.country,
+    },
+  });
+
+  const { user }: { user: UserInterface } = useUser();
+
+  if (!user) return null;
+
   const handleFormSubmit: SubmitHandler<FormInputs> = async (data) => {
     setGeneralError(null);
     setIsLoading(true);
@@ -53,13 +73,14 @@ export default function EditEventAddressForm({ address }: Props) {
       },
     };
 
-    console.log(formData.address);
-
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/api/events/update-address/${address.id}`,
       {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${user.token}`,
+        },
         body: JSON.stringify(formData),
       }
     );
@@ -78,21 +99,6 @@ export default function EditEventAddressForm({ address }: Props) {
       router.push(router.asPath);
     }
   };
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<FormInputs>({
-    defaultValues: {
-      addressLine1: address.addressLine1,
-      addressLine2: address.addressLine2,
-      town: address.town,
-      county: address.county,
-      postcode: address.postcode,
-      country: address.country,
-    },
-  });
 
   return (
     <form

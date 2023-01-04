@@ -23,10 +23,24 @@ interface Props {
 }
 
 export default function UpdateUserDetailsForm({ user }: Props) {
+  if (!user) return null;
+
   const [isLoading, setIsLoading] = useState(false);
   const [generalError, setGeneralError] = useState<string | null>(null);
 
   const router = useRouter();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormInputs>({
+    defaultValues: {
+      name: user.name,
+      telephone: user.telephone,
+      age: Number(user.age),
+    },
+  });
 
   const handleFormSubmit: SubmitHandler<FormInputs> = async (data) => {
     setGeneralError(null);
@@ -44,7 +58,10 @@ export default function UpdateUserDetailsForm({ user }: Props) {
       `${process.env.NEXT_PUBLIC_API_URL}/api/users/update/${user.id}`,
       {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer: ${user.token}`,
+        },
         body: JSON.stringify(formData),
       }
     );
@@ -73,18 +90,6 @@ export default function UpdateUserDetailsForm({ user }: Props) {
       return router.push(router.asPath);
     }
   };
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<FormInputs>({
-    defaultValues: {
-      name: user.name,
-      telephone: user.telephone,
-      age: Number(user.age),
-    },
-  });
 
   return (
     <form

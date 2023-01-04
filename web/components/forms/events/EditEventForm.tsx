@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useRouter } from 'next/router';
-import { EventInterfaceCompact } from '../../../constant-types';
+import { EventInterfaceCompact, UserInterface } from '../../../constant-types';
 import toast from 'react-hot-toast';
+import useUser from '../../../utils/iron/useUser';
 
 type FormInputs = {
   name: string;
@@ -49,6 +50,30 @@ export default function EditEventForm({ event }: Props) {
 
   const router = useRouter();
 
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormInputs>({
+    defaultValues: {
+      name: event.name,
+      description: event.description,
+      date: new Date(event.date)
+        .toLocaleDateString()
+        .split('/')
+        .reverse()
+        .join('-'),
+      public: event.public,
+      type: event.type,
+      maxBookings: event.maxBookings,
+      location: event.location,
+    },
+  });
+
+  const { user }: { user: UserInterface } = useUser();
+
+  if (!user) return null;
+
   const handleFormSubmit: SubmitHandler<FormInputs> = async (data) => {
     setGeneralError(null);
     setIsLoading(true);
@@ -71,7 +96,10 @@ export default function EditEventForm({ event }: Props) {
       `${process.env.NEXT_PUBLIC_API_URL}/api/events/update/${event.id}`,
       {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${user.token}`,
+        },
         body: JSON.stringify(formData),
       }
     );
@@ -91,26 +119,6 @@ export default function EditEventForm({ event }: Props) {
       router.push(router.asPath);
     }
   };
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<FormInputs>({
-    defaultValues: {
-      name: event.name,
-      description: event.description,
-      date: new Date(event.date)
-        .toLocaleDateString()
-        .split('/')
-        .reverse()
-        .join('-'),
-      public: event.public,
-      type: event.type,
-      maxBookings: event.maxBookings,
-      location: event.location,
-    },
-  });
 
   return (
     <form

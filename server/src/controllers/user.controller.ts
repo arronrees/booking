@@ -28,9 +28,13 @@ export async function getSingleUserController(req: Request, res: Response) {
       return res.status(404).json({ success: false, error: 'User not found' });
     }
 
-    return res
-      .status(200)
-      .json({ success: true, data: omit(user, 'password') });
+    return res.status(200).json({
+      success: true,
+      data: omit({ ...user, token: res.locals.userToken }, [
+        'password',
+        'emailVerificationString',
+      ]),
+    });
   } catch (err) {
     console.error(err);
 

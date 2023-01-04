@@ -15,6 +15,7 @@ import {
   getSingleEventEditController,
 } from '../controllers/event.controller';
 import { checkAddressObjectValid } from '../middleware/address.middleware';
+import { checkJwtExits } from '../middleware/auth.middleware';
 
 export const eventRouter = Router();
 
@@ -22,10 +23,18 @@ export const eventRouter = Router();
 eventRouter.get('/', getAllEventsController);
 
 // get admin user events
-eventRouter.get('/user/:adminUserId', getAdminUserEventsController);
+eventRouter.get(
+  '/user/:adminUserId',
+  checkJwtExits,
+  getAdminUserEventsController
+);
 
 // get single event for edit
-eventRouter.get('/single/edit/:eventId', getSingleEventEditController);
+eventRouter.get(
+  '/single/edit/:eventId',
+  checkJwtExits,
+  getSingleEventEditController
+);
 
 // get single event
 eventRouter.get('/single/:eventId', getSingleEventController);
@@ -33,6 +42,7 @@ eventRouter.get('/single/:eventId', getSingleEventController);
 // create new event
 eventRouter.post(
   '/create/:adminUserId',
+  checkJwtExits,
   checkAdminUserIdSentIsValid,
   checkCreateEventObjectValid,
   createEventController
@@ -41,6 +51,7 @@ eventRouter.post(
 // update event address
 eventRouter.put(
   '/update-address/:addressId',
+  checkJwtExits,
   checkAddressObjectValid,
   updateEventAddressController
 );
@@ -48,9 +59,10 @@ eventRouter.put(
 // update an event
 eventRouter.put(
   '/update/:eventId',
+  checkJwtExits,
   checkUpdateEventObjectValid,
   updateEventController
 );
 
 // delete an event
-eventRouter.delete('/delete/:eventId', deleteEventController);
+eventRouter.delete('/delete/:eventId', checkJwtExits, deleteEventController);

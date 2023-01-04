@@ -52,7 +52,8 @@ export const getServerSideProps = withSessionSsr(
       }
 
       const eventRes = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/events/single/edit/${params.id}`
+        `${process.env.NEXT_PUBLIC_API_URL}/api/events/single/edit/${params.id}`,
+        { headers: { Authorization: `Bearer ${user.token}` } }
       );
 
       const eventData = await eventRes.json();

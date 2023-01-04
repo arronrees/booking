@@ -59,7 +59,10 @@ export async function signupUserController(req: Request, res: Response) {
 
     return res.status(200).json({
       success: true,
-      data: omit({ ...newUser, token }, 'password'),
+      data: omit({ ...newUser, token }, [
+        'password',
+        'emailVerificationString',
+      ]),
     });
   } catch (err) {
     console.error(err);
@@ -99,7 +102,10 @@ export async function signinUserController(req: Request, res: Response) {
     if (passwordCheck) {
       return res.status(200).json({
         success: true,
-        data: omit({ ...userExists, token }, 'password'),
+        data: omit({ ...userExists, token }, [
+          'password',
+          'emailVerificationString',
+        ]),
       });
     }
 

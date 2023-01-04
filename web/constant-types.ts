@@ -14,6 +14,8 @@ export interface UserInterface {
   telephone: string;
   age: number;
   Address: AddressInterface;
+  token: string;
+  emailVerified: boolean;
 }
 
 export interface EventInterfaceCompact {

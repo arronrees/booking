@@ -66,7 +66,8 @@ export const getServerSideProps = withSessionSsr(
       };
     } else if (user.role === 'ADMIN' || user.role === 'SUPERADMIN') {
       const eventsRes = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/events/user/${user.id}`
+        `${process.env.NEXT_PUBLIC_API_URL}/api/events/user/${user.id}`,
+        { headers: { Authorization: `Bearer ${user.token}` } }
       );
 
       const eventsData = await eventsRes.json();

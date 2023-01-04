@@ -8,6 +8,7 @@ import { authRouter } from './routes/auth.routes';
 import { eventRouter } from './routes/event.routes';
 import { userRouter } from './routes/user.routes';
 import { bookingTypeRouter } from './routes/bookingtype.routes';
+import { checkJwtExits } from './middleware/auth.middleware';
 
 export const prismaDB = new PrismaClient({
   errorFormat: 'pretty',
@@ -21,6 +22,13 @@ app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(morgan('dev'));
+
+// reset user on locals
+app.use((req: Request, res: Response, next: NextFunction) => {
+  res.locals.user = null;
+
+  next();
+});
 
 // routes
 app.use('/api/auth', authRouter);
