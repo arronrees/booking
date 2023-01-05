@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useRouter } from 'next/router';
+import { toast } from 'react-hot-toast';
 
 type FormInputs = {
   name: string;
@@ -39,12 +40,10 @@ type FormData = {
 
 export default function SignUpForm() {
   const [isLoading, setIsLoading] = useState(false);
-  const [generalError, setGeneralError] = useState<string | null>(null);
 
   const router = useRouter();
 
   const handleFormSubmit: SubmitHandler<FormInputs> = async (data) => {
-    setGeneralError(null);
     setIsLoading(true);
 
     const formData: FormData = {
@@ -77,7 +76,9 @@ export default function SignUpForm() {
 
     if (!res.ok) {
       if (responseData.error && typeof responseData.error === 'string') {
-        setGeneralError(responseData.error);
+        toast.error(responseData.error);
+        setIsLoading(false);
+        return;
       }
     }
 
@@ -258,8 +259,6 @@ export default function SignUpForm() {
           <p className='form__error'>{errors.country?.message}</p>
         )}
       </div>
-
-      {generalError && <p className='form__error'>{generalError}</p>}
 
       <button
         type='submit'

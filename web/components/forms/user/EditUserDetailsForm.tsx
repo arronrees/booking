@@ -26,7 +26,6 @@ export default function UpdateUserDetailsForm({ user }: Props) {
   if (!user) return null;
 
   const [isLoading, setIsLoading] = useState(false);
-  const [generalError, setGeneralError] = useState<string | null>(null);
 
   const router = useRouter();
 
@@ -43,7 +42,6 @@ export default function UpdateUserDetailsForm({ user }: Props) {
   });
 
   const handleFormSubmit: SubmitHandler<FormInputs> = async (data) => {
-    setGeneralError(null);
     setIsLoading(true);
 
     const formData: FormData = {
@@ -70,7 +68,8 @@ export default function UpdateUserDetailsForm({ user }: Props) {
     if (!res.ok) {
       if (responseData.error && typeof responseData.error === 'string') {
         toast.error(responseData.error);
-        setGeneralError(responseData.error);
+        setIsLoading(false);
+        return;
       }
     }
 
@@ -143,8 +142,6 @@ export default function UpdateUserDetailsForm({ user }: Props) {
           <p className='form__error'>{errors.age?.message}</p>
         )}
       </div>
-
-      {generalError && <p className='form__error'>{generalError}</p>}
 
       <button
         type='submit'

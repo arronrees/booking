@@ -37,12 +37,10 @@ export default function EditUserAddressForm({ address, user }: Props) {
   }
 
   const [isLoading, setIsLoading] = useState(false);
-  const [generalError, setGeneralError] = useState<string | null>(null);
 
   const router = useRouter();
 
   const handleFormSubmit: SubmitHandler<FormInputs> = async (data) => {
-    setGeneralError(null);
     setIsLoading(true);
 
     const formData: FormData = {
@@ -72,7 +70,9 @@ export default function EditUserAddressForm({ address, user }: Props) {
 
     if (!res.ok) {
       if (responseData.error && typeof responseData.error === 'string') {
-        setGeneralError(responseData.error);
+        toast.error(responseData.error);
+        setIsLoading(false);
+        return;
       }
     }
 
@@ -215,8 +215,6 @@ export default function EditUserAddressForm({ address, user }: Props) {
           <p className='form__error'>{errors.country?.message}</p>
         )}
       </div>
-
-      {generalError && <p className='form__error'>{generalError}</p>}
 
       <button
         type='submit'

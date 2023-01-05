@@ -64,6 +64,8 @@ export default function EditUserPasswordForm({ user }: Props) {
     if (!res.ok) {
       if (responseData.error && typeof responseData.error === 'string') {
         toast.error(responseData.error);
+        setIsLoading(false);
+        return;
       }
     }
 
