@@ -1,6 +1,7 @@
 import SignInForm from '../../components/forms/SignInForm';
 import { withSessionSsr } from '../../utils/iron/withSession';
 import Image from 'next/image';
+import Link from 'next/link';
 
 export default function SignIn() {
   return (
@@ -9,6 +10,12 @@ export default function SignIn() {
         <div className='max-w-md mx-auto w-full'>
           <h1 className='mb-8 text-3xl font-title lg:text-6xl'>Sign In</h1>
           <SignInForm />
+          <p className='mt-8 text-light-blue'>
+            If you don't have an account, you can sign up{' '}
+            <Link href='/auth/signup' className='mt-8 text-white'>
+              here.
+            </Link>
+          </p>
         </div>
       </section>
       <section className='lg:col-span-2 w-full h-80 lg:h-full'>
