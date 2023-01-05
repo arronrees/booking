@@ -5,6 +5,7 @@ import EditUserDetailsForm from '../../../components/forms/user/EditUserDetailsF
 import EditUserAddressForm from '../../../components/forms/user/EditUserAddressForm';
 import useUser from '../../../utils/iron/useUser';
 import EditUserEmailForm from '../../../components/forms/user/EditUserEmailForm';
+import EditUserPasswordForm from '../../../components/forms/user/EditUserPasswordForm';
 
 interface Props {
   user: UserInterface;
@@ -23,6 +24,9 @@ export default function UpdateUser() {
         </section>
         <section className='bg-mid-blue-1 rounded p-4 shadow'>
           {user && <EditUserEmailForm user={user} />}
+        </section>
+        <section className='bg-mid-blue-1 rounded p-4 shadow'>
+          {user && <EditUserPasswordForm user={user} />}
         </section>
         <section className='bg-mid-blue-1 rounded p-4 shadow'>
           {user && <EditUserAddressForm address={user.Address} user={user} />}
