@@ -4,6 +4,7 @@ import Header from '../../../layout/main/Header';
 import EditUserDetailsForm from '../../../components/forms/user/EditUserDetailsForm';
 import EditUserAddressForm from '../../../components/forms/user/EditUserAddressForm';
 import useUser from '../../../utils/iron/useUser';
+import EditUserEmailForm from '../../../components/forms/user/EditUserEmailForm';
 
 interface Props {
   user: UserInterface;
@@ -19,6 +20,9 @@ export default function UpdateUser() {
       <div className='p-8 grid gap-6'>
         <section className='bg-mid-blue-1 rounded p-4 shadow'>
           {user && <EditUserDetailsForm user={user} />}
+        </section>
+        <section className='bg-mid-blue-1 rounded p-4 shadow'>
+          {user && <EditUserEmailForm user={user} />}
         </section>
         <section className='bg-mid-blue-1 rounded p-4 shadow'>
           {user && <EditUserAddressForm address={user.Address} user={user} />}

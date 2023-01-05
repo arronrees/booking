@@ -90,7 +90,10 @@ export async function updateUserController(req: Request, res: Response) {
       },
     });
 
-    return res.status(200).json({ success: true, data: updatedUser });
+    return res.status(200).json({
+      success: true,
+      data: omit({ ...updatedUser }, ['password', 'emailVerificationString']),
+    });
   } catch (err) {
     console.error(err);
 
@@ -152,7 +155,10 @@ export async function updateUserEmailController(req: Request, res: Response) {
       updatedUser.name
     );
 
-    return res.status(200).json({ success: true, data: updatedUser });
+    return res.status(200).json({
+      success: true,
+      data: omit({ ...updatedUser }, ['password', 'emailVerificationString']),
+    });
   } catch (err) {
     console.error(err);
 
@@ -184,7 +190,12 @@ export async function updateUserPasswordController(
       },
     });
 
-    return res.status(200).json({ success: true, data: updatedUser });
+    return res
+      .status(200)
+      .json({
+        success: true,
+        data: omit({ ...updatedUser }, ['password', 'emailVerificationString']),
+      });
   } catch (err) {
     console.error(err);
 

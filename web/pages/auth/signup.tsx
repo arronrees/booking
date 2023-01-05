@@ -1,4 +1,4 @@
-import SignUpForm from '../../components/forms/SignupForm';
+import SignUpForm from '../../components/forms/SignUpForm';
 import { withSessionSsr } from '../../utils/iron/withSession';
 import Image from 'next/image';
 import Link from 'next/link';
