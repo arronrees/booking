@@ -5,8 +5,12 @@ import { CreateAddressType, UpdateAddressType } from '../models/address.model';
 import { CreateEventType, UpdateEventType } from '../models/event.model';
 import checkValidUuid from '../utils/checkValidUuid';
 import checkEventTypeMatchesQuery from '../utils/event.utils';
+import { JsonApiResponse } from '../constant-types';
 
-export async function getAllEventsController(req: Request, res: Response) {
+export async function getAllEventsController(
+  req: Request,
+  res: Response<JsonApiResponse>
+) {
   try {
     let allEvents = [];
 
@@ -32,14 +36,14 @@ export async function getAllEventsController(req: Request, res: Response) {
 
     return res.status(500).json({
       success: false,
-      error: err,
+      error: 'Something went wrong, please try again',
     });
   }
 }
 
 export async function getAdminUserEventsController(
   req: Request,
-  res: Response
+  res: Response<JsonApiResponse>
 ) {
   try {
     const { adminUserId } = req.params;
@@ -60,14 +64,14 @@ export async function getAdminUserEventsController(
 
     return res.status(500).json({
       success: false,
-      error: err,
+      error: 'Something went wrong, please try again',
     });
   }
 }
 
 export async function getSingleEventEditController(
   req: Request,
-  res: Response
+  res: Response<JsonApiResponse>
 ) {
   try {
     const { eventId } = req.params;
@@ -91,12 +95,15 @@ export async function getSingleEventEditController(
 
     return res.status(500).json({
       success: false,
-      error: err,
+      error: 'Something went wrong, please try again',
     });
   }
 }
 
-export async function getSingleEventController(req: Request, res: Response) {
+export async function getSingleEventController(
+  req: Request,
+  res: Response<JsonApiResponse>
+) {
   try {
     const { eventId } = req.params;
 
@@ -119,12 +126,15 @@ export async function getSingleEventController(req: Request, res: Response) {
 
     return res.status(500).json({
       success: false,
-      error: err,
+      error: 'Something went wrong, please try again',
     });
   }
 }
 
-export async function createEventController(req: Request, res: Response) {
+export async function createEventController(
+  req: Request,
+  res: Response<JsonApiResponse>
+) {
   try {
     const { adminUserId }: { adminUserId?: string } = req.params;
 
@@ -167,20 +177,20 @@ export async function createEventController(req: Request, res: Response) {
       },
     });
 
-    return res.status(200).json({ success: true, data: newEvent });
+    return res.status(200).json({ success: true });
   } catch (err) {
     console.error(err);
 
     return res.status(500).json({
       success: false,
-      error: err,
+      error: 'Something went wrong, please try again',
     });
   }
 }
 
 export async function updateEventAddressController(
   req: Request,
-  res: Response
+  res: Response<JsonApiResponse>
 ) {
   try {
     const { addressId }: { addressId?: string } = req.params;
@@ -199,18 +209,21 @@ export async function updateEventAddressController(
       },
     });
 
-    return res.status(200).json({ success: true, data: updatedAddress });
+    return res.status(200).json({ success: true });
   } catch (err) {
     console.error(err);
 
     return res.status(500).json({
       success: false,
-      error: err,
+      error: 'Something went wrong, please try again',
     });
   }
 }
 
-export async function updateEventController(req: Request, res: Response) {
+export async function updateEventController(
+  req: Request,
+  res: Response<JsonApiResponse>
+) {
   try {
     const { eventId }: { eventId?: string } = req.params;
     const { event }: { event: UpdateEventType } = req.body;
@@ -238,18 +251,21 @@ export async function updateEventController(req: Request, res: Response) {
       },
     });
 
-    return res.status(200).json({ success: true, data: updatedEvent });
+    return res.status(200).json({ success: true });
   } catch (err) {
     console.error(err);
 
     return res.status(500).json({
       success: false,
-      error: err,
+      error: 'Something went wrong, please try again',
     });
   }
 }
 
-export async function deleteEventController(req: Request, res: Response) {
+export async function deleteEventController(
+  req: Request,
+  res: Response<JsonApiResponse>
+) {
   try {
     const { eventId }: { eventId?: string } = req.params;
 
@@ -261,13 +277,13 @@ export async function deleteEventController(req: Request, res: Response) {
       where: { id: eventId },
     });
 
-    return res.status(200).json({ success: true, data: deletedEvent });
+    return res.status(200).json({ success: true });
   } catch (err) {
     console.error(err);
 
     return res.status(500).json({
       success: false,
-      error: err,
+      error: 'Something went wrong, please try again',
     });
   }
 }

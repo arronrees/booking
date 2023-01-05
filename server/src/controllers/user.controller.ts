@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { omit } from 'lodash';
 import { prismaDB } from '..';
+import { JsonApiResponse } from '../constant-types';
 import { UpdateAddressType } from '../models/address.model';
 import {
   UpdateUserEmailType,
@@ -11,7 +12,10 @@ import { hashPassword } from '../utils/auth.utils';
 import checkValidUuid from '../utils/checkValidUuid';
 import { sendEmailVerificationEmail } from '../utils/user.utils';
 
-export async function getSingleUserController(req: Request, res: Response) {
+export async function getSingleUserController(
+  req: Request,
+  res: Response<JsonApiResponse>
+) {
   try {
     const { userId }: { userId?: string } = req.params;
 
@@ -40,12 +44,15 @@ export async function getSingleUserController(req: Request, res: Response) {
 
     return res.status(500).json({
       success: false,
-      error: err,
+      error: 'Something went wrong, please try again',
     });
   }
 }
 
-export async function updateUserAddressController(req: Request, res: Response) {
+export async function updateUserAddressController(
+  req: Request,
+  res: Response<JsonApiResponse>
+) {
   try {
     const { addressId }: { addressId?: string } = req.params;
     const { address }: { address: UpdateAddressType } = req.body;
@@ -63,18 +70,21 @@ export async function updateUserAddressController(req: Request, res: Response) {
       },
     });
 
-    return res.status(200).json({ success: true, data: updatedAddress });
+    return res.status(200).json({ success: true });
   } catch (err) {
     console.error(err);
 
     return res.status(500).json({
       success: false,
-      error: err,
+      error: 'Something went wrong, please try again',
     });
   }
 }
 
-export async function updateUserController(req: Request, res: Response) {
+export async function updateUserController(
+  req: Request,
+  res: Response<JsonApiResponse>
+) {
   try {
     const { userId }: { userId?: string } = req.params;
     const { user }: { user: UpdateUserType } = req.body;
@@ -90,21 +100,21 @@ export async function updateUserController(req: Request, res: Response) {
       },
     });
 
-    return res.status(200).json({
-      success: true,
-      data: omit({ ...updatedUser }, ['password', 'emailVerificationString']),
-    });
+    return res.status(200).json({ success: true });
   } catch (err) {
     console.error(err);
 
     return res.status(500).json({
       success: false,
-      error: err,
+      error: 'Something went wrong, please try again',
     });
   }
 }
 
-export async function updateUserEmailController(req: Request, res: Response) {
+export async function updateUserEmailController(
+  req: Request,
+  res: Response<JsonApiResponse>
+) {
   try {
     const { userId }: { userId?: string } = req.params;
     const { user }: { user: UpdateUserEmailType } = req.body;
@@ -157,21 +167,20 @@ export async function updateUserEmailController(req: Request, res: Response) {
 
     return res.status(200).json({
       success: true,
-      data: omit({ ...updatedUser }, ['password', 'emailVerificationString']),
     });
   } catch (err) {
     console.error(err);
 
     return res.status(500).json({
       success: false,
-      error: err,
+      error: 'Something went wrong, please try again',
     });
   }
 }
 
 export async function updateUserPasswordController(
   req: Request,
-  res: Response
+  res: Response<JsonApiResponse>
 ) {
   try {
     const { userId }: { userId?: string } = req.params;
@@ -190,18 +199,13 @@ export async function updateUserPasswordController(
       },
     });
 
-    return res
-      .status(200)
-      .json({
-        success: true,
-        data: omit({ ...updatedUser }, ['password', 'emailVerificationString']),
-      });
+    return res.status(200).json({ success: true });
   } catch (err) {
     console.error(err);
 
     return res.status(500).json({
       success: false,
-      error: err,
+      error: 'Something went wrong, please try again',
     });
   }
 }

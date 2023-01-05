@@ -1,12 +1,16 @@
 import { Request, Response } from 'express';
 import { prismaDB } from '..';
+import { JsonApiResponse } from '../constant-types';
 import {
   CreateBookingTypeType,
   UpdateBookingTypeType,
 } from '../models/bookingtype.model';
 import checkValidUuid from '../utils/checkValidUuid';
 
-export async function createBookingTypeController(req: Request, res: Response) {
+export async function createBookingTypeController(
+  req: Request,
+  res: Response<JsonApiResponse>
+) {
   try {
     const { eventId }: { eventId?: string } = req.params;
     const { bookingType }: { bookingType: CreateBookingTypeType } = req.body;
@@ -53,7 +57,7 @@ export async function createBookingTypeController(req: Request, res: Response) {
       });
     }
 
-    return res.status(200).json({ success: true, data: newBookingType });
+    return res.status(200).json({ success: true });
   } catch (err) {
     console.error(err);
 
@@ -64,7 +68,10 @@ export async function createBookingTypeController(req: Request, res: Response) {
   }
 }
 
-export async function updateBookingTypeController(req: Request, res: Response) {
+export async function updateBookingTypeController(
+  req: Request,
+  res: Response<JsonApiResponse>
+) {
   try {
     const { bookingTypeId }: { bookingTypeId?: string } = req.params;
     const { bookingType }: { bookingType: UpdateBookingTypeType } = req.body;
@@ -140,7 +147,7 @@ export async function updateBookingTypeController(req: Request, res: Response) {
       },
     });
 
-    return res.status(200).json({ success: true, data: updatedBookingType });
+    return res.status(200).json({ success: true });
   } catch (err) {
     console.error(err);
 

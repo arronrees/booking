@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { omit } from 'lodash';
 import { prismaDB } from '..';
+import { JsonApiResponse } from '../constant-types';
 import { CreateAddressType } from '../models/address.model';
 import {
   CreateUserToSaveType,
@@ -15,7 +16,10 @@ import {
 import checkValidUuid from '../utils/checkValidUuid';
 import { sendEmailVerificationEmail } from '../utils/user.utils';
 
-export async function signupUserController(req: Request, res: Response) {
+export async function signupUserController(
+  req: Request,
+  res: Response<JsonApiResponse>
+) {
   try {
     const {
       user,
@@ -74,7 +78,10 @@ export async function signupUserController(req: Request, res: Response) {
   }
 }
 
-export async function signinUserController(req: Request, res: Response) {
+export async function signinUserController(
+  req: Request,
+  res: Response<JsonApiResponse>
+) {
   try {
     const { user }: { user: SigninUserType } = req.body;
 
@@ -99,25 +106,33 @@ export async function signinUserController(req: Request, res: Response) {
     // generate token
     const token = await createJwtToken(userExists.id);
 
-    if (passwordCheck) {
-      return res.status(200).json({
-        success: true,
-        data: omit({ ...userExists, token }, [
-          'password',
-          'emailVerificationString',
-        ]),
-      });
+    if (!passwordCheck) {
+      return res
+        .status(401)
+        .json({ success: false, error: 'Incorrect details, please try again' });
     }
 
-    return res
-      .status(401)
-      .json({ success: false, error: 'Incorrect details, please try again' });
+    return res.status(200).json({
+      success: true,
+      data: omit({ ...userExists, token }, [
+        'password',
+        'emailVerificationString',
+      ]),
+    });
   } catch (err) {
-    console.log(err);
+    console.error(err);
+
+    return res.status(500).json({
+      success: false,
+      error: 'Something went wrong, please try again',
+    });
   }
 }
 
-export async function verifyEmailController(req: Request, res: Response) {
+export async function verifyEmailController(
+  req: Request,
+  res: Response<JsonApiResponse>
+) {
   try {
     const { id, token }: { id?: string; token?: string } = req.params;
 
@@ -135,7 +150,7 @@ export async function verifyEmailController(req: Request, res: Response) {
 
     if (user) {
       if (user.emailVerified) {
-        return res.status(200).json({ sucess: true });
+        return res.status(200).json({ success: true });
       }
 
       if (user.emailVerificationString === token) {
@@ -144,7 +159,7 @@ export async function verifyEmailController(req: Request, res: Response) {
           data: { emailVerified: true, emailVerificationString: null },
         });
 
-        return res.status(200).json({ sucess: true });
+        return res.status(200).json({ success: true });
       }
     }
 
