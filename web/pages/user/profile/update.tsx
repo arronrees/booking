@@ -1,4 +1,3 @@
-import { UserInterface } from '../../../constant-types';
 import { withSessionSsr } from '../../../utils/iron/withSession';
 import Header from '../../../layout/main/Header';
 import EditUserDetailsForm from '../../../components/forms/user/EditUserDetailsForm';
@@ -6,10 +5,6 @@ import EditUserAddressForm from '../../../components/forms/user/EditUserAddressF
 import useUser from '../../../utils/iron/useUser';
 import EditUserEmailForm from '../../../components/forms/user/EditUserEmailForm';
 import EditUserPasswordForm from '../../../components/forms/user/EditUserPasswordForm';
-
-interface Props {
-  user: UserInterface;
-}
 
 export default function UpdateUser() {
   const { user } = useUser();

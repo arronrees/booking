@@ -45,7 +45,7 @@ export default function EditUserEmailForm({ user }: Props) {
     };
 
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/users/update-email/${user.id}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/api/users/update-email`,
       {
         method: 'PUT',
         headers: {

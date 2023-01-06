@@ -95,7 +95,10 @@ export async function checkJwtExits(
       return res.status(401).json({ success: false, error: 'Invalid JWT' });
     }
 
-    const user = await prismaDB.user.findUnique({ where: { id } });
+    const user = await prismaDB.user.findUnique({
+      where: { id },
+      include: { Address: true },
+    });
 
     if (!user) {
       return res.status(401).json({ success: false, error: 'Invalid user' });

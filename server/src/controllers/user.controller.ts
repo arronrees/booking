@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { omit } from 'lodash';
 import { prismaDB } from '..';
-import { JsonApiResponse } from '../constant-types';
+import { JsonApiResponse, ResLocals } from '../constant-types';
 import { UpdateAddressType } from '../models/address.model';
 import {
   UpdateUserEmailType,
@@ -14,19 +14,10 @@ import { sendEmailVerificationEmail } from '../utils/user.utils';
 
 export async function getSingleUserController(
   req: Request,
-  res: Response<JsonApiResponse>
+  res: Response<JsonApiResponse> & { locals: ResLocals }
 ) {
   try {
-    const { userId }: { userId?: string } = req.params;
-
-    if (!checkValidUuid(userId)) {
-      return res.status(404).json({ success: false, error: 'User not found' });
-    }
-
-    const user = await prismaDB.user.findUnique({
-      where: { id: userId },
-      include: { Address: true },
-    });
+    const { user } = res.locals;
 
     if (!user) {
       return res.status(404).json({ success: false, error: 'User not found' });
@@ -51,10 +42,10 @@ export async function getSingleUserController(
 
 export async function updateUserAddressController(
   req: Request,
-  res: Response<JsonApiResponse>
+  res: Response<JsonApiResponse> & { locals: ResLocals }
 ) {
   try {
-    const { addressId }: { addressId?: string } = req.params;
+    const { addressId } = res.locals.user;
     const { address }: { address: UpdateAddressType } = req.body;
 
     if (!checkValidUuid(addressId)) {
@@ -83,18 +74,18 @@ export async function updateUserAddressController(
 
 export async function updateUserController(
   req: Request,
-  res: Response<JsonApiResponse>
+  res: Response<JsonApiResponse> & { locals: ResLocals }
 ) {
   try {
-    const { userId }: { userId?: string } = req.params;
+    const { id } = res.locals.user;
     const { user }: { user: UpdateUserType } = req.body;
 
-    if (!checkValidUuid(userId)) {
+    if (!checkValidUuid(id)) {
       return res.status(404).json({ success: false, error: 'User not found' });
     }
 
     const updatedUser = await prismaDB.user.update({
-      where: { id: userId },
+      where: { id },
       data: {
         ...user,
       },
@@ -116,16 +107,16 @@ export async function updateUserEmailController(
   res: Response<JsonApiResponse>
 ) {
   try {
-    const { userId }: { userId?: string } = req.params;
+    const { id } = res.locals.user;
     const { user }: { user: UpdateUserEmailType } = req.body;
 
-    if (!checkValidUuid(userId)) {
+    if (!checkValidUuid(id)) {
       return res.status(404).json({ success: false, error: 'User not found' });
     }
 
     // find the user sending the request
     const currentUser = await prismaDB.user.findUnique({
-      where: { id: userId },
+      where: { id },
     });
 
     if (!currentUser) {
@@ -152,7 +143,7 @@ export async function updateUserEmailController(
     }
 
     const updatedUser = await prismaDB.user.update({
-      where: { id: userId },
+      where: { id },
       data: {
         email: user.email,
         emailVerified: false,
@@ -183,17 +174,17 @@ export async function updateUserPasswordController(
   res: Response<JsonApiResponse>
 ) {
   try {
-    const { userId }: { userId?: string } = req.params;
+    const { id } = res.locals.user;
     const { user }: { user: UpdateUserPasswordType } = req.body;
 
-    if (!checkValidUuid(userId)) {
+    if (!checkValidUuid(id)) {
       return res.status(404).json({ success: false, error: 'User not found' });
     }
 
     const hash = await hashPassword(user.password);
 
     const updatedUser = await prismaDB.user.update({
-      where: { id: userId },
+      where: { id },
       data: {
         password: hash,
       },

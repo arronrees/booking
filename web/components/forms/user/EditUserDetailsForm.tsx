@@ -53,7 +53,7 @@ export default function UpdateUserDetailsForm({ user }: Props) {
     };
 
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/users/update/${user.id}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/api/users/update`,
       {
         method: 'PUT',
         headers: {

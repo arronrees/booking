@@ -17,11 +17,11 @@ import {
 export const userRouter = Router();
 
 // get user information
-userRouter.get('/:userId', checkJwtExits, getSingleUserController);
+userRouter.get('/', checkJwtExits, getSingleUserController);
 
 // update user address
 userRouter.put(
-  '/update-address/:addressId',
+  '/update-address',
   checkJwtExits,
   checkAddressObjectValid,
   updateUserAddressController
@@ -29,7 +29,7 @@ userRouter.put(
 
 // update user email address
 userRouter.put(
-  '/update-email/:userId',
+  '/update-email',
   checkJwtExits,
   checkUpdateUserEmailObjectValid,
   updateUserEmailController
@@ -37,7 +37,7 @@ userRouter.put(
 
 // update user password
 userRouter.put(
-  '/update-password/:userId',
+  '/update-password',
   checkJwtExits,
   checkUpdateUserPasswordObjectValid,
   updateUserPasswordController
@@ -45,7 +45,7 @@ userRouter.put(
 
 // update user details
 userRouter.put(
-  '/update/:userId',
+  '/update',
   checkJwtExits,
   checkUpdateUserObjectValid,
   updateUserController

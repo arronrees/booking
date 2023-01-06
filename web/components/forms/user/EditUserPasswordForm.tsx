@@ -49,7 +49,7 @@ export default function EditUserPasswordForm({ user }: Props) {
     };
 
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/users/update-password/${user.id}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/api/users/update-password`,
       {
         method: 'PUT',
         headers: {
