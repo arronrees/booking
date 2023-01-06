@@ -26,7 +26,7 @@ eventRouter.get('/', getAllEventsController);
 
 // get admin user events
 eventRouter.get(
-  '/user/:adminUserId',
+  '/user',
   checkJwtExits,
   checkIfUserIsAdmin,
   getAdminUserEventsController
@@ -45,7 +45,7 @@ eventRouter.get('/single/:eventId', getSingleEventController);
 
 // create new event
 eventRouter.post(
-  '/create/:adminUserId',
+  '/create',
   checkJwtExits,
   checkIfUserIsAdmin,
   checkCreateEventObjectValid,

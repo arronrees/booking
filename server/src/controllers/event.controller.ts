@@ -46,15 +46,15 @@ export async function getAdminUserEventsController(
   res: Response<JsonApiResponse>
 ) {
   try {
-    const { adminUserId } = req.params;
+    const { id } = res.locals.user;
 
-    if (!checkValidUuid(adminUserId)) {
+    if (!checkValidUuid(id)) {
       return res.status(404).json({ success: false, error: 'User not found' });
     }
 
     const events = await prismaDB.event.findMany({
       where: {
-        userId: adminUserId,
+        userId: id,
       },
     });
 
@@ -136,10 +136,10 @@ export async function createEventController(
   res: Response<JsonApiResponse>
 ) {
   try {
-    const { adminUserId }: { adminUserId?: string } = req.params;
+    const { id } = res.locals.user;
 
     const user = await prismaDB.user.findUnique({
-      where: { id: adminUserId },
+      where: { id },
     });
 
     if (!user) {
@@ -171,7 +171,7 @@ export async function createEventController(
         },
         User: {
           connect: {
-            id: adminUserId,
+            id,
           },
         },
       },

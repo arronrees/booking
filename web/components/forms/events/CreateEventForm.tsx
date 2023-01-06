@@ -90,7 +90,7 @@ export default function EditEventForm({ user }: Props) {
     console.log(formData);
 
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/events/create/${user.id}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/api/events/create`,
       {
         method: 'POST',
         headers: {
