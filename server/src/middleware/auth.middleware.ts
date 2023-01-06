@@ -1,3 +1,4 @@
+import { User } from '@prisma/client';
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import { z } from 'zod';
@@ -109,5 +110,45 @@ export async function checkJwtExits(
     console.log(err);
 
     return res.status(500).json({ success: false, error: 'Invalid JWT' });
+  }
+}
+
+export async function checkIfUserIsAdmin(
+  req: Request,
+  res: Response<JsonApiResponse>,
+  next: NextFunction
+) {
+  try {
+    const { user }: { user?: User } = res.locals;
+
+    if (!user) {
+      return res
+        .status(401)
+        .json({ success: false, error: 'Invalid user permissions' });
+    }
+
+    if (user.role === 'ADMIN' || user.role === 'SUPERADMIN') {
+      if (user.adminVerified) {
+        return next();
+      }
+
+      return res.status(401).json({
+        success: false,
+        error:
+          'User not admin, please request admin access to use this feature',
+      });
+    }
+
+    return res.status(401).json({
+      success: false,
+      error: 'User not admin, please request admin access to use this feature',
+    });
+  } catch (err) {
+    console.log(err);
+
+    return res.status(500).json({
+      success: false,
+      error: 'Something went wrong, please try again',
+    });
   }
 }

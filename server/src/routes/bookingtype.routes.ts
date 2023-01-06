@@ -3,7 +3,10 @@ import {
   createBookingTypeController,
   updateBookingTypeController,
 } from '../controllers/bookingtype.controller';
-import { checkJwtExits } from '../middleware/auth.middleware';
+import {
+  checkIfUserIsAdmin,
+  checkJwtExits,
+} from '../middleware/auth.middleware';
 import {
   checkCreateBookingTypeObjectValid,
   checkUpdateBookingTypeObjectValid,
@@ -15,6 +18,7 @@ export const bookingTypeRouter = Router();
 bookingTypeRouter.post(
   '/create/:eventId',
   checkJwtExits,
+  checkIfUserIsAdmin,
   checkCreateBookingTypeObjectValid,
   createBookingTypeController
 );
@@ -23,6 +27,7 @@ bookingTypeRouter.post(
 bookingTypeRouter.put(
   '/update/:bookingTypeId',
   checkJwtExits,
+  checkIfUserIsAdmin,
   checkUpdateBookingTypeObjectValid,
   updateBookingTypeController
 );
