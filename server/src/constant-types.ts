@@ -3,3 +3,7 @@ export interface JsonApiResponse {
   data?: [] | {} | string;
   error?: string;
 }
+
+export interface ResLocals {
+  user: User;
+}

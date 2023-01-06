@@ -3,7 +3,7 @@ import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import { z } from 'zod';
 import { prismaDB } from '..';
-import { JsonApiResponse } from '../constant-types';
+import { JsonApiResponse, ResLocals } from '../constant-types';
 import { createAddressModel } from '../models/address.model';
 import { createUserModel, signinUserModel } from '../models/user.model';
 import checkValidUuid from '../utils/checkValidUuid';
@@ -73,7 +73,7 @@ declare module 'jsonwebtoken' {
 
 export async function checkJwtExits(
   req: Request,
-  res: Response<JsonApiResponse>,
+  res: Response<JsonApiResponse> & { locals: ResLocals },
   next: NextFunction
 ) {
   try {
@@ -115,11 +115,11 @@ export async function checkJwtExits(
 
 export async function checkIfUserIsAdmin(
   req: Request,
-  res: Response<JsonApiResponse>,
+  res: Response<JsonApiResponse> & { locals: ResLocals },
   next: NextFunction
 ) {
   try {
-    const { user }: { user?: User } = res.locals;
+    const { user } = res.locals;
 
     if (!user) {
       return res
