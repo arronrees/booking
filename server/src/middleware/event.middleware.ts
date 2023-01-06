@@ -3,10 +3,11 @@ import { z } from 'zod';
 import { prismaDB } from '..';
 import { createAddressModel } from '../models/address.model';
 import { createEventModel, updateEventModel } from '../models/event.model';
+import { JsonApiResponse } from '../constant-types';
 
 export async function checkAdminUserIdSentIsValid(
   req: Request,
-  res: Response,
+  res: Response<JsonApiResponse>,
   next: NextFunction
 ) {
   try {
@@ -34,14 +35,14 @@ export async function checkAdminUserIdSentIsValid(
 
     return res.status(500).json({
       success: false,
-      error: err,
+      error: 'Something went wrong, please try again',
     });
   }
 }
 
 export async function checkCreateEventObjectValid(
   req: Request,
-  res: Response,
+  res: Response<JsonApiResponse>,
   next: NextFunction
 ) {
   try {
@@ -55,18 +56,23 @@ export async function checkCreateEventObjectValid(
     if (err instanceof z.ZodError) {
       console.log(err.format());
 
-      return res.status(400).json({ success: false, error: err.format() });
+      return res
+        .status(400)
+        .json({ success: false, error: err.errors[0].message });
     } else {
       console.log(err);
 
-      return res.status(500).json({ success: false, error: err });
+      return res.status(500).json({
+        success: false,
+        error: 'Something went wrong, please try again',
+      });
     }
   }
 }
 
 export async function checkUpdateEventObjectValid(
   req: Request,
-  res: Response,
+  res: Response<JsonApiResponse>,
   next: NextFunction
 ) {
   try {
@@ -79,11 +85,16 @@ export async function checkUpdateEventObjectValid(
     if (err instanceof z.ZodError) {
       console.log(err.format());
 
-      return res.status(400).json({ success: false, error: err.format() });
+      return res
+        .status(400)
+        .json({ success: false, error: err.errors[0].message });
     } else {
       console.log(err);
 
-      return res.status(500).json({ success: false, error: err });
+      return res.status(500).json({
+        success: false,
+        error: 'Something went wrong, please try again',
+      });
     }
   }
 }

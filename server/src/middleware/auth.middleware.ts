@@ -2,13 +2,14 @@ import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import { z } from 'zod';
 import { prismaDB } from '..';
+import { JsonApiResponse } from '../constant-types';
 import { createAddressModel } from '../models/address.model';
 import { createUserModel, signinUserModel } from '../models/user.model';
 import checkValidUuid from '../utils/checkValidUuid';
 
 export async function checkUserSignupObjectValid(
   req: Request,
-  res: Response,
+  res: Response<JsonApiResponse>,
   next: NextFunction
 ) {
   try {
@@ -22,18 +23,23 @@ export async function checkUserSignupObjectValid(
     if (err instanceof z.ZodError) {
       console.log(err.format());
 
-      return res.status(400).json({ success: false, error: err.format() });
+      return res
+        .status(400)
+        .json({ success: false, error: err.errors[0].message });
     } else {
       console.log(err);
 
-      return res.status(500).json({ success: false, error: err });
+      return res.status(500).json({
+        success: false,
+        error: 'Something went wrong, please try again',
+      });
     }
   }
 }
 
 export async function checkUserSigninObjectValid(
   req: Request,
-  res: Response,
+  res: Response<JsonApiResponse>,
   next: NextFunction
 ) {
   try {
@@ -46,9 +52,14 @@ export async function checkUserSigninObjectValid(
     if (err instanceof z.ZodError) {
       console.log(err.format());
 
-      return res.status(400).json({ success: false, error: err.format() });
+      return res
+        .status(400)
+        .json({ success: false, error: err.errors[0].message });
     } else {
-      return res.status(500).json({ success: false, error: err });
+      return res.status(500).json({
+        success: false,
+        error: 'Something went wrong, please try again',
+      });
     }
   }
 }
@@ -61,7 +72,7 @@ declare module 'jsonwebtoken' {
 
 export async function checkJwtExits(
   req: Request,
-  res: Response,
+  res: Response<JsonApiResponse>,
   next: NextFunction
 ) {
   try {

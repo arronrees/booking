@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { z } from 'zod';
+import { JsonApiResponse } from '../constant-types';
 import {
   createBookingTypeModel,
   updateBookingTypeModel,
@@ -7,7 +8,7 @@ import {
 
 export async function checkCreateBookingTypeObjectValid(
   req: Request,
-  res: Response,
+  res: Response<JsonApiResponse>,
   next: NextFunction
 ) {
   try {
@@ -20,18 +21,25 @@ export async function checkCreateBookingTypeObjectValid(
     if (err instanceof z.ZodError) {
       console.log(err.format());
 
-      return res.status(400).json({ success: false, error: err.format() });
+      return res
+        .status(400)
+        .json({ success: false, error: err.errors[0].message });
     } else {
       console.log(err);
 
-      return res.status(500).json({ success: false, error: err });
+      return res
+        .status(500)
+        .json({
+          success: false,
+          error: 'Something went wrong, please try again',
+        });
     }
   }
 }
 
 export async function checkUpdateBookingTypeObjectValid(
   req: Request,
-  res: Response,
+  res: Response<JsonApiResponse>,
   next: NextFunction
 ) {
   try {
@@ -44,11 +52,18 @@ export async function checkUpdateBookingTypeObjectValid(
     if (err instanceof z.ZodError) {
       console.log(err.format());
 
-      return res.status(400).json({ success: false, error: err.format() });
+      return res
+        .status(400)
+        .json({ success: false, error: err.errors[0].message });
     } else {
       console.log(err);
 
-      return res.status(500).json({ success: false, error: err });
+      return res
+        .status(500)
+        .json({
+          success: false,
+          error: 'Something went wrong, please try again',
+        });
     }
   }
 }
