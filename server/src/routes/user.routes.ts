@@ -5,6 +5,7 @@ import {
   updateUserController,
   updateUserEmailController,
   updateUserPasswordController,
+  getUserSavedEventsController,
 } from '../controllers/user.controller';
 import { checkAddressObjectValid } from '../middleware/address.middleware';
 import { checkJwtExits } from '../middleware/auth.middleware';
@@ -50,3 +51,6 @@ userRouter.put(
   checkUpdateUserObjectValid,
   updateUserController
 );
+
+// get user saved events
+userRouter.get('/saved-events', checkJwtExits, getUserSavedEventsController);

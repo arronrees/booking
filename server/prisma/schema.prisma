@@ -33,6 +33,7 @@ model User {
   emailVerified           Boolean    @default(false)
   emailVerificationString String?
   adminVerified           Boolean    @default(false)
+  UserSavedEvent          UserSavedEvent[]
 }
 
 model Address {
@@ -59,24 +60,35 @@ enum EventType {
 }
 
 model Event {
+  id                String        @id @unique @default(uuid())
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+  name              String        @db.VarChar(255)
+  description       String
+  slug              String
+  date              DateTime
+  location          String
+  type              EventType     @default(OTHER)
+  typeSlug          String
+  public            Boolean       @default(false)
+  maxBookings       Int           @default(0)
+  Address           Address       @relation(fields: [addressId], references: [id])
+  addressId         String
+  BookingType       BookingType[]
+  Booking           Booking[]
+  User              User          @relation(fields: [userId], references: [id])
+  userId            String
+  UserSavedEvent    UserSavedEvent[]
+}
+
+model UserSavedEvent {
   id          String        @id @unique @default(uuid())
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
-  name        String        @db.VarChar(255)
-  description String
-  slug        String
-  date        DateTime
-  location    String
-  type        EventType     @default(OTHER)
-  typeSlug    String
-  public      Boolean       @default(false)
-  maxBookings Int           @default(0)
-  Address     Address       @relation(fields: [addressId], references: [id])
-  addressId   String
-  BookingType BookingType[]
-  Booking     Booking[]
   User        User          @relation(fields: [userId], references: [id])
   userId      String
+  Event       Event         @relation(fields: [eventId], references: [id])
+  eventId     String
 }
 
 model BookingType {

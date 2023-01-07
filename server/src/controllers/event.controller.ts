@@ -5,7 +5,7 @@ import { CreateAddressType, UpdateAddressType } from '../models/address.model';
 import { CreateEventType, UpdateEventType } from '../models/event.model';
 import checkValidUuid from '../utils/checkValidUuid';
 import checkEventTypeMatchesQuery from '../utils/event.utils';
-import { JsonApiResponse } from '../constant-types';
+import { JsonApiResponse, ResLocals } from '../constant-types';
 
 export async function getAllEventsController(
   req: Request,
@@ -278,6 +278,52 @@ export async function deleteEventController(
     });
 
     return res.status(200).json({ success: true });
+  } catch (err) {
+    console.error(err);
+
+    return res.status(500).json({
+      success: false,
+      error: 'Something went wrong, please try again',
+    });
+  }
+}
+
+export async function userSaveEventController(
+  req: Request,
+  res: Response<JsonApiResponse> & { locals: ResLocals }
+) {
+  try {
+    const { id } = res.locals.user;
+    const { eventId } = req.params;
+
+    if (!checkValidUuid(eventId)) {
+      return res.status(404).json({ success: false, error: 'Event not found' });
+    }
+
+    const savedEvent = await prismaDB.userSavedEvent.findFirst({
+      where: { userId: id, eventId },
+    });
+
+    if (savedEvent) {
+      const unsavedEvent = await prismaDB.userSavedEvent.delete({
+        where: { id: savedEvent.id },
+      });
+    } else {
+      const newSavedEvent = await prismaDB.userSavedEvent.create({
+        data: {
+          User: {
+            connect: { id },
+          },
+          Event: {
+            connect: { id: eventId },
+          },
+        },
+      });
+    }
+
+    return res
+      .status(200)
+      .json({ success: true, data: savedEvent ? 'unsaved' : 'saved' });
   } catch (err) {
     console.error(err);
 

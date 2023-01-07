@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
 import { z } from 'zod';
-import { prismaDB } from '..';
 import { createAddressModel } from '../models/address.model';
 import { createEventModel, updateEventModel } from '../models/event.model';
 import { JsonApiResponse } from '../constant-types';

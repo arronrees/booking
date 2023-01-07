@@ -12,7 +12,7 @@ export default function Toolbar() {
   if (isLoading) {
     return (
       <div className='py-3 px-4 bg-mid-blue flex items-center gap-4'>
-        {isLoading && <ClipLoader color='#fff' size={16} />}
+        <ClipLoader color='#fff' size={16} />
         <span className='bg-white w-[2px] h-6 ml-auto '></span>
         <Link href='/user/profile' className='flex items-center gap-4'>
           <span>My Account</span>

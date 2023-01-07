@@ -12,6 +12,7 @@ import {
   updateEventAddressController,
   getAdminUserEventsController,
   getSingleEventEditController,
+  userSaveEventController,
 } from '../controllers/event.controller';
 import { checkAddressObjectValid } from '../middleware/address.middleware';
 import {
@@ -77,3 +78,6 @@ eventRouter.delete(
   checkIfUserIsAdmin,
   deleteEventController
 );
+
+// user save an event
+eventRouter.post('/user/save/:eventId', checkJwtExits, userSaveEventController);

@@ -200,3 +200,25 @@ export async function updateUserPasswordController(
     });
   }
 }
+
+export async function getUserSavedEventsController(
+  req: Request,
+  res: Response<JsonApiResponse> & { locals: ResLocals }
+) {
+  try {
+    const { id } = res.locals.user;
+
+    const savedEvents = await prismaDB.userSavedEvent.findMany({
+      where: { userId: id },
+    });
+
+    return res.status(200).json({ success: true, data: savedEvents });
+  } catch (err) {
+    console.error(err);
+
+    return res.status(500).json({
+      success: false,
+      error: 'Something went wrong, please try again',
+    });
+  }
+}

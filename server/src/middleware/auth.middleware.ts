@@ -1,4 +1,3 @@
-import { User } from '@prisma/client';
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import { z } from 'zod';
