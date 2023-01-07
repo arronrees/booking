@@ -333,3 +333,35 @@ export async function userSaveEventController(
     });
   }
 }
+
+export async function getSavedEventsController(
+  req: Request,
+  res: Response<JsonApiResponse> & { locals: ResLocals }
+) {
+  try {
+    const { id } = res.locals.user;
+
+    const savedEvents = await prismaDB.userSavedEvent.findMany({
+      where: { userId: id },
+    });
+
+    const allEvents = [];
+
+    for (let i = 0; i < savedEvents.length; i++) {
+      const { eventId } = savedEvents[i];
+
+      const event = await prismaDB.event.findUnique({ where: { id: eventId } });
+
+      allEvents.push(event);
+    }
+
+    return res.status(200).json({ success: true, data: allEvents });
+  } catch (err) {
+    console.error(err);
+
+    return res.status(500).json({
+      success: false,
+      error: 'Something went wrong, please try again',
+    });
+  }
+}

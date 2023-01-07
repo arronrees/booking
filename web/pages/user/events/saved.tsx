@@ -65,8 +65,15 @@ export const getServerSideProps = withSessionSsr(
         },
       };
     } else {
+      const eventsRes = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/events/saved-events`,
+        { headers: { Authorization: `Bearer ${user.token}` } }
+      );
+
+      const eventsData = await eventsRes.json();
+
       return {
-        props: {},
+        props: { events: eventsData.data },
       };
     }
   }

@@ -13,6 +13,7 @@ import {
   getAdminUserEventsController,
   getSingleEventEditController,
   userSaveEventController,
+  getSavedEventsController,
 } from '../controllers/event.controller';
 import { checkAddressObjectValid } from '../middleware/address.middleware';
 import {
@@ -32,6 +33,9 @@ eventRouter.get(
   checkIfUserIsAdmin,
   getAdminUserEventsController
 );
+
+// get user saved events
+eventRouter.get('/saved-events', checkJwtExits, getSavedEventsController);
 
 // get single event for edit
 eventRouter.get(
