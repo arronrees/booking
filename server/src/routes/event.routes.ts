@@ -14,12 +14,14 @@ import {
   getSingleEventEditController,
   userSaveEventController,
   getSavedEventsController,
+  updateEventImageController,
 } from '../controllers/event.controller';
 import { checkAddressObjectValid } from '../middleware/address.middleware';
 import {
   checkIfUserIsAdmin,
   checkJwtExits,
 } from '../middleware/auth.middleware';
+import { multerUpload } from '../constants';
 
 export const eventRouter = Router();
 
@@ -64,6 +66,15 @@ eventRouter.put(
   checkIfUserIsAdmin,
   checkAddressObjectValid,
   updateEventAddressController
+);
+
+// update event image
+eventRouter.post(
+  '/update-image/:eventId',
+  checkJwtExits,
+  checkIfUserIsAdmin,
+  multerUpload.single('eventImageFile'),
+  updateEventImageController
 );
 
 // update an event

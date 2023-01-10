@@ -17,22 +17,22 @@ enum Role {
 }
 
 model User {
-  id                      String     @id @unique @default(uuid())
-  createdAt               DateTime   @default(now())
-  updatedAt               DateTime   @updatedAt
-  name                    String     @db.VarChar(255)
-  email                   String     @unique @db.VarChar(255)
-  telephone               String     @db.VarChar(255)
+  id                      String           @id @unique @default(uuid())
+  createdAt               DateTime         @default(now())
+  updatedAt               DateTime         @updatedAt
+  name                    String           @db.VarChar(255)
+  email                   String           @unique @db.VarChar(255)
+  telephone               String           @db.VarChar(255)
   password                String
   age                     Int
-  Address                 Address    @relation(fields: [addressId], references: [id])
+  Address                 Address          @relation(fields: [addressId], references: [id])
   addressId               String
   Purchase                Purchase[]
   Event                   Event[]
-  role                    Role       @default(USER)
-  emailVerified           Boolean    @default(false)
+  role                    Role             @default(USER)
+  emailVerified           Boolean          @default(false)
   emailVerificationString String?
-  adminVerified           Boolean    @default(false)
+  adminVerified           Boolean          @default(false)
   UserSavedEvent          UserSavedEvent[]
 }
 
@@ -60,35 +60,36 @@ enum EventType {
 }
 
 model Event {
-  id                String        @id @unique @default(uuid())
-  createdAt         DateTime      @default(now())
-  updatedAt         DateTime      @updatedAt
-  name              String        @db.VarChar(255)
-  description       String
-  slug              String
-  date              DateTime
-  location          String
-  type              EventType     @default(OTHER)
-  typeSlug          String
-  public            Boolean       @default(false)
-  maxBookings       Int           @default(0)
-  Address           Address       @relation(fields: [addressId], references: [id])
-  addressId         String
-  BookingType       BookingType[]
-  Booking           Booking[]
-  User              User          @relation(fields: [userId], references: [id])
-  userId            String
-  UserSavedEvent    UserSavedEvent[]
+  id             String           @id @unique @default(uuid())
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  name           String           @db.VarChar(255)
+  description    String
+  slug           String
+  date           DateTime
+  location       String
+  type           EventType        @default(OTHER)
+  typeSlug       String
+  public         Boolean          @default(false)
+  maxBookings    Int              @default(0)
+  imageFileUrl   String?
+  Address        Address          @relation(fields: [addressId], references: [id])
+  addressId      String
+  BookingType    BookingType[]
+  Booking        Booking[]
+  User           User             @relation(fields: [userId], references: [id])
+  userId         String
+  UserSavedEvent UserSavedEvent[]
 }
 
 model UserSavedEvent {
-  id          String        @id @unique @default(uuid())
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
-  User        User          @relation(fields: [userId], references: [id])
-  userId      String
-  Event       Event         @relation(fields: [eventId], references: [id])
-  eventId     String
+  id        String   @id @unique @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  User      User     @relation(fields: [userId], references: [id])
+  userId    String
+  Event     Event    @relation(fields: [eventId], references: [id])
+  eventId   String
 }
 
 model BookingType {

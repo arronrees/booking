@@ -23,7 +23,7 @@
 }
 
 .form__label {
-  @apply block text-white w-32 font-semibold text-sm mb-1;
+  @apply block text-white w-32 font-semibold text-sm mb-2;
 }
 
 .form__error {

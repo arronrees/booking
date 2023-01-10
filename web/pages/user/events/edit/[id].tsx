@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import EditEventAddressForm from '../../../../components/forms/events/EditEventAddressForm';
 import EditEventForm from '../../../../components/forms/events/EditEventForm';
+import EditEventImageForm from '../../../../components/forms/events/EditEventImageForm';
 import { EventInterfaceFull } from '../../../../constant-types';
 import Header from '../../../../layout/main/Header';
 import { withSessionSsr } from '../../../../utils/iron/withSession';
@@ -10,15 +11,27 @@ interface Props {
 }
 
 export default function EditEventPage({ event }: Props) {
+  console.log(event);
+
   return (
     <div>
       <Header />
       <section className='p-8'>
         <h1 className='font-bold font-title text-5xl mb-6'>{event.name}</h1>
-        <div className='h-96 w-full rounded mb-6'>
-          <figure>
-            <Image src='/glasto.webp' fill alt='' className='rounded' />
-          </figure>
+        <div className='h-96 w-full rounded mb-6 grid sm:grid-cols-2 lg:grid-cols-4 gap-6'>
+          <div className='h-64 sm:h-auto lg:col-span-3'>
+            <figure>
+              <Image
+                src={`${process.env.NEXT_PUBLIC_API_URL}/${event.imageFileUrl}`}
+                fill
+                alt=''
+                className='rounded'
+              />
+            </figure>
+          </div>
+          <div className='bg-mid-blue-1 rounded p-4 shadow'>
+            <EditEventImageForm eventId={event.id} />
+          </div>
         </div>
         <div className='grid md:grid-cols-2 gap-6'>
           <div className='bg-mid-blue-1 rounded p-4 shadow'>
@@ -57,6 +70,15 @@ export const getServerSideProps = withSessionSsr(
       );
 
       const eventData = await eventRes.json();
+
+      if (!eventRes.ok) {
+        return {
+          redirect: {
+            destination: '/user/my-events',
+            permanent: false,
+          },
+        };
+      }
 
       return {
         props: { event: eventData.data },

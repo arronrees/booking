@@ -33,6 +33,7 @@ export interface EventInterfaceCompact {
   maxBookings: number;
   addressId: string;
   userId: string;
+  imageFileUrl: string;
 }
 
 export interface EventInterfaceFull {
@@ -51,6 +52,7 @@ export interface EventInterfaceFull {
   addressId: string;
   userId: string;
   Address: AddressInterface;
+  imageFileUrl: string;
 }
 
 export interface AddressInterface {

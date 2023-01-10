@@ -8,7 +8,7 @@ import { authRouter } from './routes/auth.routes';
 import { eventRouter } from './routes/event.routes';
 import { userRouter } from './routes/user.routes';
 import { bookingTypeRouter } from './routes/bookingtype.routes';
-import { checkJwtExits } from './middleware/auth.middleware';
+import path from 'path';
 
 export const prismaDB = new PrismaClient({
   errorFormat: 'pretty',
@@ -16,6 +16,9 @@ export const prismaDB = new PrismaClient({
 });
 
 const app = express();
+
+// static files
+app.use(express.static(path.join(__dirname, 'uploads')));
 
 // middleware
 app.use(cors());

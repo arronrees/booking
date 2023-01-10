@@ -20,7 +20,7 @@ export default function EventGrid({ events }: Props) {
               <div className='overlay'></div>
               <figure>
                 <Image
-                  src='/glasto.webp'
+                  src={`${process.env.NEXT_PUBLIC_API_URL}/${event.imageFileUrl}`}
                   fill
                   alt=''
                   className='rounded-t transition duration-300 group-hover:scale-105'

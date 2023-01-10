@@ -6,6 +6,10 @@ import { CreateEventType, UpdateEventType } from '../models/event.model';
 import checkValidUuid from '../utils/checkValidUuid';
 import checkEventTypeMatchesQuery from '../utils/event.utils';
 import { JsonApiResponse, ResLocals } from '../constant-types';
+import path from 'path';
+import fs from 'fs';
+import { v4 as uuidV4 } from 'uuid';
+import sharp from 'sharp';
 
 export async function getAllEventsController(
   req: Request,
@@ -356,6 +360,60 @@ export async function getSavedEventsController(
     }
 
     return res.status(200).json({ success: true, data: allEvents });
+  } catch (err) {
+    console.error(err);
+
+    return res.status(500).json({
+      success: false,
+      error: 'Something went wrong, please try again',
+    });
+  }
+}
+
+export async function updateEventImageController(
+  req: Request,
+  res: Response<JsonApiResponse> & { locals: ResLocals }
+) {
+  try {
+    const { eventId } = req.params;
+
+    if (!checkValidUuid(eventId)) {
+      return res.status(404).json({ success: false, error: 'Event not found' });
+    }
+
+    if (!req.file) {
+      return res
+        .status(400)
+        .json({ success: false, error: 'No file uploaded' });
+    }
+
+    const { filename } = req.file;
+
+    const inputImg = fs.readFileSync(
+      path.join(__dirname, `../uploads/temp/${filename}`)
+    );
+
+    const outputImgDest = 'img/events';
+    const outPutImgFilename = `${uuidV4()}-${Date.now()}.webp`;
+
+    const outputImg = await sharp(inputImg)
+      .resize(1200)
+      .toFile(
+        path.join(__dirname, `../uploads/img/events/${outPutImgFilename}`)
+      );
+
+    const removedImg = fs.unlinkSync(
+      path.join(__dirname, `../uploads/temp/${filename}`)
+    );
+
+    const event = await prismaDB.event.update({
+      where: { id: eventId },
+      data: {
+        imageFileUrl: `${outputImgDest}/${outPutImgFilename}`,
+      },
+    });
+
+    return res.status(200).json({ success: true });
   } catch (err) {
     console.error(err);
 

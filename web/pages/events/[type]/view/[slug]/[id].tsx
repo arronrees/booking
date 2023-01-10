@@ -99,7 +99,12 @@ export default function ViewEventPage({ event, savedEvents }: Props) {
         </div>
         <div className='h-96 w-full rounded mb-4'>
           <figure>
-            <Image src='/glasto.webp' fill alt='' className='rounded' />
+            <Image
+              src={`${process.env.NEXT_PUBLIC_API_URL}/${event.imageFileUrl}`}
+              fill
+              alt=''
+              className='rounded'
+            />
           </figure>
         </div>
         <div>

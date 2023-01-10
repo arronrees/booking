@@ -27,14 +27,14 @@ export default function SavedEvents({ events }: Props) {
                   <div className='overlay'></div>
                   <figure>
                     <Image
-                      src='/glasto.webp'
+                      src={`${process.env.NEXT_PUBLIC_API_URL}/${event.imageFileUrl}`}
                       fill
                       alt=''
                       className='rounded-t transition duration-300 group-hover:scale-105'
                     />
                   </figure>
                 </div>
-                <div className='p-4 rounded-b bg-mid-blue text-white'>
+                <div className='p-4 rounded-b bg-mid-blue-1 text-white'>
                   <h3 className='font-title mb-2 text-2xl'>{event.name}</h3>
                   <p>
                     <span className='capitalize'>
