@@ -59,14 +59,8 @@ eventRouter.post(
   createEventController
 );
 
-// update event address
-eventRouter.put(
-  '/update-address/:addressId',
-  checkJwtExits,
-  checkIfUserIsAdmin,
-  checkAddressObjectValid,
-  updateEventAddressController
-);
+// user save an event
+eventRouter.post('/user/save/:eventId', checkJwtExits, userSaveEventController);
 
 // update event image
 eventRouter.post(
@@ -75,6 +69,15 @@ eventRouter.post(
   checkIfUserIsAdmin,
   multerUpload.single('eventImageFile'),
   updateEventImageController
+);
+
+// update event address
+eventRouter.put(
+  '/update-address/:eventId/:addressId',
+  checkJwtExits,
+  checkIfUserIsAdmin,
+  checkAddressObjectValid,
+  updateEventAddressController
 );
 
 // update an event
@@ -93,6 +96,3 @@ eventRouter.delete(
   checkIfUserIsAdmin,
   deleteEventController
 );
-
-// user save an event
-eventRouter.post('/user/save/:eventId', checkJwtExits, userSaveEventController);

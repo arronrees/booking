@@ -11,8 +11,6 @@ interface Props {
 }
 
 export default function EditEventPage({ event }: Props) {
-  console.log(event);
-
   return (
     <div>
       <Header />
@@ -38,7 +36,7 @@ export default function EditEventPage({ event }: Props) {
             <EditEventForm event={event} />
           </div>
           <div className='bg-mid-blue-1 rounded p-4 shadow'>
-            <EditEventAddressForm address={event.Address} />
+            <EditEventAddressForm address={event.Address} eventId={event.id} />
           </div>
         </div>
       </section>

@@ -27,9 +27,10 @@ type FormData = {
 
 interface Props {
   address: AddressInterface;
+  eventId: string;
 }
 
-export default function EditEventAddressForm({ address }: Props) {
+export default function EditEventAddressForm({ address, eventId }: Props) {
   if (!address) {
     return <p>Error: No address passed to form</p>;
   }
@@ -74,7 +75,7 @@ export default function EditEventAddressForm({ address }: Props) {
     };
 
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/events/update-address/${address.id}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/api/events/update-address/${eventId}/${address.id}`,
       {
         method: 'PUT',
         headers: {

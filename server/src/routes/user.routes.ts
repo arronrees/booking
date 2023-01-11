@@ -20,6 +20,9 @@ export const userRouter = Router();
 // get user information
 userRouter.get('/', checkJwtExits, getSingleUserController);
 
+// get user saved events
+userRouter.get('/saved-events', checkJwtExits, getUserSavedEventsController);
+
 // update user address
 userRouter.put(
   '/update-address',
@@ -51,6 +54,3 @@ userRouter.put(
   checkUpdateUserObjectValid,
   updateUserController
 );
-
-// get user saved events
-userRouter.get('/saved-events', checkJwtExits, getUserSavedEventsController);

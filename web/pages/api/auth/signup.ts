@@ -22,8 +22,6 @@ async function signUpUser(req: NextApiRequest, res: NextApiResponse) {
       return res.status(401).json({ error: 'Incorrect details' });
     }
 
-    console.log(data);
-
     // if response ok update session
     req.session.user = data.data;
     await req.session.save();
