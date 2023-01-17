@@ -62,13 +62,13 @@ eventRouter.post(
 // user save an event
 eventRouter.post('/user/save/:eventId', checkJwtExits, userSaveEventController);
 
-// update event image
-eventRouter.post(
-  '/update-image/:eventId',
+// update an event
+eventRouter.put(
+  '/update/:eventId',
   checkJwtExits,
   checkIfUserIsAdmin,
-  multerUpload.single('eventImageFile'),
-  updateEventImageController
+  checkUpdateEventObjectValid,
+  updateEventController
 );
 
 // update event address
@@ -80,13 +80,13 @@ eventRouter.put(
   updateEventAddressController
 );
 
-// update an event
-eventRouter.put(
-  '/update/:eventId',
+// update event image
+eventRouter.post(
+  '/update-image/:eventId',
   checkJwtExits,
   checkIfUserIsAdmin,
-  checkUpdateEventObjectValid,
-  updateEventController
+  multerUpload.single('eventImageFile'),
+  updateEventImageController
 );
 
 // delete an event

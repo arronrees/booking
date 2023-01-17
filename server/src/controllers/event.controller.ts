@@ -47,14 +47,10 @@ export async function getAllEventsController(
 
 export async function getAdminUserEventsController(
   req: Request,
-  res: Response<JsonApiResponse>
+  res: Response<JsonApiResponse> & { locals: ResLocals }
 ) {
   try {
     const { id } = res.locals.user;
-
-    if (!checkValidUuid(id)) {
-      return res.status(404).json({ success: false, error: 'User not found' });
-    }
 
     const events = await prismaDB.event.findMany({
       where: {
@@ -63,6 +59,38 @@ export async function getAdminUserEventsController(
     });
 
     return res.status(200).json({ success: true, data: events });
+  } catch (err) {
+    console.error(err);
+
+    return res.status(500).json({
+      success: false,
+      error: 'Something went wrong, please try again',
+    });
+  }
+}
+
+export async function getSavedEventsController(
+  req: Request,
+  res: Response<JsonApiResponse> & { locals: ResLocals }
+) {
+  try {
+    const { id } = res.locals.user;
+
+    const savedEvents = await prismaDB.userSavedEvent.findMany({
+      where: { userId: id },
+    });
+
+    const allEvents = [];
+
+    for (let i = 0; i < savedEvents.length; i++) {
+      const { eventId } = savedEvents[i];
+
+      const event = await prismaDB.event.findUnique({ where: { id: eventId } });
+
+      allEvents.push(event);
+    }
+
+    return res.status(200).json({ success: true, data: allEvents });
   } catch (err) {
     console.error(err);
 
@@ -142,14 +170,10 @@ export async function getSingleEventController(
 
 export async function createEventController(
   req: Request,
-  res: Response<JsonApiResponse>
+  res: Response<JsonApiResponse> & { locals: ResLocals }
 ) {
   try {
-    const { id } = res.locals.user;
-
-    const user = await prismaDB.user.findUnique({
-      where: { id },
-    });
+    const { user } = res.locals;
 
     if (!user) {
       return res.status(404).json({ success: false, error: 'User not found' });
@@ -180,7 +204,7 @@ export async function createEventController(
         },
         User: {
           connect: {
-            id,
+            id: user.id,
           },
         },
       },
@@ -197,53 +221,42 @@ export async function createEventController(
   }
 }
 
-export async function updateEventAddressController(
+export async function userSaveEventController(
   req: Request,
   res: Response<JsonApiResponse> & { locals: ResLocals }
 ) {
   try {
-    const { addressId }: { addressId?: string } = req.params;
-    const { eventId }: { eventId?: string } = req.params;
-    const { address }: { address: UpdateAddressType } = req.body;
     const { id } = res.locals.user;
+    const { eventId } = req.params;
 
-    if (!checkValidUuid(addressId)) {
-      return res
-        .status(404)
-        .json({ success: false, error: 'Address not found' });
+    if (!checkValidUuid(eventId)) {
+      return res.status(404).json({ success: false, error: 'Event not found' });
     }
 
-    const foundEvent = await prismaDB.event.findUnique({
-      where: { id: eventId },
-      select: {
-        id: true,
-        userId: true,
-        addressId: true,
-      },
+    const savedEvent = await prismaDB.userSavedEvent.findFirst({
+      where: { userId: id, eventId },
     });
 
-    if (!foundEvent) {
-      return res.status(404).json({ success: false, error: 'No event found' });
+    if (savedEvent) {
+      const unsavedEvent = await prismaDB.userSavedEvent.delete({
+        where: { id: savedEvent.id },
+      });
+    } else {
+      const newSavedEvent = await prismaDB.userSavedEvent.create({
+        data: {
+          User: {
+            connect: { id },
+          },
+          Event: {
+            connect: { id: eventId },
+          },
+        },
+      });
     }
 
-    if (foundEvent.userId !== id) {
-      return res.status(400).json({ success: false, error: 'Not users event' });
-    }
-
-    if (foundEvent.addressId !== addressId) {
-      return res
-        .status(404)
-        .json({ success: false, error: 'Address not found' });
-    }
-
-    const updatedAddress = await prismaDB.address.update({
-      where: { id: addressId },
-      data: {
-        ...address,
-      },
-    });
-
-    return res.status(200).json({ success: true });
+    return res
+      .status(200)
+      .json({ success: true, data: savedEvent ? 'unsaved' : 'saved' });
   } catch (err) {
     console.error(err);
 
@@ -313,6 +326,134 @@ export async function updateEventController(
   }
 }
 
+export async function updateEventAddressController(
+  req: Request,
+  res: Response<JsonApiResponse> & { locals: ResLocals }
+) {
+  try {
+    const { addressId }: { addressId?: string } = req.params;
+    const { eventId }: { eventId?: string } = req.params;
+    const { address }: { address: UpdateAddressType } = req.body;
+    const { id } = res.locals.user;
+
+    if (!checkValidUuid(addressId) || !checkValidUuid(eventId)) {
+      return res
+        .status(404)
+        .json({ success: false, error: 'Address not found' });
+    }
+
+    const foundEvent = await prismaDB.event.findUnique({
+      where: { id: eventId },
+      select: {
+        id: true,
+        userId: true,
+        addressId: true,
+      },
+    });
+
+    if (!foundEvent) {
+      return res.status(404).json({ success: false, error: 'No event found' });
+    }
+
+    if (foundEvent.userId !== id) {
+      return res.status(400).json({ success: false, error: 'Not users event' });
+    }
+
+    if (foundEvent.addressId !== addressId) {
+      return res
+        .status(404)
+        .json({ success: false, error: 'Address not found' });
+    }
+
+    const updatedAddress = await prismaDB.address.update({
+      where: { id: addressId },
+      data: {
+        ...address,
+      },
+    });
+
+    return res.status(200).json({ success: true });
+  } catch (err) {
+    console.error(err);
+
+    return res.status(500).json({
+      success: false,
+      error: 'Something went wrong, please try again',
+    });
+  }
+}
+
+export async function updateEventImageController(
+  req: Request,
+  res: Response<JsonApiResponse> & { locals: ResLocals }
+) {
+  try {
+    const { eventId } = req.params;
+    const { id } = res.locals.user;
+
+    if (!checkValidUuid(eventId)) {
+      return res.status(404).json({ success: false, error: 'Event not found' });
+    }
+
+    if (!req.file) {
+      return res
+        .status(400)
+        .json({ success: false, error: 'No file uploaded' });
+    }
+
+    const findEvent = await prismaDB.event.findUnique({
+      where: { id: eventId },
+      select: {
+        id: true,
+        userId: true,
+      },
+    });
+
+    if (!findEvent) {
+      return res.status(404).json({ success: false, error: 'Event not found' });
+    }
+
+    if (findEvent.userId !== id) {
+      return res.status(401).json({ success: false, error: 'Not users event' });
+    }
+
+    const { filename } = req.file;
+
+    const inputImg = fs.readFileSync(
+      path.join(__dirname, `../uploads/temp/${filename}`)
+    );
+
+    const outputImgDest = 'img/events';
+    const outPutImgFilename = `${uuidV4()}-${Date.now()}.webp`;
+
+    const outputImg = await sharp(inputImg)
+      .resize(1200)
+      .toFile(
+        path.join(__dirname, `../uploads/img/events/${outPutImgFilename}`)
+      );
+
+    const removedImg = fs.unlinkSync(
+      path.join(__dirname, `../uploads/temp/${filename}`)
+    );
+
+    const event = await prismaDB.event.update({
+      where: { id: eventId },
+      data: {
+        imageFileUrl: `${outputImgDest}/${outPutImgFilename}`,
+      },
+    });
+
+    return res.status(200).json({ success: true });
+  } catch (err) {
+    console.error(err);
+
+    return res.status(500).json({
+      success: false,
+      error: 'Something went wrong, please try again',
+    });
+  }
+}
+
 export async function deleteEventController(
   req: Request,
   res: Response<JsonApiResponse> & { locals: ResLocals }
@@ -346,159 +487,6 @@ export async function deleteEventController(
     });
 
     return res.status(200).json({ success: true });
-  } catch (err) {
-    console.error(err);
-
-    return res.status(500).json({
-      success: false,
-      error: 'Something went wrong, please try again',
-    });
-  }
-}
-
-export async function updateEventImageController(
-  req: Request,
-  res: Response<JsonApiResponse> & { locals: ResLocals }
-) {
-  try {
-    const { eventId } = req.params;
-    const { id } = res.locals.user;
-
-    if (!checkValidUuid(eventId)) {
-      return res.status(404).json({ success: false, error: 'Event not found' });
-    }
-
-    if (!req.file) {
-      return res
-        .status(400)
-        .json({ success: false, error: 'No file uploaded' });
-    }
-
-    const { filename } = req.file;
-
-    const inputImg = fs.readFileSync(
-      path.join(__dirname, `../uploads/temp/${filename}`)
-    );
-
-    const outputImgDest = 'img/events';
-    const outPutImgFilename = `${uuidV4()}-${Date.now()}.webp`;
-
-    const outputImg = await sharp(inputImg)
-      .resize(1200)
-      .toFile(
-        path.join(__dirname, `../uploads/img/events/${outPutImgFilename}`)
-      );
-
-    const removedImg = fs.unlinkSync(
-      path.join(__dirname, `../uploads/temp/${filename}`)
-    );
-
-    const findEvent = await prismaDB.event.findUnique({
-      where: { id: eventId },
-      select: {
-        id: true,
-        userId: true,
-      },
-    });
-
-    if (!findEvent) {
-      return res.status(404).json({ success: false, error: 'Event not found' });
-    }
-
-    if (findEvent.userId !== id) {
-      const removedImg = fs.unlinkSync(
-        path.join(__dirname, `../uploads/img/events/${outPutImgFilename}`)
-      );
-
-      return res.status(401).json({ success: false, error: 'Not users event' });
-    }
-
-    const event = await prismaDB.event.update({
-      where: { id: eventId },
-      data: {
-        imageFileUrl: `${outputImgDest}/${outPutImgFilename}`,
-      },
-    });
-
-    return res.status(200).json({ success: true });
-  } catch (err) {
-    console.error(err);
-
-    return res.status(500).json({
-      success: false,
-      error: 'Something went wrong, please try again',
-    });
-  }
-}
-
-export async function userSaveEventController(
-  req: Request,
-  res: Response<JsonApiResponse> & { locals: ResLocals }
-) {
-  try {
-    const { id } = res.locals.user;
-    const { eventId } = req.params;
-
-    if (!checkValidUuid(eventId)) {
-      return res.status(404).json({ success: false, error: 'Event not found' });
-    }
-
-    const savedEvent = await prismaDB.userSavedEvent.findFirst({
-      where: { userId: id, eventId },
-    });
-
-    if (savedEvent) {
-      const unsavedEvent = await prismaDB.userSavedEvent.delete({
-        where: { id: savedEvent.id },
-      });
-    } else {
-      const newSavedEvent = await prismaDB.userSavedEvent.create({
-        data: {
-          User: {
-            connect: { id },
-          },
-          Event: {
-            connect: { id: eventId },
-          },
-        },
-      });
-    }
-
-    return res
-      .status(200)
-      .json({ success: true, data: savedEvent ? 'unsaved' : 'saved' });
-  } catch (err) {
-    console.error(err);
-
-    return res.status(500).json({
-      success: false,
-      error: 'Something went wrong, please try again',
-    });
-  }
-}
-
-export async function getSavedEventsController(
-  req: Request,
-  res: Response<JsonApiResponse> & { locals: ResLocals }
-) {
-  try {
-    const { id } = res.locals.user;
-
-    const savedEvents = await prismaDB.userSavedEvent.findMany({
-      where: { userId: id },
-    });
-
-    const allEvents = [];
-
-    for (let i = 0; i < savedEvents.length; i++) {
-      const { eventId } = savedEvents[i];
-
-      const event = await prismaDB.event.findUnique({ where: { id: eventId } });
-
-      allEvents.push(event);
-    }
-
-    return res.status(200).json({ success: true, data: allEvents });
   } catch (err) {
     console.error(err);
 
