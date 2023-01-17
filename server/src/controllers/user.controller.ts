@@ -40,6 +40,58 @@ export async function getSingleUserController(
   }
 }
 
+export async function getUserSavedEventsController(
+  req: Request,
+  res: Response<JsonApiResponse> & { locals: ResLocals }
+) {
+  try {
+    const { id } = res.locals.user;
+
+    const savedEvents = await prismaDB.userSavedEvent.findMany({
+      where: { userId: id },
+    });
+
+    return res.status(200).json({ success: true, data: savedEvents });
+  } catch (err) {
+    console.error(err);
+
+    return res.status(500).json({
+      success: false,
+      error: 'Something went wrong, please try again',
+    });
+  }
+}
+
+export async function updateUserController(
+  req: Request,
+  res: Response<JsonApiResponse> & { locals: ResLocals }
+) {
+  try {
+    const { user: currentUser } = res.locals;
+    const { user }: { user: UpdateUserType } = req.body;
+
+    if (!currentUser) {
+      return res.status(404).json({ success: false, error: 'User not found' });
+    }
+
+    const updatedUser = await prismaDB.user.update({
+      where: { id: currentUser.id },
+      data: {
+        ...user,
+      },
+    });
+
+    return res.status(200).json({ success: true });
+  } catch (err) {
+    console.error(err);
+
+    return res.status(500).json({
+      success: false,
+      error: 'Something went wrong, please try again',
+    });
+  }
+}
+
 export async function updateUserAddressController(
   req: Request,
   res: Response<JsonApiResponse> & { locals: ResLocals }
@@ -72,52 +124,13 @@ export async function updateUserAddressController(
   }
 }
 
-export async function updateUserController(
+export async function updateUserEmailController(
   req: Request,
   res: Response<JsonApiResponse> & { locals: ResLocals }
 ) {
   try {
-    const { id } = res.locals.user;
-    const { user }: { user: UpdateUserType } = req.body;
-
-    if (!checkValidUuid(id)) {
-      return res.status(404).json({ success: false, error: 'User not found' });
-    }
-
-    const updatedUser = await prismaDB.user.update({
-      where: { id },
-      data: {
-        ...user,
-      },
-    });
-
-    return res.status(200).json({ success: true });
-  } catch (err) {
-    console.error(err);
-
-    return res.status(500).json({
-      success: false,
-      error: 'Something went wrong, please try again',
-    });
-  }
-}
-
-export async function updateUserEmailController(
-  req: Request,
-  res: Response<JsonApiResponse>
-) {
-  try {
-    const { id } = res.locals.user;
+    const { user: currentUser } = res.locals;
     const { user }: { user: UpdateUserEmailType } = req.body;
-
-    if (!checkValidUuid(id)) {
-      return res.status(404).json({ success: false, error: 'User not found' });
-    }
-
-    // find the user sending the request
-    const currentUser = await prismaDB.user.findUnique({
-      where: { id },
-    });
 
     if (!currentUser) {
       return res.status(404).json({ success: false, error: 'User not found' });
@@ -143,7 +156,7 @@ export async function updateUserEmailController(
     }
 
     const updatedUser = await prismaDB.user.update({
-      where: { id },
+      where: { id: currentUser.id },
       data: {
         email: user.email,
         emailVerified: false,
@@ -171,48 +184,26 @@ export async function updateUserEmailController(
 
 export async function updateUserPasswordController(
   req: Request,
-  res: Response<JsonApiResponse>
+  res: Response<JsonApiResponse> & { locals: ResLocals }
 ) {
   try {
-    const { id } = res.locals.user;
+    const { user: currentUser } = res.locals;
     const { user }: { user: UpdateUserPasswordType } = req.body;
 
-    if (!checkValidUuid(id)) {
+    if (!currentUser) {
       return res.status(404).json({ success: false, error: 'User not found' });
     }
 
     const hash = await hashPassword(user.password);
 
     const updatedUser = await prismaDB.user.update({
-      where: { id },
+      where: { id: currentUser.id },
       data: {
         password: hash,
       },
     });
 
     return res.status(200).json({ success: true });
-  } catch (err) {
-    console.error(err);
-
-    return res.status(500).json({
-      success: false,
-      error: 'Something went wrong, please try again',
-    });
-  }
-}
-
-export async function getUserSavedEventsController(
-  req: Request,
-  res: Response<JsonApiResponse> & { locals: ResLocals }
-) {
-  try {
-    const { id } = res.locals.user;
-
-    const savedEvents = await prismaDB.userSavedEvent.findMany({
-      where: { userId: id },
-    });
-
-    return res.status(200).json({ success: true, data: savedEvents });
   } catch (err) {
     console.error(err);
 

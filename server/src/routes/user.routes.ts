@@ -23,6 +23,14 @@ userRouter.get('/', checkJwtExits, getSingleUserController);
 // get user saved events
 userRouter.get('/saved-events', checkJwtExits, getUserSavedEventsController);
 
+// update user details
+userRouter.put(
+  '/update',
+  checkJwtExits,
+  checkUpdateUserObjectValid,
+  updateUserController
+);
+
 // update user address
 userRouter.put(
   '/update-address',
@@ -45,12 +53,4 @@ userRouter.put(
   checkJwtExits,
   checkUpdateUserPasswordObjectValid,
   updateUserPasswordController
-);
-
-// update user details
-userRouter.put(
-  '/update',
-  checkJwtExits,
-  checkUpdateUserObjectValid,
-  updateUserController
 );
