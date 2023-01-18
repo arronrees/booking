@@ -51,8 +51,9 @@ export interface EventInterfaceFull {
   maxBookings: number;
   addressId: string;
   userId: string;
-  Address: AddressInterface;
   imageFileUrl: string;
+  Address: AddressInterface;
+  BookingType: BookingTypeInterface[];
 }
 
 export interface AddressInterface {
@@ -65,4 +66,15 @@ export interface AddressInterface {
   county?: string;
   postcode: string;
   country: string;
+}
+
+export interface BookingTypeInterface {
+  id: string;
+  createdAt: Date;
+  updatedAt: Date;
+  name: string;
+  description: string;
+  price: number;
+  maxBookings: number;
+  eventId: string;
 }

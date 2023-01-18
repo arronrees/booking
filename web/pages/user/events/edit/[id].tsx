@@ -2,21 +2,26 @@ import Image from 'next/image';
 import EditEventAddressForm from '../../../../components/forms/events/EditEventAddressForm';
 import EditEventForm from '../../../../components/forms/events/EditEventForm';
 import EditEventImageForm from '../../../../components/forms/events/EditEventImageForm';
+import CreateBookingTypeForm from '../../../../components/forms/events/CreateBookingTypeForm';
 import { EventInterfaceFull } from '../../../../constant-types';
 import Header from '../../../../layout/main/Header';
 import { withSessionSsr } from '../../../../utils/iron/withSession';
+import useUser from '../../../../utils/iron/useUser';
+import BookingTypeList from '../../../../components/user/events/BookingTypeList';
 
 interface Props {
   event: EventInterfaceFull;
 }
 
 export default function EditEventPage({ event }: Props) {
+  const { user } = useUser();
+
   return (
     <div>
       <Header />
-      <section className='p-8'>
-        <h1 className='font-bold font-title text-5xl mb-6'>{event.name}</h1>
-        <div className='h-96 w-full rounded mb-6 grid sm:grid-cols-2 lg:grid-cols-4 gap-6'>
+      <section className='p-8 grid gap-6'>
+        <h1 className='font-bold font-title text-5xl'>{event.name}</h1>
+        <div className='h-96 w-full rounded grid sm:grid-cols-2 lg:grid-cols-4 gap-6'>
           <div className='h-64 sm:h-auto lg:col-span-3'>
             <figure>
               <Image
@@ -38,6 +43,14 @@ export default function EditEventPage({ event }: Props) {
           <div className='bg-mid-blue-1 rounded p-4 shadow'>
             <EditEventAddressForm address={event.Address} eventId={event.id} />
           </div>
+        </div>
+        <div className='bg-mid-blue-1 rounded p-4 shadow grid gap-4'>
+          {event.BookingType.length > 0 ? (
+            <BookingTypeList bookingTypes={event.BookingType} />
+          ) : (
+            <p>No booking types created yet. Create one below.</p>
+          )}
+          <CreateBookingTypeForm eventId={event.id} user={user} />
         </div>
       </section>
     </div>

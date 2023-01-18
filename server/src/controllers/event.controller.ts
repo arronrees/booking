@@ -11,6 +11,7 @@ import fs from 'fs';
 import { v4 as uuidV4 } from 'uuid';
 import sharp from 'sharp';
 
+// GET /
 export async function getAllEventsController(
   req: Request,
   res: Response<JsonApiResponse>
@@ -45,6 +46,7 @@ export async function getAllEventsController(
   }
 }
 
+// GET /user
 export async function getAdminUserEventsController(
   req: Request,
   res: Response<JsonApiResponse> & { locals: ResLocals }
@@ -69,6 +71,7 @@ export async function getAdminUserEventsController(
   }
 }
 
+// GET /saved-events
 export async function getSavedEventsController(
   req: Request,
   res: Response<JsonApiResponse> & { locals: ResLocals }
@@ -101,6 +104,7 @@ export async function getSavedEventsController(
   }
 }
 
+// GET /single/edit/:eventId
 export async function getSingleEventEditController(
   req: Request,
   res: Response<JsonApiResponse> & { locals: ResLocals }
@@ -137,6 +141,7 @@ export async function getSingleEventEditController(
   }
 }
 
+// GET /single/:eventId
 export async function getSingleEventController(
   req: Request,
   res: Response<JsonApiResponse>
@@ -168,6 +173,7 @@ export async function getSingleEventController(
   }
 }
 
+// POST /user/save/:eventId
 export async function createEventController(
   req: Request,
   res: Response<JsonApiResponse> & { locals: ResLocals }
@@ -221,168 +227,7 @@ export async function createEventController(
   }
 }
 
-export async function userSaveEventController(
-  req: Request,
-  res: Response<JsonApiResponse> & { locals: ResLocals }
-) {
-  try {
-    const { id } = res.locals.user;
-    const { eventId } = req.params;
-
-    if (!checkValidUuid(eventId)) {
-      return res.status(404).json({ success: false, error: 'Event not found' });
-    }
-
-    const savedEvent = await prismaDB.userSavedEvent.findFirst({
-      where: { userId: id, eventId },
-    });
-
-    if (savedEvent) {
-      const unsavedEvent = await prismaDB.userSavedEvent.delete({
-        where: { id: savedEvent.id },
-      });
-    } else {
-      const newSavedEvent = await prismaDB.userSavedEvent.create({
-        data: {
-          User: {
-            connect: { id },
-          },
-          Event: {
-            connect: { id: eventId },
-          },
-        },
-      });
-    }
-
-    return res
-      .status(200)
-      .json({ success: true, data: savedEvent ? 'unsaved' : 'saved' });
-  } catch (err) {
-    console.error(err);
-
-    return res.status(500).json({
-      success: false,
-      error: 'Something went wrong, please try again',
-    });
-  }
-}
-
-export async function updateEventController(
-  req: Request,
-  res: Response<JsonApiResponse> & { locals: ResLocals }
-) {
-  try {
-    const { eventId }: { eventId?: string } = req.params;
-    const { event }: { event: UpdateEventType } = req.body;
-    const { id } = res.locals.user;
-
-    if (!checkValidUuid(eventId)) {
-      return res.status(404).json({ success: false, error: 'Event not found' });
-    }
-
-    const foundEvent = await prismaDB.event.findUnique({
-      where: { id: eventId },
-      select: {
-        id: true,
-        userId: true,
-      },
-    });
-
-    if (!foundEvent) {
-      return res.status(404).json({ success: false, error: 'Event not found' });
-    }
-
-    if (foundEvent.userId !== id) {
-      return res.status(401).json({ success: false, error: 'Not users event' });
-    }
-
-    const eventSlug = slugify(event.name, {
-      lower: true,
-      remove: /[*+~.()'"!:@]/g,
-    });
-    const eventTypeSlug = slugify(event.type, {
-      lower: true,
-      remove: /[*+~.()'"!:@]/g,
-    });
-
-    const updatedEvent = await prismaDB.event.update({
-      where: { id: eventId },
-      data: {
-        ...event,
-        slug: eventSlug,
-        typeSlug: eventTypeSlug,
-        date: new Date(event.date),
-      },
-    });
-
-    return res.status(200).json({ success: true });
-  } catch (err) {
-    console.error(err);
-
-    return res.status(500).json({
-      success: false,
-      error: 'Something went wrong, please try again',
-    });
-  }
-}
-
-export async function updateEventAddressController(
-  req: Request,
-  res: Response<JsonApiResponse> & { locals: ResLocals }
-) {
-  try {
-    const { addressId }: { addressId?: string } = req.params;
-    const { eventId }: { eventId?: string } = req.params;
-    const { address }: { address: UpdateAddressType } = req.body;
-    const { id } = res.locals.user;
-
-    if (!checkValidUuid(addressId) || !checkValidUuid(eventId)) {
-      return res
-        .status(404)
-        .json({ success: false, error: 'Address not found' });
-    }
-
-    const foundEvent = await prismaDB.event.findUnique({
-      where: { id: eventId },
-      select: {
-        id: true,
-        userId: true,
-        addressId: true,
-      },
-    });
-
-    if (!foundEvent) {
-      return res.status(404).json({ success: false, error: 'No event found' });
-    }
-
-    if (foundEvent.userId !== id) {
-      return res.status(400).json({ success: false, error: 'Not users event' });
-    }
-
-    if (foundEvent.addressId !== addressId) {
-      return res
-        .status(404)
-        .json({ success: false, error: 'Address not found' });
-    }
-
-    const updatedAddress = await prismaDB.address.update({
-      where: { id: addressId },
-      data: {
-        ...address,
-      },
-    });
-
-    return res.status(200).json({ success: true });
-  } catch (err) {
-    console.error(err);
-
-    return res.status(500).json({
-      success: false,
-      error: 'Something went wrong, please try again',
-    });
-  }
-}
-
+// POST /update-image/:eventId
 export async function updateEventImageController(
   req: Request,
   res: Response<JsonApiResponse> & { locals: ResLocals }
@@ -454,6 +299,171 @@ export async function updateEventImageController(
   }
 }
 
+// PUT /update/:eventId
+export async function userSaveEventController(
+  req: Request,
+  res: Response<JsonApiResponse> & { locals: ResLocals }
+) {
+  try {
+    const { id } = res.locals.user;
+    const { eventId } = req.params;
+
+    if (!checkValidUuid(eventId)) {
+      return res.status(404).json({ success: false, error: 'Event not found' });
+    }
+
+    const savedEvent = await prismaDB.userSavedEvent.findFirst({
+      where: { userId: id, eventId },
+    });
+
+    if (savedEvent) {
+      const unsavedEvent = await prismaDB.userSavedEvent.delete({
+        where: { id: savedEvent.id },
+      });
+    } else {
+      const newSavedEvent = await prismaDB.userSavedEvent.create({
+        data: {
+          User: {
+            connect: { id },
+          },
+          Event: {
+            connect: { id: eventId },
+          },
+        },
+      });
+    }
+
+    return res
+      .status(200)
+      .json({ success: true, data: savedEvent ? 'unsaved' : 'saved' });
+  } catch (err) {
+    console.error(err);
+
+    return res.status(500).json({
+      success: false,
+      error: 'Something went wrong, please try again',
+    });
+  }
+}
+// PUT /update-address/:eventId/:addressId
+export async function updateEventController(
+  req: Request,
+  res: Response<JsonApiResponse> & { locals: ResLocals }
+) {
+  try {
+    const { eventId }: { eventId?: string } = req.params;
+    const { event }: { event: UpdateEventType } = req.body;
+    const { id } = res.locals.user;
+
+    if (!checkValidUuid(eventId)) {
+      return res.status(404).json({ success: false, error: 'Event not found' });
+    }
+
+    const foundEvent = await prismaDB.event.findUnique({
+      where: { id: eventId },
+      select: {
+        id: true,
+        userId: true,
+      },
+    });
+
+    if (!foundEvent) {
+      return res.status(404).json({ success: false, error: 'Event not found' });
+    }
+
+    if (foundEvent.userId !== id) {
+      return res.status(401).json({ success: false, error: 'Not users event' });
+    }
+
+    const eventSlug = slugify(event.name, {
+      lower: true,
+      remove: /[*+~.()'"!:@]/g,
+    });
+    const eventTypeSlug = slugify(event.type, {
+      lower: true,
+      remove: /[*+~.()'"!:@]/g,
+    });
+
+    const updatedEvent = await prismaDB.event.update({
+      where: { id: eventId },
+      data: {
+        ...event,
+        slug: eventSlug,
+        typeSlug: eventTypeSlug,
+        date: new Date(event.date),
+      },
+    });
+
+    return res.status(200).json({ success: true });
+  } catch (err) {
+    console.error(err);
+
+    return res.status(500).json({
+      success: false,
+      error: 'Something went wrong, please try again',
+    });
+  }
+}
+
+// PUT /update-address/:eventId/:addressId
+export async function updateEventAddressController(
+  req: Request,
+  res: Response<JsonApiResponse> & { locals: ResLocals }
+) {
+  try {
+    const { addressId }: { addressId?: string } = req.params;
+    const { eventId }: { eventId?: string } = req.params;
+    const { address }: { address: UpdateAddressType } = req.body;
+    const { id } = res.locals.user;
+
+    if (!checkValidUuid(addressId) || !checkValidUuid(eventId)) {
+      return res
+        .status(404)
+        .json({ success: false, error: 'Address not found' });
+    }
+
+    const foundEvent = await prismaDB.event.findUnique({
+      where: { id: eventId },
+      select: {
+        id: true,
+        userId: true,
+        addressId: true,
+      },
+    });
+
+    if (!foundEvent) {
+      return res.status(404).json({ success: false, error: 'No event found' });
+    }
+
+    if (foundEvent.userId !== id) {
+      return res.status(400).json({ success: false, error: 'Not users event' });
+    }
+
+    if (foundEvent.addressId !== addressId) {
+      return res
+        .status(404)
+        .json({ success: false, error: 'Address not found' });
+    }
+
+    const updatedAddress = await prismaDB.address.update({
+      where: { id: addressId },
+      data: {
+        ...address,
+      },
+    });
+
+    return res.status(200).json({ success: true });
+  } catch (err) {
+    console.error(err);
+
+    return res.status(500).json({
+      success: false,
+      error: 'Something went wrong, please try again',
+    });
+  }
+}
+
+// DELETE /delete/:eventId
 export async function deleteEventController(
   req: Request,
   res: Response<JsonApiResponse> & { locals: ResLocals }
