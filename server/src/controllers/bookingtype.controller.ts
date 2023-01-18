@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { prismaDB } from '..';
-import { JsonApiResponse } from '../constant-types';
+import { JsonApiResponse, ResLocals } from '../constant-types';
 import {
   CreateBookingTypeType,
   UpdateBookingTypeType,
@@ -9,11 +9,12 @@ import checkValidUuid from '../utils/checkValidUuid';
 
 export async function createBookingTypeController(
   req: Request,
-  res: Response<JsonApiResponse>
+  res: Response<JsonApiResponse> & { locals: ResLocals }
 ) {
   try {
     const { eventId }: { eventId?: string } = req.params;
     const { bookingType }: { bookingType: CreateBookingTypeType } = req.body;
+    const { user } = res.locals;
 
     if (!checkValidUuid(eventId)) {
       return res.status(404).json({ success: false, error: 'Event not found' });
@@ -23,6 +24,10 @@ export async function createBookingTypeController(
 
     if (!event) {
       return res.status(404).json({ success: false, error: 'Event not found' });
+    }
+
+    if (event.userId !== user.id) {
+      return res.status(401).json({ success: false, error: 'Not users event' });
     }
 
     const currentBookingTypes = await prismaDB.bookingType.findMany({
@@ -70,11 +75,12 @@ export async function createBookingTypeController(
 
 export async function updateBookingTypeController(
   req: Request,
-  res: Response<JsonApiResponse>
+  res: Response<JsonApiResponse> & { locals: ResLocals }
 ) {
   try {
     const { bookingTypeId }: { bookingTypeId?: string } = req.params;
     const { bookingType }: { bookingType: UpdateBookingTypeType } = req.body;
+    const { user } = res.locals;
 
     // check id sent is valid
     if (!checkValidUuid(bookingTypeId)) {
@@ -94,6 +100,19 @@ export async function updateBookingTypeController(
         .json({ success: false, error: 'Booking Type not found' });
     }
 
+    // check event exists and is correct user
+    const event = await prismaDB.event.findUnique({
+      where: { id: thisBookingType.eventId },
+    });
+
+    if (!event) {
+      return res.status(404).json({ success: false, error: 'Event not found' });
+    }
+
+    if (event.userId !== user.id) {
+      return res.status(401).json({ success: false, error: 'Not users event' });
+    }
+
     // if max bookings is being lowered, carry on
     if (thisBookingType.maxBookings >= bookingType.maxBookings) {
       const updatedBookingType = await prismaDB.bookingType.update({
@@ -103,18 +122,10 @@ export async function updateBookingTypeController(
         },
       });
 
-      return res.status(200).json({ success: true, data: updatedBookingType });
+      return res.status(200).json({ success: true });
     }
 
     // need to check total max bookings
-    const event = await prismaDB.event.findUnique({
-      where: { id: thisBookingType.eventId },
-    });
-
-    if (!event) {
-      return res.status(404).json({ success: false, error: 'Event not found' });
-    }
-
     // calculate maximum allowed booking types
     const currentBookingTypes = await prismaDB.bookingType.findMany({
       where: { eventId: thisBookingType.eventId },
