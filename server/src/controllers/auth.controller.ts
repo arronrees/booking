@@ -16,6 +16,7 @@ import {
 import checkValidUuid from '../utils/checkValidUuid';
 import { sendEmailVerificationEmail } from '../utils/user.utils';
 
+// POST /signup
 export async function signupUserController(
   req: Request,
   res: Response<JsonApiResponse>
@@ -78,6 +79,7 @@ export async function signupUserController(
   }
 }
 
+// POST /signin
 export async function signinUserController(
   req: Request,
   res: Response<JsonApiResponse>
@@ -129,6 +131,7 @@ export async function signinUserController(
   }
 }
 
+// POST /email/verify/:id/:token
 export async function verifyEmailController(
   req: Request,
   res: Response<JsonApiResponse>

@@ -7,6 +7,7 @@ import {
 } from '../models/bookingtype.model';
 import checkValidUuid from '../utils/checkValidUuid';
 
+// POST /create/:eventId
 export async function createBookingTypeController(
   req: Request,
   res: Response<JsonApiResponse> & { locals: ResLocals }
@@ -73,6 +74,7 @@ export async function createBookingTypeController(
   }
 }
 
+// PUT /update/:bookingTypeId
 export async function updateBookingTypeController(
   req: Request,
   res: Response<JsonApiResponse> & { locals: ResLocals }

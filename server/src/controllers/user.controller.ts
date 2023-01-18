@@ -12,6 +12,7 @@ import { hashPassword } from '../utils/auth.utils';
 import checkValidUuid from '../utils/checkValidUuid';
 import { sendEmailVerificationEmail } from '../utils/user.utils';
 
+// GET /
 export async function getSingleUserController(
   req: Request,
   res: Response<JsonApiResponse> & { locals: ResLocals }
@@ -40,6 +41,7 @@ export async function getSingleUserController(
   }
 }
 
+// GET /saved-events
 export async function getUserSavedEventsController(
   req: Request,
   res: Response<JsonApiResponse> & { locals: ResLocals }
@@ -62,6 +64,7 @@ export async function getUserSavedEventsController(
   }
 }
 
+// PUT /update
 export async function updateUserController(
   req: Request,
   res: Response<JsonApiResponse> & { locals: ResLocals }
@@ -92,6 +95,7 @@ export async function updateUserController(
   }
 }
 
+// PUT /update-address
 export async function updateUserAddressController(
   req: Request,
   res: Response<JsonApiResponse> & { locals: ResLocals }
@@ -124,6 +128,7 @@ export async function updateUserAddressController(
   }
 }
 
+// PUT /update-email
 export async function updateUserEmailController(
   req: Request,
   res: Response<JsonApiResponse> & { locals: ResLocals }
@@ -182,6 +187,7 @@ export async function updateUserEmailController(
   }
 }
 
+// PUT /update-password
 export async function updateUserPasswordController(
   req: Request,
   res: Response<JsonApiResponse> & { locals: ResLocals }
