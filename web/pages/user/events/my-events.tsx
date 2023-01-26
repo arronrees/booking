@@ -77,7 +77,10 @@ export const getServerSideProps = withSessionSsr(
       };
     } else {
       return {
-        props: {},
+        redirect: {
+          destination: '/auth/signin',
+          permanent: false,
+        },
       };
     }
   }
