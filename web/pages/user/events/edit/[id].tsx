@@ -46,7 +46,10 @@ export default function EditEventPage({ event }: Props) {
         </div>
         <div className='bg-mid-blue-1 rounded p-4 shadow grid gap-4'>
           {event.BookingType.length > 0 ? (
-            <BookingTypeList bookingTypes={event.BookingType} />
+            <BookingTypeList
+              bookingTypes={event.BookingType}
+              totalMaxBookings={event.maxBookings}
+            />
           ) : (
             <p>No booking types created yet. Create one below.</p>
           )}

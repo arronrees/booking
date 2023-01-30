@@ -2,12 +2,25 @@ import { BookingTypeInterface } from '../../../constant-types';
 
 interface Props {
   bookingTypes: BookingTypeInterface[];
+  totalMaxBookings: number;
 }
 
-export default function BookingTypeList({ bookingTypes }: Props) {
+export default function BookingTypeList({
+  bookingTypes,
+  totalMaxBookings,
+}: Props) {
+  const currentBookingsUsed = bookingTypes.reduce((a, b) => {
+    return a + b.maxBookings;
+  }, 0);
+
   return (
     <>
-      <p className='font-title text-xl text-gold'>Booking Types</p>
+      <p className='font-title text-xl text-gold'>
+        Booking Types{' '}
+        <span className='text-gray-400 text-base'>
+          - {totalMaxBookings - currentBookingsUsed} Bookings Remaining
+        </span>
+      </p>
 
       <div className='grid gap-4'>
         {bookingTypes.map((bookingType) => (
