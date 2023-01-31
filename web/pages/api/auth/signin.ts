@@ -19,7 +19,7 @@ async function signInUser(req: NextApiRequest, res: NextApiResponse) {
 
     if (!response.ok) {
       req.session.destroy();
-      return res.status(401).json({ error: 'Incorrect details' });
+      return res.status(401).json({ error: data.error });
     }
 
     // if response ok update session

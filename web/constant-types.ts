@@ -78,3 +78,9 @@ export interface BookingTypeInterface {
   maxBookings: number;
   eventId: string;
 }
+
+export interface JsonApiResponseType {
+  success: boolean;
+  data?: [] | {} | string;
+  error?: string;
+}

@@ -1,4 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
+import { JsonApiResponseType } from '../../../constant-types';
 import { withSessionRoute } from '../../../utils/iron/withSession';
 
 export default withSessionRoute(signUpUser);
@@ -19,7 +20,7 @@ async function signUpUser(req: NextApiRequest, res: NextApiResponse) {
 
     if (!response.ok) {
       req.session.destroy();
-      return res.status(401).json({ error: 'Incorrect details' });
+      return res.status(401).json({ error: data.error });
     }
 
     // if response ok update session

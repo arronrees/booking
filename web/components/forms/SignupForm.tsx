@@ -177,7 +177,7 @@ export default function SignUpForm() {
       </div>
       <div>
         <input
-          type='passwordConfirmation'
+          type='password'
           placeholder='Password Confirmation'
           {...register('passwordConfirmation', {
             required: 'Password Confirmation is required',
