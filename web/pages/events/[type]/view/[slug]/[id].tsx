@@ -112,10 +112,36 @@ export default function ViewEventPage({ event, savedEvents }: Props) {
             {event.name} - {event.location} -{' '}
             {new Date(event.date).toDateString()}
           </p>
-          <p className='mb-2'>{event.description}</p>
-          <Link href='/' className='btn btn--gold block'>
-            Buy Tickets
-          </Link>
+          <p className='text-sm'>{event.description}</p>
+          <p className='mt-8 font-title text-2xl text-gold mb-4'>
+            Ticket Options
+          </p>
+          <div className='grid gap-4'>
+            {event.BookingType.length > 0 ? (
+              event.BookingType.map((booking) => (
+                <div
+                  key={booking.id}
+                  className='border-2 rounded p-4 border-gray-500'
+                >
+                  <p className='font-semibold text-lg'>{booking.name}</p>
+                  <p className='text-sm font-light mb-2'>
+                    {booking.description}
+                  </p>
+                  <p className='font-bold text-gold'>
+                    {new Intl.NumberFormat('en', {
+                      style: 'currency',
+                      currency: 'GBP',
+                    }).format(booking.price)}
+                  </p>
+                </div>
+              ))
+            ) : (
+              <p>
+                Cannot purchase tickets for this event yet, please check back
+                soon!
+              </p>
+            )}
+          </div>
         </div>
       </section>
     </div>
