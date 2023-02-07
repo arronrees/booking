@@ -61,38 +61,42 @@ export default function SignUpForm() {
 
   return (
     <form
-      className='w-full grid gap-3'
+      className='w-full grid gap-4'
       onSubmit={handleSubmit(handleFormSubmit)}
     >
-      <div className='flex items-center gap-4'>
+      <div className=''>
+        <label htmlFor='email' className='form__label'>
+          Email
+        </label>
         <input
           type='email'
-          placeholder='Email'
+          id='email'
+          placeholder='elton.john@gmail.com'
           {...register('email', { required: 'Email is required' })}
           className='form__input'
         />
+        {errors.email?.message && (
+          <p className='form__error'>{errors.email?.message}</p>
+        )}
       </div>
-      {errors.email?.message && (
-        <p className='form__error'>{errors.email?.message}</p>
-      )}
 
-      <div className='flex items-center gap-4'>
+      <div className=''>
+        <label htmlFor='password' className='form__label'>
+          Password
+        </label>
         <input
           type='password'
+          id='password'
           placeholder='Password'
           {...register('password', { required: 'Password is required' })}
           className='form__input'
         />
+        {errors.password?.message && (
+          <p className='form__error'>{errors.password?.message}</p>
+        )}
       </div>
-      {errors.password?.message && (
-        <p className='form__error'>{errors.password?.message}</p>
-      )}
 
-      <button
-        type='submit'
-        className='mt-4 btn btn--gold text-lg'
-        disabled={isLoading}
-      >
+      <button type='submit' className='btn btn--gold' disabled={isLoading}>
         Submit
       </button>
     </form>

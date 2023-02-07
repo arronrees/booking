@@ -5,7 +5,7 @@ import '../styles/globals.css';
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <div className='bg-dark-blue text-white'>
+    <div className='bg-mid-blue text-white min-h-screen'>
       <Toaster
         position='top-center'
         toastOptions={{

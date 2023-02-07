@@ -1,33 +1,31 @@
-@import url('https://fonts.googleapis.com/css2?family=Lilita+One&family=Work+Sans:wght@200;300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Exo:wght@200;300;400;500;600;700;800;900&family=Lilita+One&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 .btn {
-  @apply w-max text-center tracking-wide text-white p-3 px-8 font-title rounded shadow cursor-pointer transition duration-200 focus:outline-none ring-offset-2 focus:ring-2 disabled:text-gray-400 disabled:bg-gray-200 disabled:hover:bg-gray-200 disabled:focus:bg-gray-200 disabled:cursor-progress;
+  @apply rounded py-3 px-8 font-semibold text-sm shadow-md block cursor-pointer transition duration-200 focus:outline-none ring-offset-2 focus:ring-2 ring-offset-mid-blue;
 }
 
 .btn--gold {
-  @apply bg-gold hover:bg-gold2 focus:bg-gold2 active:bg-gold3 ring-gold;
+  @apply bg-gold  hover:bg-gold-med focus:bg-gold-med active:bg-gold-dark ring-gold/60;
 }
 
-.btn--lblue {
-  @apply bg-light-blue hover:bg-light-blue2 focus:bg-light-blue2 active:bg-light-blue3 ring-light-blue;
-}
-
-.form__input {
-  @apply transition duration-200 block px-6 py-3 w-full rounded outline-none border-none text-white bg-mid-blue placeholder:text-white placeholder:opacity-70 focus:ring-slate-600 appearance-none relative;
-
-  line-height: 1;
+.btn--blue {
+  @apply bg-light-blue hover:bg-light-blue-med focus:bg-light-blue-med active:bg-light-blue-dark ring-light-blue/60;
 }
 
 .form__label {
-  @apply block text-white w-32 font-semibold text-sm mb-2;
+  @apply font-semibold mb-1 block text-sm;
+}
+
+.form__input {
+  @apply py-3 px-4 rounded border border-white bg-dark-blue w-full text-sm shadow-md transition duration-200 ring-offset-2 focus:ring-2  ring-light-blue/60 ring-offset-mid-blue;
 }
 
 .form__error {
-  @apply text-red-400 text-xs mt-2;
+  @apply text-red font-semibold text-xs mt-2;
 }
 
 figure,
