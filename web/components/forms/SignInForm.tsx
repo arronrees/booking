@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useRouter } from 'next/router';
 import { toast } from 'react-hot-toast';
+import DividerLine from '../../layout/main/DividerLine';
 
 type FormInputs = {
   email: string;
@@ -64,7 +65,7 @@ export default function SignUpForm() {
       className='w-full grid gap-4'
       onSubmit={handleSubmit(handleFormSubmit)}
     >
-      <div className=''>
+      <div>
         <label htmlFor='email' className='form__label'>
           Email
         </label>
@@ -80,7 +81,7 @@ export default function SignUpForm() {
         )}
       </div>
 
-      <div className=''>
+      <div>
         <label htmlFor='password' className='form__label'>
           Password
         </label>
@@ -95,6 +96,8 @@ export default function SignUpForm() {
           <p className='form__error'>{errors.password?.message}</p>
         )}
       </div>
+
+      <DividerLine />
 
       <button type='submit' className='btn btn--gold' disabled={isLoading}>
         Submit

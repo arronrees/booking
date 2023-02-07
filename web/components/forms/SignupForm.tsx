@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useRouter } from 'next/router';
 import { toast } from 'react-hot-toast';
+import DividerLine from '../../layout/main/DividerLine';
 
 type FormInputs = {
   name: string;
@@ -112,26 +113,33 @@ export default function SignUpForm() {
 
   return (
     <form
-      className='w-full grid gap-3 xs:grid-cols-2'
+      className='w-full grid gap-4'
       onSubmit={handleSubmit(handleFormSubmit)}
     >
-      <p className='font-title xs:col-span-2 text-gray-300'>Your Details</p>
-
-      <div>
+      <div className=''>
+        <label htmlFor='name' className='form__label'>
+          Full Name
+        </label>
         <input
           type='text'
-          placeholder='Name'
-          {...register('name', { required: 'Name is required' })}
+          placeholder='Elton John'
+          id='name'
+          {...register('name', { required: 'Full Name is required' })}
           className='form__input'
         />
         {errors.name?.message && (
           <p className='form__error'>{errors.name?.message}</p>
         )}
       </div>
+
       <div>
+        <label htmlFor='email' className='form__label'>
+          Email
+        </label>
         <input
           type='email'
-          placeholder='Email'
+          placeholder='elton.john@gmail.com'
+          id='email'
           {...register('email', { required: 'Email is required' })}
           className='form__input'
         />
@@ -139,10 +147,15 @@ export default function SignUpForm() {
           <p className='form__error'>{errors.email?.message}</p>
         )}
       </div>
+
       <div>
+        <label htmlFor='telephone' className='form__label'>
+          Telephone
+        </label>
         <input
           type='text'
-          placeholder='Telephone'
+          placeholder='01935 477073'
+          id='telephone'
           {...register('telephone', { required: 'Telephone is required' })}
           className='form__input'
         />
@@ -150,10 +163,15 @@ export default function SignUpForm() {
           <p className='form__error'>{errors.telephone?.message}</p>
         )}
       </div>
+
       <div>
+        <label htmlFor='age' className='form__label'>
+          Age
+        </label>
         <input
           type='number'
-          placeholder='Age'
+          placeholder='24'
+          id='age'
           {...register('age', {
             required: 'Age is required',
             min: { value: 1, message: 'Age must be at least 1' },
@@ -164,37 +182,17 @@ export default function SignUpForm() {
           <p className='form__error'>{errors.age?.message}</p>
         )}
       </div>
-      <div>
-        <input
-          type='password'
-          placeholder='Password'
-          {...register('password', { required: 'Password is required' })}
-          className='form__input'
-        />
-        {errors.password?.message && (
-          <p className='form__error'>{errors.password?.message}</p>
-        )}
-      </div>
-      <div>
-        <input
-          type='password'
-          placeholder='Password Confirmation'
-          {...register('passwordConfirmation', {
-            required: 'Password Confirmation is required',
-          })}
-          className='form__input'
-        />
-        {errors.password?.message && (
-          <p className='form__error'>{errors.password?.message}</p>
-        )}
-      </div>
 
-      <p className='mt-4 font-title xs:col-span-2 text-gray-300'>Address</p>
+      <DividerLine />
 
       <div>
+        <label htmlFor='addressLine1' className='form__label'>
+          Address Line 1
+        </label>
         <input
           type='text'
-          placeholder='Address Line 1'
+          placeholder='Goodbye Yellow'
+          id='addressLine1'
           {...register('addressLine1', {
             required: 'Address Line 1 is required',
           })}
@@ -204,10 +202,15 @@ export default function SignUpForm() {
           <p className='form__error'>{errors.addressLine1?.message}</p>
         )}
       </div>
+
       <div>
+        <label htmlFor='addressLine2' className='form__label'>
+          Address Line 2
+        </label>
         <input
           type='text'
-          placeholder='Address Line 2'
+          placeholder='Brick Road'
+          id='addressLine2'
           {...register('addressLine2')}
           className='form__input'
         />
@@ -215,10 +218,15 @@ export default function SignUpForm() {
           <p className='form__error'>{errors.addressLine2?.message}</p>
         )}
       </div>
+
       <div>
+        <label htmlFor='town' className='form__label'>
+          Town/City
+        </label>
         <input
           type='text'
-          placeholder='Town'
+          placeholder='Yeovil'
+          id='town'
           {...register('town', { required: 'Town is required' })}
           className='form__input'
         />
@@ -226,10 +234,15 @@ export default function SignUpForm() {
           <p className='form__error'>{errors.town?.message}</p>
         )}
       </div>
+
       <div>
+        <label htmlFor='county' className='form__label'>
+          County
+        </label>
         <input
           type='text'
-          placeholder='County'
+          placeholder='Somerset'
+          id='county'
           {...register('county', { required: 'County is required' })}
           className='form__input'
         />
@@ -237,10 +250,15 @@ export default function SignUpForm() {
           <p className='form__error'>{errors.county?.message}</p>
         )}
       </div>
+
       <div>
+        <label htmlFor='postcode' className='form__label'>
+          Postcode
+        </label>
         <input
           type='text'
-          placeholder='Postcode'
+          placeholder='BA21 5EA'
+          id='postcode'
           {...register('postcode', { required: 'Postcode is required' })}
           className='form__input'
         />
@@ -248,10 +266,15 @@ export default function SignUpForm() {
           <p className='form__error'>{errors.postcode?.message}</p>
         )}
       </div>
+
       <div>
+        <label htmlFor='country' className='form__label'>
+          Country
+        </label>
         <input
           type='text'
-          placeholder='Country'
+          placeholder='UK'
+          id='country'
           {...register('country', { required: 'Country is required' })}
           className='form__input'
         />
@@ -260,11 +283,43 @@ export default function SignUpForm() {
         )}
       </div>
 
-      <button
-        type='submit'
-        className='mt-4 btn btn--gold text-lg xs:col-span-2'
-        disabled={isLoading}
-      >
+      <DividerLine />
+
+      <div>
+        <label htmlFor='password' className='form__label'>
+          Password
+        </label>
+        <input
+          type='password'
+          id='password'
+          {...register('password', { required: 'Password is required' })}
+          className='form__input'
+        />
+        {errors.password?.message && (
+          <p className='form__error'>{errors.password?.message}</p>
+        )}
+      </div>
+
+      <div>
+        <label htmlFor='passwordConfirmation' className='form__label'>
+          Password Confirmation
+        </label>
+        <input
+          type='password'
+          id='passwordConfirmation'
+          {...register('passwordConfirmation', {
+            required: 'Password Confirmation is required',
+          })}
+          className='form__input'
+        />
+        {errors.passwordConfirmation?.message && (
+          <p className='form__error'>{errors.passwordConfirmation?.message}</p>
+        )}
+      </div>
+
+      <DividerLine />
+
+      <button type='submit' className='btn btn--gold' disabled={isLoading}>
         Submit
       </button>
     </form>
