@@ -88,7 +88,7 @@ export default function EditUserAddressForm({ address, user }: Props) {
       }
 
       setIsLoading(false);
-      toast.success('User updated successfully');
+      toast.success('User address updated successfully');
       return router.push(router.asPath);
     }
   };
@@ -110,13 +110,9 @@ export default function EditUserAddressForm({ address, user }: Props) {
 
   return (
     <form
-      className='w-full grid gap-4 md:grid-cols-2'
+      className='w-full grid gap-4'
       onSubmit={handleSubmit(handleFormSubmit)}
     >
-      <p className='font-title text-xl xs:col-span-2 text-gold'>
-        User Address Details
-      </p>
-
       <div>
         <label className='form__label' htmlFor='addressLine1'>
           Address Line 1
@@ -124,7 +120,6 @@ export default function EditUserAddressForm({ address, user }: Props) {
         <input
           type='text'
           id='addressLine1'
-          placeholder='Address Line 1'
           {...register('addressLine1', {
             required: 'Address Line 1 is required',
           })}
@@ -134,6 +129,7 @@ export default function EditUserAddressForm({ address, user }: Props) {
           <p className='form__error'>{errors.addressLine1?.message}</p>
         )}
       </div>
+
       <div>
         <label className='form__label' htmlFor='addressLine2'>
           Address Line 2
@@ -141,7 +137,6 @@ export default function EditUserAddressForm({ address, user }: Props) {
         <input
           type='text'
           id='addressLine2'
-          placeholder='Address Line 2'
           {...register('addressLine2')}
           className='form__input'
         />
@@ -149,6 +144,7 @@ export default function EditUserAddressForm({ address, user }: Props) {
           <p className='form__error'>{errors.addressLine2?.message}</p>
         )}
       </div>
+
       <div>
         <label className='form__label' htmlFor='town'>
           Town
@@ -156,7 +152,6 @@ export default function EditUserAddressForm({ address, user }: Props) {
         <input
           type='text'
           id='town'
-          placeholder='Town'
           {...register('town', {
             required: 'Town is required',
           })}
@@ -166,6 +161,7 @@ export default function EditUserAddressForm({ address, user }: Props) {
           <p className='form__error'>{errors.town?.message}</p>
         )}
       </div>
+
       <div>
         <label className='form__label' htmlFor='county'>
           County
@@ -173,7 +169,6 @@ export default function EditUserAddressForm({ address, user }: Props) {
         <input
           type='text'
           id='county'
-          placeholder='County'
           {...register('county')}
           className='form__input'
         />
@@ -181,6 +176,7 @@ export default function EditUserAddressForm({ address, user }: Props) {
           <p className='form__error'>{errors.county?.message}</p>
         )}
       </div>
+
       <div>
         <label className='form__label' htmlFor='postcode'>
           Postcode
@@ -188,7 +184,6 @@ export default function EditUserAddressForm({ address, user }: Props) {
         <input
           type='text'
           id='postcode'
-          placeholder='Postcode'
           {...register('postcode', {
             required: 'Postcode is required',
           })}
@@ -198,6 +193,7 @@ export default function EditUserAddressForm({ address, user }: Props) {
           <p className='form__error'>{errors.postcode?.message}</p>
         )}
       </div>
+
       <div>
         <label className='form__label' htmlFor='country'>
           Country
@@ -205,7 +201,6 @@ export default function EditUserAddressForm({ address, user }: Props) {
         <input
           type='text'
           id='country'
-          placeholder='Country'
           {...register('country', {
             required: 'Country is required',
           })}
@@ -216,11 +211,7 @@ export default function EditUserAddressForm({ address, user }: Props) {
         )}
       </div>
 
-      <button
-        type='submit'
-        className='mt-4 btn btn--lblue text-lg md:col-span-2'
-        disabled={isLoading}
-      >
+      <button type='submit' className='btn btn--blue' disabled={isLoading}>
         Submit
       </button>
     </form>

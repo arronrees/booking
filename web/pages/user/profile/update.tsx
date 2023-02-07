@@ -5,29 +5,45 @@ import EditUserAddressForm from '../../../components/forms/user/EditUserAddressF
 import useUser from '../../../utils/iron/useUser';
 import EditUserEmailForm from '../../../components/forms/user/EditUserEmailForm';
 import EditUserPasswordForm from '../../../components/forms/user/EditUserPasswordForm';
+import Container from '../../../layout/main/Container';
+import { UserInterface } from '../../../constant-types';
+import DividerLine from '../../../layout/main/DividerLine';
 
 export default function UpdateUser() {
-  const { user } = useUser();
+  const { user }: { user: UserInterface } = useUser();
 
   return (
-    <div>
+    <>
       <Header />
 
-      <div className='p-8 grid gap-6'>
-        <section className='bg-mid-blue-1 rounded p-4 shadow'>
-          {user && <EditUserDetailsForm user={user} />}
-        </section>
-        <section className='bg-mid-blue-1 rounded p-4 shadow'>
-          {user && <EditUserEmailForm user={user} />}
-        </section>
-        <section className='bg-mid-blue-1 rounded p-4 shadow'>
-          {user && <EditUserPasswordForm user={user} />}
-        </section>
-        <section className='bg-mid-blue-1 rounded p-4 shadow'>
-          {user && <EditUserAddressForm address={user.Address} user={user} />}
-        </section>
-      </div>
-    </div>
+      {user && (
+        <Container>
+          <h2 className='page__title'>Update my details</h2>
+          <DividerLine className='pb-2' />
+          <EditUserDetailsForm user={user} />
+
+          <DividerLine className='py-4' />
+          <h2 className='page__title'>Update email address</h2>
+          <p className='pb-2'>
+            If you update your email you will have to re-verify your email
+            address.
+          </p>
+          <DividerLine className='pb-2' />
+          <EditUserEmailForm user={user} />
+
+          <DividerLine className='py-4' />
+          <h2 className='page__title'>Update password</h2>
+          <p className='pb-2'>Leave blank to keep password the same.</p>
+          <DividerLine className='pb-2' />
+          <EditUserPasswordForm user={user} />
+
+          <DividerLine className='py-4' />
+          <h2 className='page__title'>Update address</h2>
+          <DividerLine className='pb-2' />
+          <EditUserAddressForm address={user.Address} user={user} />
+        </Container>
+      )}
+    </>
   );
 }
 

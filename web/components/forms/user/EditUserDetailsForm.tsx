@@ -85,21 +85,19 @@ export default function UpdateUserDetailsForm({ user }: Props) {
       }
 
       setIsLoading(false);
-      toast.success('User updated successfully');
+      toast.success('User details updated successfully');
       return router.push(router.asPath);
     }
   };
 
   return (
     <form
-      className='w-full grid gap-4 md:grid-cols-2'
+      className='w-full grid gap-4'
       onSubmit={handleSubmit(handleFormSubmit)}
     >
-      <p className='font-title text-xl xs:col-span-2 text-gold'>User Details</p>
-
       <div>
         <label className='form__label' htmlFor='name'>
-          Name
+          Full Name
         </label>
         <input
           type='text'
@@ -112,8 +110,9 @@ export default function UpdateUserDetailsForm({ user }: Props) {
           <p className='form__error'>{errors.name?.message}</p>
         )}
       </div>
+
       <div>
-        <label className='form__label' htmlFor='name'>
+        <label className='form__label' htmlFor='telephone'>
           Telephone
         </label>
         <input
@@ -127,8 +126,9 @@ export default function UpdateUserDetailsForm({ user }: Props) {
           <p className='form__error'>{errors.telephone?.message}</p>
         )}
       </div>
+
       <div>
-        <label className='form__label' htmlFor='name'>
+        <label className='form__label' htmlFor='age'>
           Age
         </label>
         <input
@@ -145,7 +145,8 @@ export default function UpdateUserDetailsForm({ user }: Props) {
 
       <button
         type='submit'
-        className='mt-4 btn btn--lblue text-lg md:col-span-2'
+        className='
+        btn btn--blue'
         disabled={isLoading}
       >
         Submit

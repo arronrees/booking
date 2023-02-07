@@ -77,21 +77,21 @@ export default function EditUserEmailForm({ user }: Props) {
       }
 
       setIsLoading(false);
-      toast.success('User updated successfully');
+      toast.success(
+        'User email updated successfully, please verify your email.'
+      );
       return router.push(router.asPath);
     }
   };
 
   return (
     <form
-      className='w-full grid gap-4 md:grid-cols-2'
+      className='w-full grid gap-4'
       onSubmit={handleSubmit(handleFormSubmit)}
     >
-      <p className='font-title text-xl xs:col-span-2 text-gold'>User Email</p>
-
       <div>
-        <label className='form__label' htmlFor='name'>
-          Name
+        <label className='form__label' htmlFor='email'>
+          Email
         </label>
         <input
           type='email'
@@ -105,11 +105,7 @@ export default function EditUserEmailForm({ user }: Props) {
         )}
       </div>
 
-      <button
-        type='submit'
-        className='mt-4 btn btn--lblue text-lg md:col-span-2'
-        disabled={isLoading}
-      >
+      <button type='submit' className='btn btn--blue' disabled={isLoading}>
         Submit
       </button>
     </form>
