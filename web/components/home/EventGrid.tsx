@@ -8,38 +8,40 @@ interface Props {
 
 export default function EventGrid({ events }: Props) {
   return (
-    <section className='grid gap-6 p-6 xs:grid-cols-2 md:grid-cols-3 xl:grid-cols-4'>
+    <section className='grid gap-4 grid-cols-2'>
       {events?.map((event) => (
-        <Link
-          href={`/events/${event.typeSlug}/view/${event.slug}/${event.id}`}
-          key={event.id}
-          className='h-full w-full'
-        >
-          <article className='rounded-t group h-full w-full'>
-            <div className='h-40'>
-              <div className='overlay'></div>
-              <figure>
-                <Image
-                  src={`${process.env.NEXT_PUBLIC_API_URL}/${event.imageFileUrl}`}
-                  fill
-                  alt=''
-                  className='rounded-t transition duration-300 group-hover:scale-105'
-                />
-              </figure>
-            </div>
-            <div className='p-4 rounded-b bg-white text-dark-blue'>
-              <h3 className='font-title mb-2 text-2xl'>{event.name}</h3>
-              <p>
-                <span className='capitalize'>
-                  {event.type.toLowerCase()} -{' '}
-                  <span>{new Date(event.date).toDateString()}</span> -{' '}
-                  <span>{event.location}</span>
-                </span>
-              </p>
-            </div>
-          </article>
-        </Link>
+        <EventItem event={event} key={event.id} />
       ))}
     </section>
+  );
+}
+
+export function EventItem({ event }: { event: EventInterfaceCompact }) {
+  return (
+    <Link
+      href={`/events/${event.typeSlug}/view/${event.slug}/${event.id}`}
+      key={event.id}
+      className='h-full w-full group'
+    >
+      <article className='rounded-t h-full w-full group-focus:shadow-lg'>
+        <div className='h-40'>
+          <div className='overlay'></div>
+          <figure>
+            <Image
+              src={`${process.env.NEXT_PUBLIC_API_URL}/${event.imageFileUrl}`}
+              fill
+              alt=''
+              className='rounded-t transition duration-300 group-hover:scale-105'
+            />
+          </figure>
+        </div>
+        <div className='p-3 py-4 rounded-b bg-white text-dark-blue'>
+          <h3 className='font-title mb-2 text-lg leading-6'>{event.name}</h3>
+          <p className='text-xs text-gray-600'>
+            {new Date(event.date).toDateString()}
+          </p>
+        </div>
+      </article>
+    </Link>
   );
 }

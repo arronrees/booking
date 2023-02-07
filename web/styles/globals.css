@@ -28,6 +28,10 @@
   @apply text-red font-semibold text-xs mt-2;
 }
 
+.page__title {
+  @apply pb-2 font-title text-2xl;
+}
+
 figure,
 img {
   width: 100%;

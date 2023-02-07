@@ -12,7 +12,7 @@ export default function SignUp() {
 
       <section className='px-6'>
         <div className='pb-2'>
-          <h1 className='pb-2 font-title text-2xl'>Sign Up</h1>
+          <h1 className='page__title'>Sign Up</h1>
           <p>
             If you already have an account with us, you can sign in{' '}
             <Link href='/auth/signin' className='text-gold font-bold'>
