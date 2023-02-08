@@ -34,7 +34,7 @@ export default function Header() {
         </div>
         <button
           type='button'
-          className='cursor-pointer relative z-50 lg:hidden xs:ml-0'
+          className='cursor-pointer relative z-50'
           onClick={() => setDisplayNav(!displayNav)}
         >
           <Bars3Icon className='w-8 h-8' />
