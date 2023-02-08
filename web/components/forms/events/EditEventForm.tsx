@@ -9,7 +9,7 @@ type FormInputs = {
   name: string;
   description: string;
   date: Date | string;
-  public: boolean;
+  public: boolean | 'true' | 'false';
   type: EventType;
   maxBookings: number;
   location: string;
@@ -83,7 +83,7 @@ export default function EditEventForm({ event }: Props) {
         name: data.name,
         description: data.description,
         date: new Date(data.date),
-        public: data.public,
+        public: data.public === 'true' ? true : false,
         type: data.type,
         maxBookings: data.maxBookings,
         location: data.location,
@@ -122,13 +122,9 @@ export default function EditEventForm({ event }: Props) {
 
   return (
     <form
-      className='w-full grid gap-4 md:grid-cols-2'
+      className='w-full grid gap-4'
       onSubmit={handleSubmit(handleFormSubmit)}
     >
-      <p className='font-title text-xl xs:col-span-2 text-gold'>
-        Event Details
-      </p>
-
       <div>
         <label className='form__label' htmlFor='name'>
           Name
@@ -144,6 +140,7 @@ export default function EditEventForm({ event }: Props) {
           <p className='form__error'>{errors.name?.message}</p>
         )}
       </div>
+
       <div className='md:col-span-2'>
         <label className='form__label' htmlFor='description'>
           Description
@@ -158,6 +155,7 @@ export default function EditEventForm({ event }: Props) {
           <p className='form__error'>{errors.description?.message}</p>
         )}
       </div>
+
       <div>
         <label className='form__label' htmlFor='date'>
           Date
@@ -173,20 +171,20 @@ export default function EditEventForm({ event }: Props) {
           <p className='form__error'>{errors.date?.message}</p>
         )}
       </div>
-      <div className='md:col-span-2 flex items-center'>
+
+      <div>
         <label className='form__label' htmlFor='public'>
-          Public?
+          Make Public?
         </label>
-        <input
-          type='checkbox'
-          id='public'
-          {...register('public')}
-          className='form__checkbox'
-        />
+        <select id='public' {...register('public')} className='form__input'>
+          <option value='true'>Yes</option>
+          <option value='false'>No</option>
+        </select>
         {errors.public?.message && (
           <p className='form__error'>{errors.public?.message}</p>
         )}
       </div>
+
       <div>
         <label className='form__label' htmlFor='type'>
           Type
@@ -207,6 +205,7 @@ export default function EditEventForm({ event }: Props) {
           <p className='form__error'>{errors.type?.message}</p>
         )}
       </div>
+
       <div>
         <label className='form__label' htmlFor='maxBookings'>
           Max Bookings
@@ -222,6 +221,7 @@ export default function EditEventForm({ event }: Props) {
           <p className='form__error'>{errors.maxBookings?.message}</p>
         )}
       </div>
+
       <div>
         <label className='form__label' htmlFor='location'>
           Location
@@ -240,11 +240,7 @@ export default function EditEventForm({ event }: Props) {
 
       {generalError && <p className='form__error'>{generalError}</p>}
 
-      <button
-        type='submit'
-        className='mt-4 btn btn--lblue text-lg md:col-span-2'
-        disabled={isLoading}
-      >
+      <button type='submit' className='btn btn--blue' disabled={isLoading}>
         Submit
       </button>
     </form>

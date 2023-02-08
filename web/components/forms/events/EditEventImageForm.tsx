@@ -64,16 +64,13 @@ export default function EditEventImageForm({ eventId }: Props) {
 
   return (
     <form className='w-full grid gap-4' onSubmit={handleFormSubmit}>
-      <p className='font-title text-xl text-gold'>Upload New Event Image</p>
-
       <div>
-        <label className='form__label' htmlFor='name'>
+        <label className='form__label' htmlFor='image'>
           Image file
         </label>
         <input
           type='file'
-          id='name'
-          placeholder='Name'
+          id='image'
           className='form__input'
           onChange={(e) => {
             if (e.target.files) {
@@ -83,11 +80,7 @@ export default function EditEventImageForm({ eventId }: Props) {
         />
       </div>
 
-      <button
-        type='submit'
-        className='mt-4 btn btn--lblue text-lg'
-        disabled={isLoading}
-      >
+      <button type='submit' className='btn btn--blue' disabled={isLoading}>
         Submit
       </button>
     </form>

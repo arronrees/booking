@@ -8,6 +8,8 @@ import Header from '../../../../layout/main/Header';
 import { withSessionSsr } from '../../../../utils/iron/withSession';
 import useUser from '../../../../utils/iron/useUser';
 import BookingTypeList from '../../../../components/user/events/BookingTypeList';
+import Container from '../../../../layout/main/Container';
+import DividerLine from '../../../../layout/main/DividerLine';
 
 interface Props {
   event: EventInterfaceFull;
@@ -17,12 +19,18 @@ export default function EditEventPage({ event }: Props) {
   const { user } = useUser();
 
   return (
-    <div>
+    <>
       <Header />
-      <section className='p-8 grid gap-6'>
-        <h1 className='font-bold font-title text-5xl'>{event.name}</h1>
-        <div className='h-96 w-full rounded grid sm:grid-cols-2 lg:grid-cols-4 gap-6'>
-          <div className='h-64 sm:h-auto lg:col-span-3'>
+
+      <Container>
+        <section>
+          <h1 className='page__title'>
+            Editing -{' '}
+            <span className='text-light-blue-light'>{event.name}</span>
+          </h1>
+          <DividerLine className='pb-4' />
+
+          <div className='h-48'>
             <figure>
               <Image
                 src={`${process.env.NEXT_PUBLIC_API_URL}/${event.imageFileUrl}`}
@@ -32,31 +40,38 @@ export default function EditEventPage({ event }: Props) {
               />
             </figure>
           </div>
-          <div className='bg-mid-blue-1 rounded p-4 shadow'>
-            <EditEventImageForm eventId={event.id} />
+
+          <DividerLine className='py-4' />
+
+          <h2 className='page__title'>Upload new event image</h2>
+          <DividerLine className='pb-2' />
+          <EditEventImageForm eventId={event.id} />
+          <DividerLine className='py-4' />
+
+          <h2 className='page__title'>Update event details</h2>
+          <DividerLine className='pb-2' />
+          <EditEventForm event={event} />
+          <DividerLine className='py-4' />
+
+          <h2 className='page__title'>Update event address</h2>
+          <DividerLine className='pb-2' />
+          <EditEventAddressForm address={event.Address} eventId={event.id} />
+          <DividerLine className='py-4' />
+
+          <div className='grid gap-4'>
+            {event.BookingType.length > 0 ? (
+              <BookingTypeList
+                bookingTypes={event.BookingType}
+                totalMaxBookings={event.maxBookings}
+              />
+            ) : (
+              <p>No booking types created yet. Create one below.</p>
+            )}
+            <CreateBookingTypeForm eventId={event.id} user={user} />
           </div>
-        </div>
-        <div className='grid md:grid-cols-2 gap-6'>
-          <div className='bg-mid-blue-1 rounded p-4 shadow'>
-            <EditEventForm event={event} />
-          </div>
-          <div className='bg-mid-blue-1 rounded p-4 shadow'>
-            <EditEventAddressForm address={event.Address} eventId={event.id} />
-          </div>
-        </div>
-        <div className='bg-mid-blue-1 rounded p-4 shadow grid gap-4'>
-          {event.BookingType.length > 0 ? (
-            <BookingTypeList
-              bookingTypes={event.BookingType}
-              totalMaxBookings={event.maxBookings}
-            />
-          ) : (
-            <p>No booking types created yet. Create one below.</p>
-          )}
-          <CreateBookingTypeForm eventId={event.id} user={user} />
-        </div>
-      </section>
-    </div>
+        </section>
+      </Container>
+    </>
   );
 }
 

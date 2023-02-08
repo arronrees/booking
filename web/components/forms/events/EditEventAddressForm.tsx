@@ -103,13 +103,9 @@ export default function EditEventAddressForm({ address, eventId }: Props) {
 
   return (
     <form
-      className='w-full grid gap-4 md:grid-cols-2'
+      className='w-full grid gap-4'
       onSubmit={handleSubmit(handleFormSubmit)}
     >
-      <p className='font-title text-xl xs:col-span-2 text-gold'>
-        Event Address Details
-      </p>
-
       <div>
         <label className='form__label' htmlFor='addressLine1'>
           Address Line 1
@@ -127,6 +123,7 @@ export default function EditEventAddressForm({ address, eventId }: Props) {
           <p className='form__error'>{errors.addressLine1?.message}</p>
         )}
       </div>
+
       <div>
         <label className='form__label' htmlFor='addressLine2'>
           Address Line 2
@@ -142,6 +139,7 @@ export default function EditEventAddressForm({ address, eventId }: Props) {
           <p className='form__error'>{errors.addressLine2?.message}</p>
         )}
       </div>
+
       <div>
         <label className='form__label' htmlFor='town'>
           Town
@@ -159,6 +157,7 @@ export default function EditEventAddressForm({ address, eventId }: Props) {
           <p className='form__error'>{errors.town?.message}</p>
         )}
       </div>
+
       <div>
         <label className='form__label' htmlFor='county'>
           County
@@ -174,6 +173,7 @@ export default function EditEventAddressForm({ address, eventId }: Props) {
           <p className='form__error'>{errors.county?.message}</p>
         )}
       </div>
+
       <div>
         <label className='form__label' htmlFor='postcode'>
           Postcode
@@ -191,6 +191,7 @@ export default function EditEventAddressForm({ address, eventId }: Props) {
           <p className='form__error'>{errors.postcode?.message}</p>
         )}
       </div>
+
       <div>
         <label className='form__label' htmlFor='country'>
           Country
@@ -211,11 +212,7 @@ export default function EditEventAddressForm({ address, eventId }: Props) {
 
       {generalError && <p className='form__error'>{generalError}</p>}
 
-      <button
-        type='submit'
-        className='mt-4 btn btn--lblue text-lg md:col-span-2'
-        disabled={isLoading}
-      >
+      <button type='submit' className='btn btn--blue' disabled={isLoading}>
         Submit
       </button>
     </form>

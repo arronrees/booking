@@ -21,7 +21,7 @@
 }
 
 .form__input {
-  @apply py-3 px-4 rounded border border-white bg-dark-blue w-full text-sm shadow-md transition duration-200 ring-offset-2 focus:ring-2  ring-light-blue/60 ring-offset-mid-blue;
+  @apply py-3 px-4 rounded border border-white bg-dark-blue w-full text-sm shadow-md transition duration-200 ring-offset-2 focus:ring-2  ring-light-blue/60 ring-offset-mid-blue relative;
 }
 
 .form__error {
