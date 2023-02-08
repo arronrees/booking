@@ -59,12 +59,10 @@ export default function EditEventForm({ user }: Props) {
   }
 
   const [isLoading, setIsLoading] = useState(false);
-  const [generalError, setGeneralError] = useState<string | null>(null);
 
   const router = useRouter();
 
   const handleFormSubmit: SubmitHandler<FormInputs> = async (data) => {
-    setGeneralError(null);
     setIsLoading(true);
 
     const formData: FormData = {
@@ -87,8 +85,6 @@ export default function EditEventForm({ user }: Props) {
       },
     };
 
-    console.log(formData);
-
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/api/events/create`,
       {
@@ -101,19 +97,19 @@ export default function EditEventForm({ user }: Props) {
       }
     );
     const responseData = await res.json();
-    console.log(responseData);
 
     if (!res.ok) {
       if (responseData.error && typeof responseData.error === 'string') {
         toast.error(responseData.error);
-        setGeneralError(responseData.error);
+        setIsLoading(false);
+        return;
       }
     }
 
     if (res.ok) {
       setIsLoading(false);
       toast.success('Event created successfully');
-      router.push('/events');
+      return router.push('/events');
     }
   };
 
@@ -134,7 +130,7 @@ export default function EditEventForm({ user }: Props) {
 
   return (
     <form
-      className='w-full grid gap-4 md:grid-cols-2'
+      className='w-full grid gap-4'
       onSubmit={handleSubmit(handleFormSubmit)}
     >
       <p className='font-title text-xl xs:col-span-2 text-gold'>
@@ -156,7 +152,8 @@ export default function EditEventForm({ user }: Props) {
           <p className='form__error'>{errors.name?.message}</p>
         )}
       </div>
-      <div className='md:col-span-2'>
+
+      <div>
         <label className='form__label' htmlFor='description'>
           Description
         </label>
@@ -170,6 +167,7 @@ export default function EditEventForm({ user }: Props) {
           <p className='form__error'>{errors.description?.message}</p>
         )}
       </div>
+
       <div>
         <label className='form__label' htmlFor='date'>
           Date
@@ -185,6 +183,7 @@ export default function EditEventForm({ user }: Props) {
           <p className='form__error'>{errors.date?.message}</p>
         )}
       </div>
+
       <div className='md:col-span-2 flex items-center'>
         <label className='form__label' htmlFor='public'>
           Public?
@@ -199,6 +198,7 @@ export default function EditEventForm({ user }: Props) {
           <p className='form__error'>{errors.public?.message}</p>
         )}
       </div>
+
       <div>
         <label className='form__label' htmlFor='type'>
           Type
@@ -353,13 +353,7 @@ export default function EditEventForm({ user }: Props) {
         )}
       </div>
 
-      {generalError && <p className='form__error'>{generalError}</p>}
-
-      <button
-        type='submit'
-        className='mt-4 btn btn--lblue text-lg md:col-span-2'
-        disabled={isLoading}
-      >
+      <button type='submit' className='btn btn--gold' disabled={isLoading}>
         Submit
       </button>
     </form>

@@ -36,7 +36,6 @@ export default function EditEventAddressForm({ address, eventId }: Props) {
   }
 
   const [isLoading, setIsLoading] = useState(false);
-  const [generalError, setGeneralError] = useState<string | null>(null);
 
   const router = useRouter();
 
@@ -60,7 +59,6 @@ export default function EditEventAddressForm({ address, eventId }: Props) {
   if (!user) return null;
 
   const handleFormSubmit: SubmitHandler<FormInputs> = async (data) => {
-    setGeneralError(null);
     setIsLoading(true);
 
     const formData: FormData = {
@@ -86,18 +84,19 @@ export default function EditEventAddressForm({ address, eventId }: Props) {
       }
     );
     const responseData = await res.json();
-    console.log(responseData);
 
     if (!res.ok) {
       if (responseData.error && typeof responseData.error === 'string') {
-        setGeneralError(responseData.error);
+        toast.error(responseData.error);
+        setIsLoading(false);
+        return;
       }
     }
 
     if (res.ok) {
       setIsLoading(false);
-      toast.success('Address updated sucessfully');
-      router.push(router.asPath);
+      toast.success('Event address updated sucessfully');
+      return router.push(router.asPath);
     }
   };
 
@@ -209,8 +208,6 @@ export default function EditEventAddressForm({ address, eventId }: Props) {
           <p className='form__error'>{errors.country?.message}</p>
         )}
       </div>
-
-      {generalError && <p className='form__error'>{generalError}</p>}
 
       <button type='submit' className='btn btn--blue' disabled={isLoading}>
         Submit

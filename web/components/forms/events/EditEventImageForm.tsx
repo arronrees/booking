@@ -40,7 +40,6 @@ export default function EditEventImageForm({ eventId }: Props) {
         }
       );
       const responseData = await res.json();
-      console.log(responseData);
 
       if (!res.ok) {
         if (responseData.error && typeof responseData.error === 'string') {
@@ -53,12 +52,10 @@ export default function EditEventImageForm({ eventId }: Props) {
       if (res.ok) {
         setIsLoading(false);
         toast.success('Event image updated successfully');
-        router.push(router.asPath);
-        return;
+        return router.push(router.asPath);
       }
     } else {
-      toast.error('No file selected');
-      return;
+      return toast.error('No file selected');
     }
   };
 

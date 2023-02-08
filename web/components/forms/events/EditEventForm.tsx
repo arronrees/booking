@@ -46,7 +46,6 @@ export default function EditEventForm({ event }: Props) {
   }
 
   const [isLoading, setIsLoading] = useState(false);
-  const [generalError, setGeneralError] = useState<string | null>(null);
 
   const router = useRouter();
 
@@ -75,7 +74,6 @@ export default function EditEventForm({ event }: Props) {
   if (!user) return null;
 
   const handleFormSubmit: SubmitHandler<FormInputs> = async (data) => {
-    setGeneralError(null);
     setIsLoading(true);
 
     const formData: FormData = {
@@ -104,19 +102,19 @@ export default function EditEventForm({ event }: Props) {
       }
     );
     const responseData = await res.json();
-    console.log(responseData);
 
     if (!res.ok) {
       if (responseData.error && typeof responseData.error === 'string') {
         toast.error(responseData.error);
-        setGeneralError(responseData.error);
+        setIsLoading(false);
+        return;
       }
     }
 
     if (res.ok) {
       setIsLoading(false);
-      toast.success('Event updated successfully');
-      router.push(router.asPath);
+      toast.success('Event details updated successfully');
+      return router.push(router.asPath);
     }
   };
 
@@ -237,8 +235,6 @@ export default function EditEventForm({ event }: Props) {
           <p className='form__error'>{errors.public?.message}</p>
         )}
       </div>
-
-      {generalError && <p className='form__error'>{generalError}</p>}
 
       <button type='submit' className='btn btn--blue' disabled={isLoading}>
         Submit

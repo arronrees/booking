@@ -29,12 +29,10 @@ export default function CreateBookingTypeForm({ user, eventId }: Props) {
   if (!user) return null;
 
   const [isLoading, setIsLoading] = useState(false);
-  const [generalError, setGeneralError] = useState<string | null>(null);
 
   const router = useRouter();
 
   const handleFormSubmit: SubmitHandler<FormInputs> = async (data) => {
-    setGeneralError(null);
     setIsLoading(true);
 
     const formData: FormData = {
@@ -45,8 +43,6 @@ export default function CreateBookingTypeForm({ user, eventId }: Props) {
         price: Number(data.price),
       },
     };
-
-    console.log(formData);
 
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/api/bookingtype/create/${eventId}`,
@@ -60,19 +56,19 @@ export default function CreateBookingTypeForm({ user, eventId }: Props) {
       }
     );
     const responseData = await res.json();
-    console.log(responseData);
 
     if (!res.ok) {
       if (responseData.error && typeof responseData.error === 'string') {
         toast.error(responseData.error);
-        setGeneralError(responseData.error);
+        setIsLoading(false);
+        return;
       }
     }
 
     if (res.ok) {
       setIsLoading(false);
       toast.success('Booking Type created successfully');
-      router.push(router.asPath);
+      return router.push(router.asPath);
     }
   };
 
@@ -91,7 +87,7 @@ export default function CreateBookingTypeForm({ user, eventId }: Props) {
 
   return (
     <form
-      className='w-full grid gap-4 md:grid-cols-2'
+      className='w-full grid gap-4'
       onSubmit={handleSubmit(handleFormSubmit)}
     >
       <p className='font-title text-xl text-gold md:col-span-2'>
@@ -113,7 +109,8 @@ export default function CreateBookingTypeForm({ user, eventId }: Props) {
           <p className='form__error'>{errors.name?.message}</p>
         )}
       </div>
-      <div className='md:col-span-2'>
+
+      <div>
         <label className='form__label' htmlFor='description'>
           Description
         </label>
@@ -127,6 +124,7 @@ export default function CreateBookingTypeForm({ user, eventId }: Props) {
           <p className='form__error'>{errors.description?.message}</p>
         )}
       </div>
+
       <div>
         <label className='form__label' htmlFor='date'>
           Price
@@ -143,6 +141,7 @@ export default function CreateBookingTypeForm({ user, eventId }: Props) {
           <p className='form__error'>{errors.price?.message}</p>
         )}
       </div>
+
       <div>
         <label className='form__label' htmlFor='maxBookings'>
           Max Bookings
@@ -160,11 +159,7 @@ export default function CreateBookingTypeForm({ user, eventId }: Props) {
         )}
       </div>
 
-      <button
-        type='submit'
-        className='mt-4 btn btn--lblue text-lg md:col-span-2'
-        disabled={isLoading}
-      >
+      <button type='submit' className='btn btn--blue' disabled={isLoading}>
         Submit
       </button>
     </form>
