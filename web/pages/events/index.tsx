@@ -1,6 +1,6 @@
 import { withSessionSsr } from '../../utils/iron/withSession';
 import Header from '../../layout/main/Header';
-import EventGrid from '../../components/home/EventGrid';
+import EventGrid from '../../components/events/EventGrid';
 import { EventInterfaceCompact } from '../../constant-types';
 
 interface Props {

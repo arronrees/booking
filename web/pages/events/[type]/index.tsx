@@ -1,4 +1,4 @@
-import EventGrid from '../../../components/home/EventGrid';
+import EventGrid from '../../../components/events/EventGrid';
 import { EventInterfaceCompact } from '../../../constant-types';
 import Header from '../../../layout/main/Header';
 import { withSessionSsr } from '../../../utils/iron/withSession';
