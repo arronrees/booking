@@ -52,6 +52,15 @@ export const getServerSideProps = withSessionSsr(
 
     const eventsData = await eventsRes.json();
 
+    if (!eventsRes.ok) {
+      return {
+        redirect: {
+          destination: '/',
+          permanent: false,
+        },
+      };
+    }
+
     return {
       props: { events: eventsData.data, type: params.type },
     };

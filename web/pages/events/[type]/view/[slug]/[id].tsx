@@ -27,8 +27,6 @@ export default function ViewEventPage({ event, savedEvents }: Props) {
   const [isEventSaved, setIsEventSaved] = useState(false);
   const router = useRouter();
 
-  console.log(event);
-
   useEffect(() => {
     if (savedEvents) {
       const saved = savedEvents.find((ev) => ev.eventId === event.id);
@@ -198,6 +196,15 @@ export const getServerSideProps = withSessionSsr(
     );
 
     const eventData = await eventRes.json();
+
+    if (!eventRes.ok) {
+      return {
+        redirect: {
+          destination: '/',
+          permanent: false,
+        },
+      };
+    }
 
     if (user) {
       const savedEventsRes = await fetch(
