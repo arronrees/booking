@@ -3,6 +3,7 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { useRouter } from 'next/router';
 import toast from 'react-hot-toast';
 import { UserInterface } from '../../../constant-types';
+import useUser from '../../../utils/iron/useUser';
 
 type FormInputs = {
   name: string;
@@ -21,16 +22,30 @@ type FormData = {
 };
 
 interface Props {
-  user: UserInterface;
   eventId: string;
 }
 
-export default function CreateBookingTypeForm({ user, eventId }: Props) {
-  if (!user) return null;
-
+export default function CreateBookingTypeForm({ eventId }: Props) {
   const [isLoading, setIsLoading] = useState(false);
 
   const router = useRouter();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormInputs>({
+    defaultValues: {
+      name: '',
+      description: '',
+      price: 0,
+      maxBookings: 0,
+    },
+  });
+
+  const { user }: { user: UserInterface } = useUser();
+
+  if (!user) return null;
 
   const handleFormSubmit: SubmitHandler<FormInputs> = async (data) => {
     setIsLoading(true);
@@ -71,19 +86,6 @@ export default function CreateBookingTypeForm({ user, eventId }: Props) {
       return router.push(router.asPath);
     }
   };
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<FormInputs>({
-    defaultValues: {
-      name: '',
-      description: '',
-      price: 0,
-      maxBookings: 0,
-    },
-  });
 
   return (
     <form

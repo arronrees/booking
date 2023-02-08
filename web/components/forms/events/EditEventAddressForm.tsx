@@ -141,7 +141,7 @@ export default function EditEventAddressForm({ address, eventId }: Props) {
 
       <div>
         <label className='form__label' htmlFor='town'>
-          Town
+          Town/City
         </label>
         <input
           type='text'

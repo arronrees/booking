@@ -1,21 +1,24 @@
 import CreateEventForm from '../../../components/forms/events/CreateEventForm';
-import { UserInterface } from '../../../constant-types';
+import Container from '../../../layout/main/Container';
+import DividerLine from '../../../layout/main/DividerLine';
 import Header from '../../../layout/main/Header';
-import useUser from '../../../utils/iron/useUser';
 import { withSessionSsr } from '../../../utils/iron/withSession';
 
 export default function CreateEventPage() {
-  const { user }: { user: UserInterface } = useUser();
-
   return (
-    <div>
+    <>
       <Header />
-      <div className='p-8'>
-        <section className='bg-mid-blue-1 rounded p-4 shadow'>
-          {user && <CreateEventForm user={user} />}
-        </section>
-      </div>
-    </div>
+
+      <Container>
+        <h1 className='page__title'>Create new event</h1>
+        <p className='pb-2'>
+          Enter your event details here to create your event. You can add the
+          event image in the next step.
+        </p>
+        <DividerLine className='pb-4' />
+        <CreateEventForm />
+      </Container>
+    </>
   );
 }
 

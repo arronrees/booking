@@ -16,8 +16,6 @@ interface Props {
 }
 
 export default function EditEventPage({ event }: Props) {
-  const { user } = useUser();
-
   return (
     <>
       <Header />
@@ -69,7 +67,7 @@ export default function EditEventPage({ event }: Props) {
             )}
             <h2 className='page__title'>Create new booking type</h2>
             <DividerLine className='pb-2' />
-            <CreateBookingTypeForm eventId={event.id} user={user} />
+            <CreateBookingTypeForm eventId={event.id} />
           </div>
         </section>
       </Container>

@@ -3,12 +3,14 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { useRouter } from 'next/router';
 import toast from 'react-hot-toast';
 import { UserInterface } from '../../../constant-types';
+import useUser from '../../../utils/iron/useUser';
+import DividerLine from '../../../layout/main/DividerLine';
 
 type FormInputs = {
   name: string;
   description: string;
   date: Date | string;
-  public: boolean;
+  public: boolean | 'true' | 'false';
   type: EventType;
   maxBookings: number;
   location: string;
@@ -49,18 +51,29 @@ type FormData = {
   };
 };
 
-interface Props {
-  user: UserInterface;
-}
-
-export default function EditEventForm({ user }: Props) {
-  if (!user) {
-    return <p>Error: No user</p>;
-  }
-
+export default function EditEventForm() {
   const [isLoading, setIsLoading] = useState(false);
 
   const router = useRouter();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormInputs>({
+    defaultValues: {
+      name: '',
+      description: '',
+      date: new Date(),
+      public: true,
+      maxBookings: 0,
+      location: '',
+    },
+  });
+
+  const { user }: { user: UserInterface } = useUser();
+
+  if (!user) return null;
 
   const handleFormSubmit: SubmitHandler<FormInputs> = async (data) => {
     setIsLoading(true);
@@ -70,7 +83,7 @@ export default function EditEventForm({ user }: Props) {
         name: data.name,
         description: data.description,
         date: new Date(data.date),
-        public: data.public,
+        public: data.public === 'true' ? true : false,
         type: data.type,
         maxBookings: Number(data.maxBookings),
         location: data.location,
@@ -113,31 +126,15 @@ export default function EditEventForm({ user }: Props) {
     }
   };
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<FormInputs>({
-    defaultValues: {
-      name: '',
-      description: '',
-      date: new Date(),
-      public: true,
-      maxBookings: 0,
-      location: '',
-    },
-  });
-
   return (
     <form
       className='w-full grid gap-4'
       onSubmit={handleSubmit(handleFormSubmit)}
     >
-      <p className='font-title text-xl xs:col-span-2 text-gold'>
-        Event Details
-      </p>
-
       <div>
+        <p className='page__title'>Event Details</p>
+        <DividerLine className='pb-4' />
+
         <label className='form__label' htmlFor='name'>
           Name
         </label>
@@ -169,6 +166,22 @@ export default function EditEventForm({ user }: Props) {
       </div>
 
       <div>
+        <label className='form__label' htmlFor='location'>
+          Location
+        </label>
+        <input
+          type='text'
+          id='location'
+          placeholder='Location'
+          {...register('location', { required: 'Location is required' })}
+          className='form__input'
+        />
+        {errors.location?.message && (
+          <p className='form__error'>{errors.location?.message}</p>
+        )}
+      </div>
+
+      <div>
         <label className='form__label' htmlFor='date'>
           Date
         </label>
@@ -181,21 +194,6 @@ export default function EditEventForm({ user }: Props) {
         />
         {errors.date?.message && (
           <p className='form__error'>{errors.date?.message}</p>
-        )}
-      </div>
-
-      <div className='md:col-span-2 flex items-center'>
-        <label className='form__label' htmlFor='public'>
-          Public?
-        </label>
-        <input
-          type='checkbox'
-          id='public'
-          {...register('public')}
-          className='form__checkbox'
-        />
-        {errors.public?.message && (
-          <p className='form__error'>{errors.public?.message}</p>
         )}
       </div>
 
@@ -234,34 +232,31 @@ export default function EditEventForm({ user }: Props) {
           <p className='form__error'>{errors.maxBookings?.message}</p>
         )}
       </div>
+
       <div>
-        <label className='form__label' htmlFor='location'>
-          Location
+        <label className='form__label' htmlFor='public'>
+          Make Public?
         </label>
-        <input
-          type='text'
-          id='location'
-          placeholder='Location'
-          {...register('location', { required: 'Location is required' })}
-          className='form__input'
-        />
-        {errors.location?.message && (
-          <p className='form__error'>{errors.location?.message}</p>
+        <select id='public' {...register('public')} className='form__input'>
+          <option value='false'>No</option>
+          <option value='true'>Yes</option>
+        </select>
+        {errors.public?.message && (
+          <p className='form__error'>{errors.public?.message}</p>
         )}
       </div>
 
-      <p className='font-title text-xl xs:col-span-2 text-gold'>
-        Event Address Details
-      </p>
-
       <div>
+        <p className='page__title'>Address Details</p>
+        <DividerLine className='pb-4' />
+
         <label className='form__label' htmlFor='addressLine1'>
           Address Line 1
         </label>
         <input
           type='text'
           id='addressLine1'
-          placeholder='Address Line 1'
+          placeholder='Goodbye Yellow'
           {...register('addressLine1', {
             required: 'Address Line 1 is required',
           })}
@@ -278,7 +273,7 @@ export default function EditEventForm({ user }: Props) {
         <input
           type='text'
           id='addressLine2'
-          placeholder='Address Line 2'
+          placeholder='Brick Road'
           {...register('addressLine2')}
           className='form__input'
         />
@@ -288,12 +283,12 @@ export default function EditEventForm({ user }: Props) {
       </div>
       <div>
         <label className='form__label' htmlFor='town'>
-          Town
+          Town/City
         </label>
         <input
           type='text'
           id='town'
-          placeholder='Town'
+          placeholder='Yeovil'
           {...register('town', {
             required: 'Town is required',
           })}
@@ -310,7 +305,7 @@ export default function EditEventForm({ user }: Props) {
         <input
           type='text'
           id='county'
-          placeholder='County'
+          placeholder='Somerset'
           {...register('county')}
           className='form__input'
         />
@@ -325,7 +320,7 @@ export default function EditEventForm({ user }: Props) {
         <input
           type='text'
           id='postcode'
-          placeholder='Postcode'
+          placeholder='BA21 5EA'
           {...register('postcode', {
             required: 'Postcode is required',
           })}
@@ -342,7 +337,7 @@ export default function EditEventForm({ user }: Props) {
         <input
           type='text'
           id='country'
-          placeholder='Country'
+          placeholder='UK'
           {...register('country', {
             required: 'Country is required',
           })}
