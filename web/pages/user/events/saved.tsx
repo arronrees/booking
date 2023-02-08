@@ -1,8 +1,10 @@
 import { withSessionSsr } from '../../../utils/iron/withSession';
-import Image from 'next/image';
-import Link from 'next/link';
 import { EventInterfaceCompact } from '../../../constant-types';
 import Header from '../../../layout/main/Header';
+import DividerLine from '../../../layout/main/DividerLine';
+import Container from '../../../layout/main/Container';
+import EventGrid from '../../../components/events/EventGrid';
+import { EventSavedItem } from '../../../components/events/EventItem';
 
 interface Props {
   events: EventInterfaceCompact[] | null;
@@ -12,43 +14,19 @@ export default function SavedEvents({ events }: Props) {
   return (
     <>
       <Header />
-      <div className='p-6'>
-        <h1 className='mb-8 text-3xl font-title lg:text-6xl'>Saved Events</h1>
 
-        <section className='grid gap-6 p-6 xs:grid-cols-2 md:grid-cols-3 xl:grid-cols-4'>
-          {events?.map((event) => (
-            <Link
-              href={`/events/${event.typeSlug}/view/${event.slug}/${event.id}`}
-              key={event.id}
-              className='h-full w-full'
-            >
-              <article className='rounded-t group h-full w-full'>
-                <div className='h-40'>
-                  <div className='overlay'></div>
-                  <figure>
-                    <Image
-                      src={`${process.env.NEXT_PUBLIC_API_URL}/${event.imageFileUrl}`}
-                      fill
-                      alt=''
-                      className='rounded-t transition duration-300 group-hover:scale-105'
-                    />
-                  </figure>
-                </div>
-                <div className='p-4 rounded-b bg-mid-blue-1 text-white'>
-                  <h3 className='font-title mb-2 text-2xl'>{event.name}</h3>
-                  <p>
-                    <span className='capitalize'>
-                      {event.type.toLowerCase()} -{' '}
-                      <span>{new Date(event.date).toDateString()}</span> -{' '}
-                      <span>{event.location}</span>
-                    </span>
-                  </p>
-                </div>
-              </article>
-            </Link>
-          ))}
-        </section>
-      </div>
+      <Container>
+        <div>
+          <h1 className='page__title'>Saved Events</h1>
+          <DividerLine className='pb-6' />
+
+          <EventGrid>
+            {events?.map((event) => (
+              <EventSavedItem key={event.id} event={event} />
+            ))}
+          </EventGrid>
+        </div>
+      </Container>
     </>
   );
 }

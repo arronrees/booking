@@ -18,6 +18,8 @@ export default function Home({ events }: Props) {
       <Container>
         <div>
           <h2 className='page__title'>Featured Events</h2>
+          <DividerLine className='pb-6' />
+
           <EventGrid>
             {events?.map((event) => (
               <EventItem key={event.id} event={event} />
