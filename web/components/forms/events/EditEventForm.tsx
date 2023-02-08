@@ -85,7 +85,7 @@ export default function EditEventForm({ event }: Props) {
         date: new Date(data.date),
         public: data.public === 'true' ? true : false,
         type: data.type,
-        maxBookings: data.maxBookings,
+        maxBookings: Number(data.maxBookings),
         location: data.location,
       },
     };
@@ -157,6 +157,22 @@ export default function EditEventForm({ event }: Props) {
       </div>
 
       <div>
+        <label className='form__label' htmlFor='location'>
+          Location
+        </label>
+        <input
+          type='text'
+          id='location'
+          placeholder='Location'
+          {...register('location', { required: 'Location is required' })}
+          className='form__input'
+        />
+        {errors.location?.message && (
+          <p className='form__error'>{errors.location?.message}</p>
+        )}
+      </div>
+
+      <div>
         <label className='form__label' htmlFor='date'>
           Date
         </label>
@@ -169,19 +185,6 @@ export default function EditEventForm({ event }: Props) {
         />
         {errors.date?.message && (
           <p className='form__error'>{errors.date?.message}</p>
-        )}
-      </div>
-
-      <div>
-        <label className='form__label' htmlFor='public'>
-          Make Public?
-        </label>
-        <select id='public' {...register('public')} className='form__input'>
-          <option value='true'>Yes</option>
-          <option value='false'>No</option>
-        </select>
-        {errors.public?.message && (
-          <p className='form__error'>{errors.public?.message}</p>
         )}
       </div>
 
@@ -223,18 +226,15 @@ export default function EditEventForm({ event }: Props) {
       </div>
 
       <div>
-        <label className='form__label' htmlFor='location'>
-          Location
+        <label className='form__label' htmlFor='public'>
+          Make Public?
         </label>
-        <input
-          type='text'
-          id='location'
-          placeholder='Location'
-          {...register('location', { required: 'Location is required' })}
-          className='form__input'
-        />
-        {errors.location?.message && (
-          <p className='form__error'>{errors.location?.message}</p>
+        <select id='public' {...register('public')} className='form__input'>
+          <option value='true'>Yes</option>
+          <option value='false'>No</option>
+        </select>
+        {errors.public?.message && (
+          <p className='form__error'>{errors.public?.message}</p>
         )}
       </div>
 
