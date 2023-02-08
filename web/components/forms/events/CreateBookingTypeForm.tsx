@@ -90,10 +90,6 @@ export default function CreateBookingTypeForm({ user, eventId }: Props) {
       className='w-full grid gap-4'
       onSubmit={handleSubmit(handleFormSubmit)}
     >
-      <p className='font-title text-xl text-gold md:col-span-2'>
-        Create New Booking Type
-      </p>
-
       <div>
         <label className='form__label' htmlFor='name'>
           Name
@@ -134,6 +130,7 @@ export default function CreateBookingTypeForm({ user, eventId }: Props) {
           id='price'
           placeholder='Price'
           min={0}
+          step='0.01'
           {...register('price', { required: 'Price is required' })}
           className='form__input'
         />
@@ -150,7 +147,7 @@ export default function CreateBookingTypeForm({ user, eventId }: Props) {
           type='number'
           id='maxBookings'
           min={0}
-          placeholder='maxBookings'
+          placeholder='Max Bookings'
           {...register('maxBookings', { required: 'Max Bookings is required' })}
           className='form__input'
         />
@@ -159,7 +156,7 @@ export default function CreateBookingTypeForm({ user, eventId }: Props) {
         )}
       </div>
 
-      <button type='submit' className='btn btn--blue' disabled={isLoading}>
+      <button type='submit' className='btn btn--gold' disabled={isLoading}>
         Submit
       </button>
     </form>

@@ -58,7 +58,7 @@ export default function EditEventPage({ event }: Props) {
           <EditEventAddressForm address={event.Address} eventId={event.id} />
           <DividerLine className='py-4' />
 
-          <div className='grid gap-4'>
+          <div>
             {event.BookingType.length > 0 ? (
               <BookingTypeList
                 bookingTypes={event.BookingType}
@@ -67,6 +67,8 @@ export default function EditEventPage({ event }: Props) {
             ) : (
               <p>No booking types created yet. Create one below.</p>
             )}
+            <h2 className='page__title'>Create new booking type</h2>
+            <DividerLine className='pb-2' />
             <CreateBookingTypeForm eventId={event.id} user={user} />
           </div>
         </section>

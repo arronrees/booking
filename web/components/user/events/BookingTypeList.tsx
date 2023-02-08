@@ -15,22 +15,25 @@ export default function BookingTypeList({
 
   return (
     <>
-      <p className='font-title text-xl text-gold'>
-        Booking Types{' '}
-        <span className='text-gray-400 text-base'>
-          - {totalMaxBookings - currentBookingsUsed} Bookings Remaining
+      <p className='page__title'>
+        Booking Types
+        <span className='block mt-1 text-gray-400 text-sm font-medium font-sans'>
+          - {totalMaxBookings - currentBookingsUsed} bookings available
         </span>
       </p>
 
-      <div className='grid gap-4'>
+      <div className='grid gap-4 pb-6'>
         {bookingTypes.map((bookingType) => (
           <div
             key={bookingType.id}
-            className='border-2 rounded p-4 border-gray-500'
+            className='rounded p-4 bg-dark-blue shadow-md'
           >
             <p className='font-semibold text-lg'>{bookingType.name}</p>
-            <p className='text-sm font-light mb-2'>{bookingType.description}</p>
-            <p className='font-bold text-gold'>
+            <p className='text-xs font-light mt-1 mb-2'>
+              {bookingType.description}
+            </p>
+
+            <p className='font-title mb-3'>
               {new Intl.NumberFormat('en', {
                 style: 'currency',
                 currency: 'GBP',
