@@ -1,17 +1,34 @@
 import EventGrid from '../../../components/events/EventGrid';
+import { EventItem } from '../../../components/events/EventItem';
 import { EventInterfaceCompact } from '../../../constant-types';
+import Container from '../../../layout/main/Container';
+import DividerLine from '../../../layout/main/DividerLine';
 import Header from '../../../layout/main/Header';
 import { withSessionSsr } from '../../../utils/iron/withSession';
 
 interface Props {
   events: EventInterfaceCompact[] | null;
+  type: string;
 }
 
-export default function EventTypePage({ events }: Props) {
+export default function EventTypePage({ events, type }: Props) {
   return (
     <div>
       <Header />
-      <EventGrid events={events} />
+
+      <Container>
+        <h1 className='page__title'>
+          Category -{' '}
+          <span className='text-light-blue-light capitalize'>{type}</span>
+        </h1>
+        <DividerLine className='pb-6' />
+
+        <EventGrid>
+          {events?.map((event) => (
+            <EventItem key={event.id} event={event} />
+          ))}
+        </EventGrid>
+      </Container>
     </div>
   );
 }
@@ -22,7 +39,10 @@ export const getServerSideProps = withSessionSsr(
 
     if (!params || !params.type) {
       return {
-        props: { events: null },
+        redirect: {
+          destination: '/',
+          permanent: false,
+        },
       };
     }
 
@@ -33,7 +53,7 @@ export const getServerSideProps = withSessionSsr(
     const eventsData = await eventsRes.json();
 
     return {
-      props: { events: eventsData.data },
+      props: { events: eventsData.data, type: params.type },
     };
   }
 );
