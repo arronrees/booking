@@ -2,6 +2,9 @@ import { withSessionSsr } from '../../utils/iron/withSession';
 import Header from '../../layout/main/Header';
 import EventGrid from '../../components/events/EventGrid';
 import { EventInterfaceCompact } from '../../constant-types';
+import Container from '../../layout/main/Container';
+import DividerLine from '../../layout/main/DividerLine';
+import { EventItem } from '../../components/events/EventItem';
 
 interface Props {
   events: EventInterfaceCompact[] | null;
@@ -11,7 +14,17 @@ export default function Events({ events }: Props) {
   return (
     <div>
       <Header />
-      <EventGrid events={events} />
+
+      <Container>
+        <h1 className='page__title'>All Events</h1>
+        <DividerLine className='pb-6' />
+
+        <EventGrid>
+          {events?.map((event) => (
+            <EventItem key={event.id} event={event} />
+          ))}
+        </EventGrid>
+      </Container>
     </div>
   );
 }
