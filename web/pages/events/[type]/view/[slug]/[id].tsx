@@ -1,11 +1,13 @@
-import { HeartIcon as HeartIconOutline } from '@heroicons/react/24/outline';
-import { HeartIcon as HeartIconSolid } from '@heroicons/react/24/solid';
+import { BookmarkIcon as BookmarkIconOutline } from '@heroicons/react/24/outline';
+import { BookmarkIcon as BookmarkIconSolid } from '@heroicons/react/24/solid';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
 import { toast } from 'react-hot-toast';
 import { EventInterfaceFull } from '../../../../../constant-types';
+import Container from '../../../../../layout/main/Container';
+import DividerLine from '../../../../../layout/main/DividerLine';
 import Header from '../../../../../layout/main/Header';
 import useUser from '../../../../../utils/iron/useUser';
 import { withSessionSsr } from '../../../../../utils/iron/withSession';
@@ -24,6 +26,8 @@ export default function ViewEventPage({ event, savedEvents }: Props) {
   const { user } = useUser();
   const [isEventSaved, setIsEventSaved] = useState(false);
   const router = useRouter();
+
+  console.log(event);
 
   useEffect(() => {
     if (savedEvents) {
@@ -63,10 +67,11 @@ export default function ViewEventPage({ event, savedEvents }: Props) {
   };
 
   return (
-    <div>
+    <>
       <Header />
-      <section className='p-8 mx-auto max-w-6xl'>
-        <div className='flex gap-4 mb-6 text-xs'>
+
+      <Container>
+        <div className='flex gap-4 text-xs'>
           <Link href='/'>Home</Link>
           <span>/</span>
           <Link href='/events'>Events</Link>
@@ -81,70 +86,100 @@ export default function ViewEventPage({ event, savedEvents }: Props) {
             {event.name}
           </Link>
         </div>
-        <div className='flex items-center justify-between'>
-          <h1 className='font-bold font-title text-5xl mb-6'>{event.name}</h1>
-          {user && (
-            <button
-              type='button'
-              className='bg-red-500 w-10 h-10 flex items-center justify-center rounded shadow-sm'
-              onClick={handleSaveEvent}
-            >
-              {isEventSaved ? (
-                <HeartIconSolid className='w-4 h-4' />
-              ) : (
-                <HeartIconOutline className='w-4 h-4' />
-              )}
-            </button>
-          )}
-        </div>
-        <div className='h-96 w-full rounded mb-4'>
-          <figure>
-            <Image
-              src={`${process.env.NEXT_PUBLIC_API_URL}/${event.imageFileUrl}`}
-              fill
-              alt=''
-              className='rounded'
-            />
-          </figure>
-        </div>
-        <div>
-          <p className='font-semibold text-xl mb-2'>
-            {event.name} - {event.location} -{' '}
-            {new Date(event.date).toDateString()}
-          </p>
-          <p className='text-sm'>{event.description}</p>
-          <p className='mt-8 font-title text-2xl text-gold mb-4'>
-            Ticket Options
-          </p>
-          <div className='grid gap-4'>
-            {event.BookingType.length > 0 ? (
-              event.BookingType.map((booking) => (
-                <div
-                  key={booking.id}
-                  className='border-2 rounded p-4 border-gray-500'
-                >
-                  <p className='font-semibold text-lg'>{booking.name}</p>
-                  <p className='text-sm font-light mb-2'>
-                    {booking.description}
-                  </p>
-                  <p className='font-bold text-gold'>
-                    {new Intl.NumberFormat('en', {
-                      style: 'currency',
-                      currency: 'GBP',
-                    }).format(booking.price)}
-                  </p>
-                </div>
-              ))
-            ) : (
-              <p>
-                Cannot purchase tickets for this event yet, please check back
-                soon!
-              </p>
+        <DividerLine className='py-4' />
+        <section className='flex justify-between'>
+          <div>
+            <h1 className='font-title text-3xl mb-1'>{event.name}</h1>
+            <p className='text-sm text-gray-400 flex gap-3 items-center'>
+              <span>{event.location}</span>
+              <span className='bg-gray-400 w-[2px] h-[2px] block rounded-full'></span>
+              <span>{new Date(event.date).toDateString()}</span>
+            </p>
+          </div>
+          <div>
+            {user && (
+              <button
+                type='button'
+                className='bg-red-500 w-10 h-10 flex items-center justify-center rounded shadow-sm'
+                onClick={handleSaveEvent}
+              >
+                {isEventSaved ? (
+                  <BookmarkIconSolid className='w-6 h-6 text-red' />
+                ) : (
+                  <BookmarkIconOutline className='w-6 h-6 text-red' />
+                )}
+              </button>
             )}
           </div>
-        </div>
-      </section>
-    </div>
+        </section>
+        <DividerLine className='pt-2 pb-6' />
+        <section>
+          {event.BookingType.length > 0 ? (
+            <>
+              <h2 className='page__title'>Available Tickets</h2>
+              <div className='grid gap-4'>
+                {event.BookingType.map((booking) => (
+                  <div
+                    key={booking.id}
+                    className='rounded p-4 bg-dark-blue shadow-md'
+                  >
+                    <p className='font-medium text-xl mb-1'>{booking.name}</p>
+                    <p className='text-xs font-light mb-2'>
+                      {booking.description}
+                    </p>
+                    <p className='font-title text-lg'>
+                      {new Intl.NumberFormat('en', {
+                        style: 'currency',
+                        currency: 'GBP',
+                      }).format(booking.price)}
+                    </p>
+                    <div className='mt-4 flex gap-4 items-center'>
+                      <label htmlFor='quantity' className='form__label'>
+                        Quantity
+                      </label>
+                      <select
+                        id='quantity'
+                        className='form__input max-w-[10rem]'
+                      >
+                        <option value='0'>0</option>
+                        <option value='1'>1</option>
+                        <option value='2'>2</option>
+                        <option value='3'>3</option>
+                        <option value='4'>4</option>
+                        <option value='5'>5</option>
+                        <option value='6'>6</option>
+                      </select>
+                    </div>
+                  </div>
+                ))}
+                <button className='btn btn--gold'>Buy Tickets</button>
+              </div>
+            </>
+          ) : (
+            <p>
+              Tickets are currently unavailable for purchase, please check back
+              soon!
+            </p>
+          )}
+        </section>
+        <DividerLine className='py-6' />
+        <section className='bg-dark-blue rounded p-6 shadow-md'>
+          <p className='page__title'>About the event</p>
+          <div className='h-64 w-full rounded mb-4'>
+            <figure>
+              <Image
+                src={`${process.env.NEXT_PUBLIC_API_URL}/${event.imageFileUrl}`}
+                fill
+                alt={event.name}
+                className='rounded'
+              />
+            </figure>
+          </div>
+          <p className='page__title'>{event.name}</p>
+          <p className='text-sm'>{event.description}</p>
+        </section>
+      </Container>
+    </>
   );
 }
 
