@@ -1,9 +1,11 @@
+import { XMarkIcon } from '@heroicons/react/24/outline';
 import { Bars3Icon } from '@heroicons/react/24/solid';
 import Link from 'next/link';
 import { useState } from 'react';
 import { UserInterface } from '../../constant-types';
 import useUser from '../../utils/iron/useUser';
 import DividerLine from './DividerLine';
+import Navbar from './Navbar';
 
 export default function Header() {
   const [displayNav, setDisplayNav] = useState(false);
@@ -32,12 +34,17 @@ export default function Header() {
             </Link>
           )}
         </div>
+        <Navbar displayNav={displayNav} />
         <button
           type='button'
           className='cursor-pointer relative z-50'
           onClick={() => setDisplayNav(!displayNav)}
         >
-          <Bars3Icon className='w-8 h-8' />
+          {displayNav ? (
+            <XMarkIcon className='w-8 h-8' />
+          ) : (
+            <Bars3Icon className='w-8 h-8' />
+          )}
         </button>
       </header>
       <DividerLine />

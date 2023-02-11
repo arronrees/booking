@@ -16,6 +16,7 @@ export interface UserInterface {
   Address: AddressInterface;
   token: string;
   emailVerified: boolean;
+  role: 'USER' | 'ADMIN' | 'SUPERADMIN';
 }
 
 export interface EventInterfaceCompact {
