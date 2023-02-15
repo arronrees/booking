@@ -64,6 +64,29 @@ export async function getUserSavedEventsController(
   }
 }
 
+// POST /resend-verification-email
+export async function postResendVerficationEmailController(
+  req: Request,
+  res: Response<JsonApiResponse> & { locals: ResLocals }
+) {
+  try {
+    const { user } = res.locals;
+
+    await sendEmailVerificationEmail(user.email, user.id, user.name);
+
+    return res.status(200).json({
+      success: true,
+    });
+  } catch (err) {
+    console.error(err);
+
+    return res.status(500).json({
+      success: false,
+      error: 'Something went wrong, please try again',
+    });
+  }
+}
+
 // PUT /update
 export async function updateUserController(
   req: Request,

@@ -84,7 +84,7 @@ export default function SignUpForm() {
     }
 
     if (res.ok) {
-      router.push('/');
+      router.push('/user/signup-confirmation');
     }
 
     setIsLoading(false);

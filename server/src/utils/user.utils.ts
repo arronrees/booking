@@ -1,10 +1,7 @@
 import { User } from '@prisma/client';
 import { prismaDB } from '..';
 import { emailTransporter } from '../constants';
-import checkValidUuid from './checkValidUuid';
 import randomstring from 'randomstring';
-
-type FieldToCheck = 'id' | 'email';
 
 export async function sendEmailVerificationEmail(
   email: string,
@@ -12,11 +9,11 @@ export async function sendEmailVerificationEmail(
   name: string
 ) {
   try {
-    const random = randomstring.generate();
+    const randomString = randomstring.generate();
 
     await prismaDB.user.update({
       where: { id },
-      data: { emailVerificationString: random },
+      data: { emailVerificationString: randomString },
     });
 
     const message = await emailTransporter.sendMail({
@@ -26,7 +23,7 @@ export async function sendEmailVerificationEmail(
       text: 'Please verify your email address',
       html: `
         <p>Hi, <b>${name}.</b> Thanks for joining.</p>
-        <p>Please visit this <a href="${process.env.WEB_URL}/user/verify-email/${id}?token=${random}" target="_blank" rel="noreferrer">link</a> to verify your email address</p>
+        <p>Please visit this <a href="${process.env.WEB_URL}/user/verify-email/${id}?token=${randomString}" target="_blank" rel="noreferrer">link</a> to verify your email address</p>
       `,
     });
   } catch (err) {
