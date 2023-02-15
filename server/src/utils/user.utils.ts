@@ -13,7 +13,7 @@ export async function sendEmailVerificationEmail(
 
     await prismaDB.user.update({
       where: { id },
-      data: { emailVerificationString: randomString },
+      data: { emailVerificationString: randomString, emailVerified: false },
     });
 
     const message = await emailTransporter.sendMail({
