@@ -27,6 +27,8 @@ export default function SignUpConfirmation({ user }: Props) {
       return;
     }
 
+    const response = await fetch('/api/user/update');
+
     toast.success('Email confirmation successfully sent.');
     router.push('/');
     return;
