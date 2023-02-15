@@ -7,6 +7,7 @@ import {
   updateUserPasswordController,
   getUserSavedEventsController,
   postResendVerficationEmailController,
+  postUserAdminRequest,
 } from '../controllers/user.controller';
 import { checkAddressObjectValid } from '../middleware/address.middleware';
 import { checkJwtExits } from '../middleware/auth.middleware';
@@ -30,6 +31,9 @@ userRouter.post(
   checkJwtExits,
   postResendVerficationEmailController
 );
+
+// user request admin user role
+userRouter.post('/admin-request', checkJwtExits, postUserAdminRequest);
 
 // update user details
 userRouter.put(

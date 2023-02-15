@@ -87,6 +87,35 @@ export async function postResendVerficationEmailController(
   }
 }
 
+// POST /admin-request
+export async function postUserAdminRequest(
+  req: Request,
+  res: Response<JsonApiResponse> & { locals: ResLocals }
+) {
+  try {
+    const { user } = res.locals;
+
+    if (user.role !== 'USER') {
+      return res
+        .status(400)
+        .json({ success: false, error: 'User is already admin.' });
+    }
+
+    const newRequest = await prismaDB.userAdminRequest.create({
+      data: { userId: user.id },
+    });
+
+    return res.status(200).json({ success: true });
+  } catch (err) {
+    console.error(err);
+
+    return res.status(500).json({
+      success: false,
+      error: 'Something went wrong, please try again',
+    });
+  }
+}
+
 // PUT /update
 export async function updateUserController(
   req: Request,
