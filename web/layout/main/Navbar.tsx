@@ -9,7 +9,7 @@ export default function Navbar({ displayNav }: { displayNav: boolean }) {
 
   return (
     <nav
-      className={`fixed inset-0 z-10 top-20 bg-dark-blue overflow-hidden transition duration-300 ${
+      className={`fixed inset-0 z-10 top-20 bg-dark-blue overflow-hidden transition duration-300 overflow-y-scroll ${
         displayNav ? 'w-full' : 'w-0'
       }`}
       style={{ minHeight: 'calc(100vh - 5rem)' }}
@@ -64,6 +64,31 @@ export default function Navbar({ displayNav }: { displayNav: boolean }) {
                   href='/user/events/my-events'
                   icon='/icons/my-event.svg'
                   className='bg-light-blue hover:bg-light-blue-med focus:bg-light-blue-med active:bg-light-blue-dark ring-light-blue/40'
+                />
+                <DividerLine className='py-2' />
+              </>
+            )}
+            {user.role === 'SUPERADMIN' && (
+              <>
+                <li className='font-semibold'>Creator Tools</li>
+                <NavItem
+                  text='Create Event'
+                  href='/user/events/create'
+                  icon='/icons/create-event.svg'
+                  className='bg-gold hover:bg-gold-med focus:bg-gold-med active:bg-gold-dark ring-gold/40'
+                />
+                <NavItem
+                  text='My Events'
+                  href='/user/events/my-events'
+                  icon='/icons/my-event.svg'
+                  className='bg-light-blue hover:bg-light-blue-med focus:bg-light-blue-med active:bg-light-blue-dark ring-light-blue/40'
+                />
+                <DividerLine className='py-2' />
+                <li className='font-semibold'>Superadmin Tools</li>
+                <NavItem
+                  text='Admin User Requests'
+                  href='/'
+                  icon='/icons/details.svg'
                 />
                 <DividerLine className='py-2' />
               </>
