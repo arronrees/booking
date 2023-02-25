@@ -23,14 +23,16 @@ export default function BecomeAnAdmin({ user }: Props) {
     const data = await res.json();
 
     if (!res.ok) {
-      toast.error('Error sending admin request, please try again.');
+      toast.error(data.error);
       return;
     }
 
     const response = await fetch('/api/user/update');
 
-    toast.success('Email confirmation successfully sent.');
-    router.push('/');
+    toast.success(
+      'Admin request successfully sent, we will email you with an update.'
+    );
+    router.push('/user');
     return;
   };
 

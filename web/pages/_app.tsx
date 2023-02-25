@@ -13,7 +13,7 @@ export default function App({ Component, pageProps }: AppProps) {
             fontWeight: 500,
             padding: '1rem',
             marginTop: '1rem',
-            lineHeight: 1,
+            lineHeight: 1.35,
             boxShadow:
               '0 5px 8px -1px rgb(0 0 0 / 0.15), 0 2px 4px -2px rgb(0 0 0 / 0.15)',
           },

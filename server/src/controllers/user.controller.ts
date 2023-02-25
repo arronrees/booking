@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { omit } from 'lodash';
+import { find, omit } from 'lodash';
 import { prismaDB } from '..';
 import { JsonApiResponse, ResLocals } from '../constant-types';
 import { UpdateAddressType } from '../models/address.model';
@@ -99,6 +99,55 @@ export async function postUserAdminRequest(
       return res
         .status(400)
         .json({ success: false, error: 'User is already admin.' });
+    }
+
+    const findAllAdminRequestsFromUser =
+      await prismaDB.userAdminRequest.findMany({
+        where: {
+          userId: user.id,
+        },
+      });
+
+    if (findAllAdminRequestsFromUser.length >= 5) {
+      return res.status(400).json({
+        success: false,
+        error:
+          'User has already submitted 5 admin requests, cannot create another one',
+      });
+    }
+
+    let canCreateAdminRequest: boolean = true;
+    let userAdminRequestError: string = '';
+
+    for (let i = 0; i < findAllAdminRequestsFromUser.length; i++) {
+      const request = findAllAdminRequestsFromUser[i];
+
+      if (request.status === 'PENDING' || !request.complete) {
+        canCreateAdminRequest = false;
+        userAdminRequestError =
+          'Cannot create new admin request while user currently has admin request in progress';
+        break;
+      }
+
+      const currentDate = new Date();
+      const threeMonthsAgo = new Date();
+      threeMonthsAgo.setMonth(currentDate.getMonth() - 3);
+
+      const requestDate = new Date(request.createdAt);
+
+      // date is within last 3 months
+      if (requestDate >= threeMonthsAgo && requestDate <= currentDate) {
+        canCreateAdminRequest = false;
+        userAdminRequestError =
+          'User has requested admin in the last 3 months, cannot request again';
+        break;
+      }
+    }
+
+    if (!canCreateAdminRequest) {
+      return res
+        .status(400)
+        .json({ success: false, error: userAdminRequestError });
     }
 
     const newRequest = await prismaDB.userAdminRequest.create({
