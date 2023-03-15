@@ -51,7 +51,7 @@ export default function BecomeAnAdmin({ user }: Props) {
         </div>
         <DividerLine className='py-4' />
         <div>
-          <button className='btn btn--blue' onClick={handleButtonClick}>
+          <button className='btn btn--gold' onClick={handleButtonClick}>
             Request admin account
           </button>
         </div>

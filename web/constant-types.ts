@@ -85,3 +85,19 @@ export interface JsonApiResponseType {
   data?: [] | {} | string;
   error?: string;
 }
+
+enum UserAdminRequestStatusType {
+  PENDING = 'PENDING',
+  APPROVED = 'APPROVED',
+  DENIED = 'DENIED',
+}
+
+export interface UserAdminRequestType {
+  id: string;
+  createdAt: Date;
+  updatedAt: Date;
+  userId: string;
+  status: UserAdminRequestStatusType;
+  dateComplete: Date | null;
+  complete: boolean;
+}

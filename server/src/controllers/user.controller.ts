@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { find, omit } from 'lodash';
+import { omit } from 'lodash';
 import { prismaDB } from '..';
 import { JsonApiResponse, ResLocals } from '../constant-types';
 import { UpdateAddressType } from '../models/address.model';
@@ -54,6 +54,29 @@ export async function getUserSavedEventsController(
     });
 
     return res.status(200).json({ success: true, data: savedEvents });
+  } catch (err) {
+    console.error(err);
+
+    return res.status(500).json({
+      success: false,
+      error: 'Something went wrong, please try again',
+    });
+  }
+}
+
+// GET /admin-request
+export async function getUserAdminRequests(
+  req: Request,
+  res: Response<JsonApiResponse> & { locals: ResLocals }
+) {
+  try {
+    const { id } = res.locals.user;
+
+    const userAdminRequests = await prismaDB.userAdminRequest.findMany({
+      where: { userId: id },
+    });
+
+    return res.status(200).json({ success: true, data: userAdminRequests });
   } catch (err) {
     console.error(err);
 
@@ -139,7 +162,7 @@ export async function postUserAdminRequest(
       if (requestDate >= threeMonthsAgo && requestDate <= currentDate) {
         canCreateAdminRequest = false;
         userAdminRequestError =
-          'User has requested admin in the last 3 months, cannot request again';
+          'User has requested admin role in the last 3 months, cannot request again yet';
         break;
       }
     }

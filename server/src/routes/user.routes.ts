@@ -8,6 +8,7 @@ import {
   getUserSavedEventsController,
   postResendVerficationEmailController,
   postUserAdminRequest,
+  getUserAdminRequests,
 } from '../controllers/user.controller';
 import { checkAddressObjectValid } from '../middleware/address.middleware';
 import { checkJwtExits } from '../middleware/auth.middleware';
@@ -24,6 +25,9 @@ userRouter.get('/', checkJwtExits, getSingleUserController);
 
 // get user saved events
 userRouter.get('/saved-events', checkJwtExits, getUserSavedEventsController);
+
+// get user admin requests
+userRouter.get('/admin-request', checkJwtExits, getUserAdminRequests);
 
 // resend verification email
 userRouter.post(
