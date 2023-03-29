@@ -9,6 +9,7 @@ import {
   postResendVerficationEmailController,
   postUserAdminRequest,
   getUserAdminRequests,
+  getSingleUserAdminRequest,
 } from '../controllers/user.controller';
 import { checkAddressObjectValid } from '../middleware/address.middleware';
 import { checkJwtExits } from '../middleware/auth.middleware';
@@ -28,6 +29,13 @@ userRouter.get('/saved-events', checkJwtExits, getUserSavedEventsController);
 
 // get user admin requests
 userRouter.get('/admin-request', checkJwtExits, getUserAdminRequests);
+
+// get single user admin request
+userRouter.get(
+  '/admin-request/:adminRequestId',
+  checkJwtExits,
+  getSingleUserAdminRequest
+);
 
 // resend verification email
 userRouter.post(

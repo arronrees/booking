@@ -87,6 +87,41 @@ export async function getUserAdminRequests(
   }
 }
 
+// GET /admin-request/:adminRequestId
+export async function getSingleUserAdminRequest(
+  req: Request,
+  res: Response<JsonApiResponse> & { locals: ResLocals }
+) {
+  try {
+    const { adminRequestId } = req.params;
+
+    if (!checkValidUuid(adminRequestId)) {
+      return res
+        .status(404)
+        .json({ success: false, error: 'No admin request found' });
+    }
+
+    const findAdminRequest = await prismaDB.userAdminRequest.findFirst({
+      where: { id: adminRequestId },
+    });
+
+    if (!findAdminRequest) {
+      return res
+        .status(404)
+        .json({ success: false, error: 'No admin request found' });
+    }
+
+    return res.status(200).json({ success: true, data: findAdminRequest });
+  } catch (err) {
+    console.error(err);
+
+    return res.status(500).json({
+      success: false,
+      error: 'Something went wrong, please try again',
+    });
+  }
+}
+
 // POST /resend-verification-email
 export async function postResendVerficationEmailController(
   req: Request,

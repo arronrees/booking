@@ -2,10 +2,10 @@ import Link from 'next/link';
 import {
   JsonApiResponseType,
   UserAdminRequestType,
-} from '../../constant-types';
-import DividerLine from '../../layout/main/DividerLine';
-import Header from '../../layout/main/Header';
-import { withSessionSsr } from '../../utils/iron/withSession';
+} from '../../../constant-types';
+import DividerLine from '../../../layout/main/DividerLine';
+import Header from '../../../layout/main/Header';
+import { withSessionSsr } from '../../../utils/iron/withSession';
 
 type Props = { adminRequests?: UserAdminRequestType[] };
 
@@ -23,9 +23,13 @@ export default function AdminRequests({ adminRequests }: Props) {
         <div className='grid gap-2'>
           {adminRequests &&
             adminRequests.map((request) => (
-              <div key={request.id} className='bg-dark-blue rounded p-4'>
+              <Link
+                href={`/user/admin-requests/${request.id}`}
+                key={request.id}
+                className='bg-dark-blue rounded p-4'
+              >
                 <p>Status: {request.status}</p>
-              </div>
+              </Link>
             ))}
         </div>
         <DividerLine className='py-4' />
