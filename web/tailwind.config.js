@@ -24,6 +24,9 @@ module.exports = {
         'gold-dark': '#B6900A',
         grey: '#3A4048',
         red: '#C54C4C',
+        'red-light': '#C54C4C',
+        'red-med': '#C54C4C',
+        'red-dark': '#C54C4C',
       },
       screens: {
         xs: '525px',

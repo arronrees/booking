@@ -122,6 +122,28 @@ export async function getSingleUserAdminRequest(
   }
 }
 
+// GET /admin/admin-requests
+export async function getAdminRequestsForVerification(
+  req: Request,
+  res: Response<JsonApiResponse> & { locals: ResLocals }
+) {
+  try {
+    const adminRequests = await prismaDB.userAdminRequest.findMany({
+      where: { complete: false },
+      include: { User: { select: { name: true } } },
+    });
+
+    return res.status(200).json({ success: true, data: adminRequests });
+  } catch (err) {
+    console.error(err);
+
+    return res.status(500).json({
+      success: false,
+      error: 'Something went wrong, please try again',
+    });
+  }
+}
+
 // POST /resend-verification-email
 export async function postResendVerficationEmailController(
   req: Request,
@@ -213,6 +235,91 @@ export async function postUserAdminRequest(
     });
 
     return res.status(200).json({ success: true });
+  } catch (err) {
+    console.error(err);
+
+    return res.status(500).json({
+      success: false,
+      error: 'Something went wrong, please try again',
+    });
+  }
+}
+
+// POST /admin/admin-requests/:adminRequestId?result=approveOrDeny
+export async function postApproveAdminRequest(
+  req: Request,
+  res: Response<JsonApiResponse> & { locals: ResLocals }
+) {
+  try {
+    const { user } = res.locals;
+
+    if (user.role !== 'SUPERADMIN') {
+      return res.status(400).json({
+        success: false,
+        error: 'User does not have permissions to do this',
+      });
+    }
+
+    const { adminRequestId } = req.params;
+
+    if (!adminRequestId) {
+      return res
+        .status(404)
+        .json({ success: false, error: 'No admin request found' });
+    }
+
+    if (!checkValidUuid(adminRequestId)) {
+      return res
+        .status(404)
+        .json({ success: false, error: 'No admin request found' });
+    }
+
+    const { result }: { result?: string } = req.query;
+
+    if (!result) {
+      return res
+        .status(400)
+        .json({ success: false, error: 'Please provide result of request' });
+    }
+
+    const adminRequest = await prismaDB.userAdminRequest.findUnique({
+      where: { id: adminRequestId },
+    });
+
+    if (!adminRequest) {
+      return res
+        .status(404)
+        .json({ success: false, error: 'No admin request found' });
+    }
+
+    if (result === 'approve') {
+      const updatedAdminRequest = await prismaDB.userAdminRequest.update({
+        where: { id: adminRequestId },
+        data: {
+          complete: true,
+          dateComplete: new Date(),
+          status: 'APPROVED',
+        },
+      });
+
+      return res.status(200).json({ success: true });
+    } else if (result === 'deny') {
+      const updatedAdminRequest = await prismaDB.userAdminRequest.update({
+        where: { id: adminRequestId },
+        data: {
+          complete: true,
+          dateComplete: new Date(),
+          status: 'DENIED',
+        },
+      });
+
+      return res.status(200).json({ success: true });
+    } else {
+      return res.status(400).json({
+        success: false,
+        error: 'Please provide correct result of request',
+      });
+    }
   } catch (err) {
     console.error(err);
 

@@ -16,6 +16,10 @@
   @apply bg-light-blue hover:bg-light-blue-med focus:bg-light-blue-med active:bg-light-blue-dark ring-light-blue/60;
 }
 
+.btn--red {
+  @apply bg-red hover:bg-red-med focus:bg-red-med active:bg-red-dark ring-red/60;
+}
+
 .form__label {
   @apply font-semibold mb-1 block text-sm;
 }

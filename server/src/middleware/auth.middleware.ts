@@ -154,3 +154,44 @@ export async function checkIfUserIsAdmin(
     });
   }
 }
+
+export async function checkIfUserIsSuperAdmin(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const { user } = res.locals;
+
+    if (!user) {
+      return res
+        .status(401)
+        .json({ success: false, error: 'Invalid user permissions' });
+    }
+
+    if (user.role === 'SUPERADMIN') {
+      if (user.adminVerified) {
+        return next();
+      }
+
+      return res.status(401).json({
+        success: false,
+        error:
+          'User not super admin, please request admin access to use this feature',
+      });
+    }
+
+    return res.status(401).json({
+      success: false,
+      error:
+        'User not super admin, please request admin access to use this feature',
+    });
+  } catch (err) {
+    console.log(err);
+
+    return res.status(500).json({
+      success: false,
+      error: 'Something went wrong, please try again',
+    });
+  }
+}

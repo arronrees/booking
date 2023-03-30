@@ -100,4 +100,5 @@ export interface UserAdminRequestType {
   status: UserAdminRequestStatusType;
   dateComplete: Date | null;
   complete: boolean;
+  User?: UserInterface;
 }

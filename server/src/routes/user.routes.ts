@@ -10,9 +10,14 @@ import {
   postUserAdminRequest,
   getUserAdminRequests,
   getSingleUserAdminRequest,
+  getAdminRequestsForVerification,
+  postApproveAdminRequest,
 } from '../controllers/user.controller';
 import { checkAddressObjectValid } from '../middleware/address.middleware';
-import { checkJwtExits } from '../middleware/auth.middleware';
+import {
+  checkIfUserIsSuperAdmin,
+  checkJwtExits,
+} from '../middleware/auth.middleware';
 import {
   checkUpdateUserEmailObjectValid,
   checkUpdateUserObjectValid,
@@ -37,6 +42,14 @@ userRouter.get(
   getSingleUserAdminRequest
 );
 
+// get admin requests for verification
+userRouter.get(
+  '/admin/admin-requests',
+  checkJwtExits,
+  checkIfUserIsSuperAdmin,
+  getAdminRequestsForVerification
+);
+
 // resend verification email
 userRouter.post(
   '/resend-verification-email',
@@ -46,6 +59,14 @@ userRouter.post(
 
 // user request admin user role
 userRouter.post('/admin-request', checkJwtExits, postUserAdminRequest);
+
+// super admin approve or deny admin request
+userRouter.post(
+  '/admin/admin-requests/:adminRequestId',
+  checkJwtExits,
+  checkIfUserIsSuperAdmin,
+  postApproveAdminRequest
+);
 
 // update user details
 userRouter.put(
