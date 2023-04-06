@@ -2,14 +2,18 @@ import Link from 'next/link';
 import {
   JsonApiResponseType,
   UserAdminRequestType,
+  UserInterface,
 } from '../../../constant-types';
 import DividerLine from '../../../layout/main/DividerLine';
 import Header from '../../../layout/main/Header';
 import { withSessionSsr } from '../../../utils/iron/withSession';
+import useUser from '../../../utils/iron/useUser';
 
 type Props = { adminRequests?: UserAdminRequestType[] };
 
 export default function AdminRequests({ adminRequests }: Props) {
+  const { user }: { user: UserInterface } = useUser();
+
   return (
     <>
       <Header />
@@ -32,12 +36,16 @@ export default function AdminRequests({ adminRequests }: Props) {
               </Link>
             ))}
         </div>
-        <DividerLine className='py-4' />
-        <div>
-          <Link href='/user/become-an-admin' className='btn btn--blue'>
-            Become and Admin
-          </Link>
-        </div>
+        {user && user.role === 'USER' && (
+          <>
+            <DividerLine className='py-4' />
+            <div>
+              <Link href='/user/become-an-admin' className='btn btn--blue'>
+                Become and Admin
+              </Link>
+            </div>
+          </>
+        )}
       </section>
     </>
   );

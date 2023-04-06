@@ -1,5 +1,7 @@
+import Link from 'next/link';
 import { UserAdminRequestType } from '../../../constant-types';
 import Container from '../../../layout/main/Container';
+import DividerLine from '../../../layout/main/DividerLine';
 import Header from '../../../layout/main/Header';
 import { withSessionSsr } from '../../../utils/iron/withSession';
 
@@ -89,6 +91,15 @@ function AdminRequestApproved({
         Your requested to become an admin user was approved on{' '}
         {new Date(adminRequest.dateComplete).toDateString()}.
       </p>
+      <DividerLine className='py-4' />
+      <div className='flex gap-4'>
+        <Link href='/events/create' className='btn btn--gold'>
+          Create event
+        </Link>
+        <Link href='/user/profile' className='btn btn--blue'>
+          View profile
+        </Link>
+      </div>
     </div>
   );
 }
