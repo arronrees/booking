@@ -302,6 +302,14 @@ export async function postApproveAdminRequest(
         },
       });
 
+      const updateUser = await prismaDB.user.update({
+        where: { id: adminRequest.userId },
+        data: {
+          role: 'ADMIN',
+          adminVerified: true,
+        },
+      });
+
       return res.status(200).json({ success: true });
     } else if (result === 'deny') {
       const updatedAdminRequest = await prismaDB.userAdminRequest.update({

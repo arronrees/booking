@@ -21,9 +21,14 @@ export default function AdminRequestsForVerification({ adminRequests }: Props) {
         <div>
           <h1 className='page__title'>Admin Verification Requests</h1>
           <p>
-            There are currently {adminRequests ? adminRequests.length : '0'}{' '}
-            admin verification requests. Please review and action each request
-            below.
+            {!adminRequests ||
+              (adminRequests.length === 0 &&
+                'There are currently no admin requests for you to review.')}
+            {adminRequests &&
+              adminRequests.length > 0 &&
+              `There are currently ${adminRequests.length}
+                admin verification requests. Please review and action each request
+                below.`}
           </p>
         </div>
         <DividerLine className='py-4' />
