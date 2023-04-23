@@ -173,7 +173,7 @@ export async function getSingleEventController(
   }
 }
 
-// POST /user/save/:eventId
+// POST /create
 export async function createEventController(
   req: Request,
   res: Response<JsonApiResponse> & { locals: ResLocals }
@@ -216,7 +216,7 @@ export async function createEventController(
       },
     });
 
-    return res.status(200).json({ success: true });
+    return res.status(200).json({ success: true, data: newEvent });
   } catch (err) {
     console.error(err);
 

@@ -83,7 +83,7 @@ export default function EditEventForm() {
         name: data.name,
         description: data.description,
         date: new Date(data.date),
-        public: data.public === 'true' ? true : false,
+        public: data.public == 'true' ? true : false,
         type: data.type,
         maxBookings: Number(data.maxBookings),
         location: data.location,
@@ -122,7 +122,7 @@ export default function EditEventForm() {
     if (res.ok) {
       setIsLoading(false);
       toast.success('Event created successfully');
-      return router.push('/events');
+      return router.push(`/user/events/edit/${responseData.data.id}`);
     }
   };
 

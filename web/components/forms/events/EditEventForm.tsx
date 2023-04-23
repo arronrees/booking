@@ -81,14 +81,12 @@ export default function EditEventForm({ event }: Props) {
         name: data.name,
         description: data.description,
         date: new Date(data.date),
-        public: data.public === 'true' ? true : false,
+        public: data.public == 'true' ? true : false,
         type: data.type,
         maxBookings: Number(data.maxBookings),
         location: data.location,
       },
     };
-
-    console.log(formData.event);
 
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/api/events/update/${event.id}`,
