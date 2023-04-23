@@ -28,10 +28,12 @@ export async function getAllEventsController(
 
       allEvents = await prismaDB.event.findMany({
         where: { public: true, typeSlug: req.query.type as string },
+        orderBy: { date: 'asc' },
       });
     } else {
       allEvents = await prismaDB.event.findMany({
         where: { public: true },
+        orderBy: { date: 'asc' },
       });
     }
 
@@ -58,6 +60,7 @@ export async function getAdminUserEventsController(
       where: {
         userId: id,
       },
+      orderBy: { date: 'asc' },
     });
 
     return res.status(200).json({ success: true, data: events });
