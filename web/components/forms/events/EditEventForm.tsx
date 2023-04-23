@@ -62,7 +62,7 @@ export default function EditEventForm({ event }: Props) {
         .split('/')
         .reverse()
         .join('-'),
-      public: event.public,
+      public: event.public ? 'true' : 'false',
       type: event.type,
       maxBookings: event.maxBookings,
       location: event.location,
