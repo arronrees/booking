@@ -8,6 +8,7 @@ import EditUserPasswordForm from '../../../components/forms/user/EditUserPasswor
 import Container from '../../../layout/main/Container';
 import { UserInterface } from '../../../constant-types';
 import DividerLine from '../../../layout/main/DividerLine';
+import Link from 'next/link';
 
 export default function UpdateUser() {
   const { user }: { user: UserInterface } = useUser();
@@ -18,29 +19,35 @@ export default function UpdateUser() {
 
       {user && (
         <Container>
-          <h2 className='page__title'>Update my details</h2>
-          <DividerLine className='pb-2' />
-          <EditUserDetailsForm user={user} />
-
+          <h2 className='page__title'>My Details</h2>
+          <ul className='text-sm font-thin flex flex-col gap-1 mb-4'>
+            <li>{user.name}</li>
+            <li>{user.email}</li>
+            <li>{user.telephone}</li>
+          </ul>
+          <ul className='text-sm font-thin flex flex-col gap-1'>
+            <li>{user.Address.addressLine1}</li>
+            {user.Address.addressLine2 && <li>{user.Address.addressLine2}</li>}
+            <li>{user.Address.town}</li>
+            <li>{user.Address.county}</li>
+            <li>{user.Address.postcode}</li>
+            <li>{user.Address.country}</li>
+          </ul>
           <DividerLine className='py-4' />
-          <h2 className='page__title'>Update email address</h2>
-          <p className='pb-2'>
-            If you update your email you will have to re-verify your email
-            address.
-          </p>
-          <DividerLine className='pb-2' />
-          <EditUserEmailForm user={user} />
-
-          <DividerLine className='py-4' />
-          <h2 className='page__title'>Update password</h2>
-          <p className='pb-2'>Leave blank to keep password the same.</p>
-          <DividerLine className='pb-2' />
-          <EditUserPasswordForm user={user} />
-
-          <DividerLine className='py-4' />
-          <h2 className='page__title'>Update address</h2>
-          <DividerLine className='pb-2' />
-          <EditUserAddressForm address={user.Address} user={user} />
+          <div className='flex gap-4 flex-col items-start text-sm'>
+            <Link className='border-b' href='/user/profile/update/my-details'>
+              Update my details
+            </Link>
+            <Link className='border-b' href='/user/profile/update/address'>
+              Update my address
+            </Link>
+            <Link className='border-b' href='/user/profile/update/email'>
+              Update my email
+            </Link>
+            <Link className='border-b' href='/user/profile/update/password'>
+              Update my password
+            </Link>
+          </div>
         </Container>
       )}
     </>

@@ -87,7 +87,7 @@ export default function Navbar({ displayNav }: { displayNav: boolean }) {
                 <li className='font-semibold'>Superadmin Tools</li>
                 <NavItem
                   text='Admin User Requests'
-                  href='/'
+                  href='/user/admin/admin-requests'
                   icon='/icons/details.svg'
                 />
                 <DividerLine className='py-2' />

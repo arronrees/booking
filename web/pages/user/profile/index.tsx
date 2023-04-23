@@ -24,7 +24,7 @@ export default function Profile() {
               <DashboardLink
                 colour='mid-blue'
                 text='My Details'
-                href='/user/profile/update'
+                href='/user/profile/my-details'
               />
               <DashboardLink
                 colour='gold'

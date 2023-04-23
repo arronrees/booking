@@ -65,7 +65,7 @@ export function EventEditItem({ event }: { event: EventInterfaceCompact }) {
 export function EventSavedItem({ event }: { event: EventInterfaceCompact }) {
   return (
     <Link
-      href={`/user/events/edit/${event.id}`}
+      href={`/events/${event.typeSlug}/view/${event.slug}/${event.id}`}
       key={event.id}
       className='h-full w-full group'
     >
