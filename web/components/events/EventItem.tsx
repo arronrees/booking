@@ -9,7 +9,7 @@ export function EventItem({ event }: { event: EventInterfaceCompact }) {
       key={event.id}
       className='h-full w-full group'
     >
-      <article className='rounded-t h-full w-full group-focus:shadow-lg'>
+      <article className='flex flex-col rounded-t h-full w-full group-focus:shadow-lg'>
         <div className='h-40'>
           <div className='overlay'></div>
           <figure>
@@ -21,7 +21,7 @@ export function EventItem({ event }: { event: EventInterfaceCompact }) {
             />
           </figure>
         </div>
-        <div className='p-3 py-4 rounded-b bg-white text-dark-blue'>
+        <div className='flex-1 p-3 py-4 rounded-b bg-white text-dark-blue'>
           <h3 className='font-title mb-2 text-lg leading-6'>{event.name}</h3>
           <p className='text-xs text-gray-600'>
             {new Date(event.date).toDateString()}
@@ -39,7 +39,7 @@ export function EventEditItem({ event }: { event: EventInterfaceCompact }) {
       key={event.id}
       className='h-full w-full group'
     >
-      <article className='rounded-t h-full w-full group-focus:shadow-lg'>
+      <article className='flex flex-col rounded-t h-full w-full group-focus:shadow-lg'>
         <div className='h-40'>
           <div className='overlay'></div>
           <figure>
@@ -51,7 +51,7 @@ export function EventEditItem({ event }: { event: EventInterfaceCompact }) {
             />
           </figure>
         </div>
-        <div className='p-3 py-4 rounded-b bg-light-blue text-white'>
+        <div className='flex-1 p-3 py-4 rounded-b bg-light-blue text-white'>
           <h3 className='font-title mb-2 text-lg leading-6'>{event.name}</h3>
           <p className='text-xs text-white'>
             {new Date(event.date).toDateString()}
@@ -69,7 +69,7 @@ export function EventSavedItem({ event }: { event: EventInterfaceCompact }) {
       key={event.id}
       className='h-full w-full group'
     >
-      <article className='rounded-t h-full w-full group-focus:shadow-lg'>
+      <article className='flex flex-col rounded-t h-full w-full group-focus:shadow-lg'>
         <div className='h-40'>
           <div className='overlay'></div>
           <figure>
@@ -81,7 +81,7 @@ export function EventSavedItem({ event }: { event: EventInterfaceCompact }) {
             />
           </figure>
         </div>
-        <div className='p-3 py-4 rounded-b bg-dark-blue text-white'>
+        <div className='flex-1 p-3 py-4 rounded-b bg-dark-blue text-white'>
           <h3 className='font-title mb-2 text-lg leading-6'>{event.name}</h3>
           <p className='text-xs text-white'>
             {new Date(event.date).toDateString()}
