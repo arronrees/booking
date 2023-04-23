@@ -57,6 +57,15 @@ export interface EventInterfaceFull {
   BookingType: BookingTypeInterface[];
 }
 
+export interface SavedEventInterface {
+  id: string;
+  createdAt: Date;
+  updatedAt: Date;
+  userId: String;
+  Event: EventInterfaceFull;
+  eventId: string;
+}
+
 export interface AddressInterface {
   id: string;
   createdAt: Date;

@@ -84,19 +84,10 @@ export async function getSavedEventsController(
 
     const savedEvents = await prismaDB.userSavedEvent.findMany({
       where: { userId: id },
+      include: { Event: true },
     });
 
-    const allEvents = [];
-
-    for (let i = 0; i < savedEvents.length; i++) {
-      const { eventId } = savedEvents[i];
-
-      const event = await prismaDB.event.findUnique({ where: { id: eventId } });
-
-      allEvents.push(event);
-    }
-
-    return res.status(200).json({ success: true, data: allEvents });
+    return res.status(200).json({ success: true, data: savedEvents });
   } catch (err) {
     console.error(err);
 

@@ -1,5 +1,5 @@
 import { withSessionSsr } from '../../../utils/iron/withSession';
-import { EventInterfaceCompact } from '../../../constant-types';
+import { SavedEventInterface } from '../../../constant-types';
 import Header from '../../../layout/main/Header';
 import DividerLine from '../../../layout/main/DividerLine';
 import Container from '../../../layout/main/Container';
@@ -7,10 +7,10 @@ import EventGrid from '../../../components/events/EventGrid';
 import { EventSavedItem } from '../../../components/events/EventItem';
 
 interface Props {
-  events: EventInterfaceCompact[] | null;
+  savedEvents: SavedEventInterface[] | null;
 }
 
-export default function SavedEvents({ events }: Props) {
+export default function SavedEvents({ savedEvents }: Props) {
   return (
     <>
       <Header />
@@ -21,8 +21,8 @@ export default function SavedEvents({ events }: Props) {
           <DividerLine className='pb-6' />
 
           <EventGrid>
-            {events?.map((event) => (
-              <EventSavedItem key={event.id} event={event} />
+            {savedEvents?.map((savedEvent) => (
+              <EventSavedItem key={savedEvent.id} event={savedEvent.Event} />
             ))}
           </EventGrid>
         </div>
@@ -51,7 +51,7 @@ export const getServerSideProps = withSessionSsr(
       const eventsData = await eventsRes.json();
 
       return {
-        props: { events: eventsData.data },
+        props: { savedEvents: eventsData.data },
       };
     }
   }
