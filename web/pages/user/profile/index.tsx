@@ -14,15 +14,15 @@ export default function Profile() {
               Your Profile
             </h1>
             <div className='grid xs:grid-cols-2 md:gap-6 gap-4'>
-              <DashboardLink colour='mid-blue' text='My Tickets' href='/' />
+              <DashboardLink colour='dark-blue' text='My Tickets' href='/' />
               <DashboardLink
-                colour='mid-blue'
+                colour='dark-blue'
                 text='Saved Events'
                 href='/user/events/saved'
               />
-              <DashboardLink colour='mid-blue' text='Dashboard' href='/' />
+              <DashboardLink colour='dark-blue' text='Dashboard' href='/' />
               <DashboardLink
-                colour='mid-blue'
+                colour='dark-blue'
                 text='My Details'
                 href='/user/profile/my-details'
               />
